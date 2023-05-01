@@ -1,10 +1,13 @@
-#include <windows.h>
+#include <Windows.h>
 
 #include "render.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
-	if (!RENDER_Init())
+	(void)hPrevInstance;
+	(void)lpCmdLine;
+
+	if (!RENDER_Init(hInstance, nShowCmd))
 	{
 		MessageBoxA(NULL, "Failed to create renderer.", "Failed", MB_OK | MB_ICONERROR);
 		return 1;

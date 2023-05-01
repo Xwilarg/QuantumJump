@@ -1,8 +1,6 @@
 #include <Windows.h>
 #include <GL/GL.h>
 
-#undef CreateWindow
-
 #include "render.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -12,14 +10,14 @@ static HDC hDC;
 
 static HGLRC context;
 
-static bool CreateWindow()
+static bool InitWindow(HINSTANCE hInstance)
 {
 	// register the window class
 	WNDCLASS wc;
 	memset(&wc, 0, sizeof(wc));
 
 	wc.lpfnWndProc = WindowProc;
-	wc.hInstance = GetModuleHandleA(NULL);
+	wc.hInstance = hInstance;
 	wc.lpszClassName = "static";
 
 	RegisterClassA(&wc);
@@ -35,7 +33,7 @@ static bool CreateWindow()
 
 		NULL,
 		NULL,
-		wc.hInstance,
+		hInstance,
 		NULL
 	);
 
@@ -79,7 +77,7 @@ static bool CreateContext()
 	return true;
 }
 
-static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
@@ -94,9 +92,9 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 	return 0;
 }
 
-bool RENDER_Init()
+bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 {
-	if (!CreateWindow())
+	if (!InitWindow(hInstance))
 	{
 		return false;
 	}
@@ -106,7 +104,7 @@ bool RENDER_Init()
 		return false;
 	}
 
-	ShowWindow(hWnd, SW_SHOW);
+	ShowWindow(hWnd, nShowCmd);
 
 	return true;
 }

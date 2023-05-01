@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
+#include <errno.h>
 
 #include "texture.h"
 
@@ -12,7 +13,6 @@ typedef struct
 {
 	uint16_t width;
 	uint16_t height;
-
 } TextureHeader;
 #pragma pack(pop)
 
@@ -21,9 +21,11 @@ static void UploadTexture(Texture* texture, int width, int height, void* data);
 bool TEXTURE_Load(const char* filename, Texture* texture)
 {
 	FILE* f;
-	if ((f = fopen(filename, "rb")) == NULL)
+	int err = fopen_s(&f, filename, "rb");
+	if (err != 0)
 	{
-		assert(!"Failed to open texture");
+#pragma warning(suppress: 4996)
+		assert(!strerror(err));
 		return false;
 	}
 
