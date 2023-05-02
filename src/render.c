@@ -1,14 +1,20 @@
 #include <Windows.h>
 #include <GL/GL.h>
 
+#include "wgl.h"
 #include "render.h"
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+PFNWGLCREATECONTEXTATTRIBSARBPROC	wglCreateContextAttribsARB;
+PFNGLGENBUFFERSARBPROC				glGenBuffers;
+PFNGLBINDBUFFERARBPROC				glBindBuffer;
+PFNGLBUFFERDATAARBPROC				glBufferData;
 
 static HWND hWnd;
 static HDC hDC;
 
 static HGLRC context;
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 static bool InitWindow(HINSTANCE hInstance)
 {
@@ -64,7 +70,7 @@ static bool CreateContext()
 	int format = ChoosePixelFormat(hDC, &pfd);
 	SetPixelFormat(hDC, format, &pfd);
 
-	// create the context
+	// create the dummy context
 	context = wglCreateContext(hDC);
 
 	if (context == NULL)
@@ -74,7 +80,38 @@ static bool CreateContext()
 
 	wglMakeCurrent(hDC, context);
 
+	// load the extension
+	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+
+	if (wglCreateContextAttribsARB == NULL)
+	{
+		return false;
+	}
+
+	// create a 3.2 context
+	int attributes[] = {
+		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+		WGL_CONTEXT_MINOR_VERSION_ARB, 2,
+		0, 0
+	};
+
+	context = wglCreateContextAttribsARB(hDC, context, attributes);
+
+	if (context == NULL)
+	{
+		return false;
+	}
+
+	wglMakeCurrent(hDC, context);
+
 	return true;
+}
+
+static void Init()
+{
+	getProcAddress(glGenBuffers, PFNGLGENBUFFERSARBPROC)
+	getProcAddress(glBindBuffer, PFNGLBINDBUFFERARBPROC)
+	getProcAddress(glBufferData, PFNGLBUFFERDATAARBPROC)
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -103,6 +140,8 @@ bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 	{
 		return false;
 	}
+
+	Init();
 
 	ShowWindow(hWnd, nShowCmd);
 
