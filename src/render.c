@@ -113,3 +113,11 @@ void RENDER_Render()
 {
 	SwapBuffers(hDC);
 }
+
+void RENDER_Destroy()
+{
+	wglDeleteContext(context);
+
+	ReleaseDC(hWnd, hDC);
+	DestroyWindow(hWnd);
+}
