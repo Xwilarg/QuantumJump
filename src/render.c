@@ -1,14 +1,13 @@
 #include <Windows.h>
-#include <GL/GL.h>
 
 #include "render.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 static HWND hWnd;
-static HDC hDC;
+static LPDIRECT3D9 d3d;
 
-static HGLRC context;
+LPDIRECT3DDEVICE9 d3dDevice;
 
 static bool InitWindow(HINSTANCE hInstance)
 {
@@ -42,37 +41,29 @@ static bool InitWindow(HINSTANCE hInstance)
 		return false;
 	}
 
-	hDC = GetDC(hWnd);
-
 	return true;
 }
 
-static bool CreateContext()
+static bool CreateDevice()
 {
-	PIXELFORMATDESCRIPTOR pfd;
-	memset(&pfd, 0, sizeof(pfd));
-
-	pfd.nSize = sizeof(pfd);
-	pfd.nVersion = 1;
-	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-	pfd.iPixelType = PFD_TYPE_RGBA;
-	pfd.cColorBits = 32;
-	pfd.cDepthBits = 24;
-	pfd.cStencilBits = 8;
-	pfd.iLayerType = PFD_MAIN_PLANE;
-
-	int format = ChoosePixelFormat(hDC, &pfd);
-	SetPixelFormat(hDC, format, &pfd);
-
-	// create the context
-	context = wglCreateContext(hDC);
-
-	if (context == NULL)
+	// create the dx9 object
+	if ((d3d = Direct3DCreate9(D3D_SDK_VERSION)) == NULL)
 	{
 		return false;
 	}
 
-	wglMakeCurrent(hDC, context);
+	D3DPRESENT_PARAMETERS d3dpp;
+	memset(&d3dpp, 0, sizeof(d3dpp));
+
+	d3dpp.Windowed = TRUE;
+	d3dpp.hDeviceWindow = hWnd;
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+
+	// create the device
+	if (FAILED(d3d->lpVtbl->CreateDevice(d3d, D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &d3dDevice)))
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -99,7 +90,7 @@ bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 		return false;
 	}
 
-	if (!CreateContext())
+	if (!CreateDevice())
 	{
 		return false;
 	}
@@ -111,13 +102,13 @@ bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 
 void RENDER_Render()
 {
-	SwapBuffers(hDC);
+	d3dDevice->lpVtbl->Present(d3dDevice, NULL, NULL, NULL, NULL);
 }
 
 void RENDER_Destroy()
 {
-	wglDeleteContext(context);
+	d3dDevice->lpVtbl->Release(d3dDevice);
+	d3d->lpVtbl->Release(d3d);
 
-	ReleaseDC(hWnd, hDC);
 	DestroyWindow(hWnd);
 }

@@ -1,10 +1,12 @@
 #pragma once
 
+#include <d3d9.h>
 #include <stdbool.h>
 
 typedef struct
 {
-	unsigned int handle;
+	LPDIRECT3DTEXTURE9 handle;
 } Texture;
 
 bool TEXTURE_Load(const char* filename, Texture* texture);
+void TEXTURE_Free(Texture* texture);

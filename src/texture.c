@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include <GL/GL.h>
+#include <d3d9.h>
 
 #include <stdio.h>
 #include <stdint.h>
@@ -7,6 +7,7 @@
 #include <errno.h>
 
 #include "texture.h"
+#include "render.h"
 
 #pragma pack(push, 1)
 typedef struct
@@ -16,7 +17,7 @@ typedef struct
 } TextureHeader;
 #pragma pack(pop)
 
-static void UploadTexture(Texture* texture, int width, int height, void* data);
+static bool UploadTexture(Texture* texture, int width, int height, void* data);
 
 bool TEXTURE_Load(const char* filename, Texture* texture)
 {
@@ -33,7 +34,7 @@ bool TEXTURE_Load(const char* filename, Texture* texture)
 	TextureHeader header;
 	fread(&header, sizeof(header), 1, f);
 
-	unsigned int size = header.width * header.height * 3;
+	unsigned int size = header.width * header.height * 4;
 	void* data = malloc(size);
 
 	if (!data)
@@ -42,7 +43,12 @@ bool TEXTURE_Load(const char* filename, Texture* texture)
 	}
 
 	fread(data, size, 1, f);
-	UploadTexture(texture, header.width, header.height, data);
+
+	if (!UploadTexture(texture, header.width, header.height, data))
+	{
+		free(data);
+		return false;
+	}
 
 	// free the texture data
 	free(data);
@@ -50,14 +56,29 @@ bool TEXTURE_Load(const char* filename, Texture* texture)
 	return true;
 }
 
-static void UploadTexture(Texture* texture, int width, int height, void* data)
+void TEXTURE_Free(Texture* texture)
 {
-	GLuint textures;
-	glGenTextures(1, &textures);
+	texture->handle->lpVtbl->Release(texture->handle);
+	texture->handle = NULL;
+}
 
-	glBindTexture(GL_TEXTURE_2D, textures);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+static bool UploadTexture(Texture* texture, int width, int height, void* data)
+{
+	LPDIRECT3DTEXTURE9 resource;
 
-	texture->handle = textures;
+	if (FAILED(d3dDevice->lpVtbl->CreateTexture(d3dDevice, width, height, 0, D3DUSAGE_DYNAMIC, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &resource, NULL)))
+	{
+		return false;
+	}
+
+	D3DLOCKED_RECT rect;
+	resource->lpVtbl->LockRect(resource, 0, &rect, NULL, NULL);
+
+	// upload the texture data
+	memcpy(rect.pBits, data, width * height * 4);
+
+	resource->lpVtbl->UnlockRect(resource, 0);
+
+	texture->handle = resource;
+	return true;
 }
