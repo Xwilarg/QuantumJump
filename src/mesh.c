@@ -42,11 +42,23 @@ bool MESH_Load(const char* filename, Mesh* mesh)
 		return false;
 	}
 
+	void* uvs = malloc(sizeof(float) * header.numVertices * 2);
+	if (!uvs)
+	{
+		free(vertices);
+		free(indices);
+		return false;
+	}
+
 	fread(vertices, sizeof(short), header.numVertices * 3, f);
+	fread(uvs, sizeof(float), header.numVertices * 2, f);
 	fread(indices, sizeof(unsigned short), header.numIndices, f);
 
 	mesh->vertices = vertices;
 	mesh->indices = indices;
+	mesh->uvs = uvs;
+
+	fclose(f);
 
 	return true;
 }
@@ -55,4 +67,5 @@ void MESH_Free(Mesh* mesh)
 {
 	free(mesh->indices);
 	free(mesh->vertices);
+	free(mesh->uvs);
 }

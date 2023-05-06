@@ -22,11 +22,9 @@ static bool UploadTexture(Texture* texture, int width, int height, void* data);
 bool TEXTURE_Load(const char* filename, Texture* texture)
 {
 	FILE* f;
-	int err = fopen_s(&f, filename, "rb");
-	if (err != 0)
+	if (fopen_s(&f, filename, "rb") != 0)
 	{
-#pragma warning(suppress: 4996)
-		assert(!strerror(err));
+		assert(!"Failed to open texture");
 		return false;
 	}
 
@@ -52,6 +50,8 @@ bool TEXTURE_Load(const char* filename, Texture* texture)
 
 	// free the texture data
 	free(data);
+
+	fclose(f);
 
 	return true;
 }

@@ -7,7 +7,19 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 static HWND hWnd;
 static LPDIRECT3D9 d3d;
 
+static int width;
+static int height;
+
 LPDIRECT3DDEVICE9 d3dDevice;
+
+static void UpdateClientArea()
+{
+	RECT rect;
+	GetClientRect(hWnd, &rect);
+
+	width = rect.right;
+	height = rect.bottom;
+}
 
 static bool InitWindow(HINSTANCE hInstance)
 {
@@ -27,8 +39,7 @@ static bool InitWindow(HINSTANCE hInstance)
 		"Game",
 
 		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT,
-		960, 540,
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 
 		NULL,
 		NULL,
@@ -40,6 +51,8 @@ static bool InitWindow(HINSTANCE hInstance)
 	{
 		return false;
 	}
+
+	UpdateClientArea();
 
 	return true;
 }
@@ -58,6 +71,8 @@ static bool CreateDevice()
 	d3dpp.Windowed = TRUE;
 	d3dpp.hDeviceWindow = hWnd;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.EnableAutoDepthStencil = true;
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 
 	// create the device
 	if (FAILED(d3d->lpVtbl->CreateDevice(d3d, D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &d3dDevice)))
@@ -74,6 +89,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CLOSE:
 		PostQuitMessage(0);
+		break;
+
+	case WM_SIZE:
+		UpdateClientArea();
 		break;
 
 	default:

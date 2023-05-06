@@ -9,6 +9,7 @@ typedef struct
 
 	short* vertices;
 	unsigned short* indices;
+	float* uvs;
 } Mesh;
 
 bool MESH_Load(const char* filename, Mesh* mesh);

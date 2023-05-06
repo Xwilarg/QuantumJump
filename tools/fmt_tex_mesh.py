@@ -13,7 +13,7 @@ def writeTexture(data, width, height, bs):
     bs.writeUShort(width)
     bs.writeUShort(height)
 
-    data = rapi.imageEncodeRaw(data, width, height, "r8g8b8")
+    data = rapi.imageEncodeRaw(data, width, height, "a8r8g8b8")
 
     bs.writeBytes(data)
 
@@ -29,6 +29,10 @@ def writeMesh(mdl, bs):
         bs.writeUShort(int(position[0]))
         bs.writeUShort(int(position[1]))
         bs.writeUShort(int(position[2]))
+
+    for uv in mesh.uvs:
+        bs.writeFloat(uv[0])
+        bs.writeFloat(uv[1])
 
     for indice in mesh.indices:
         bs.writeUShort(indice)
