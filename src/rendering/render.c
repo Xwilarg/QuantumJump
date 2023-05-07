@@ -165,9 +165,16 @@ void RENDER_Render()
 	d3dDevice->lpVtbl->Present(d3dDevice, NULL, NULL, NULL, NULL);
 }
 
-// Render an object
-void RENDER_RenderObject(Mesh* mesh, Transform *t)
+void RENDER_RenderCube(Vector min, Vector max, Vector rotation, Vector scale)
 {
+	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+}
+
+// Render an object
+void RENDER_RenderMesh(Mesh* mesh, Transform *t)
+{
+	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_FILLMODE, D3DFILL_SOLID);
+
 	// position
 	D3DMATRIX matPosition;
 	D3DXMatrixTranslation(&matPosition, t->position.x, t->position.y, t->position.z);

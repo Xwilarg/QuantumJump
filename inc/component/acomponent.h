@@ -4,7 +4,8 @@
 
 typedef enum {
 	COMPONENT_RIGIDBODY,
-	COMPONENT_RENDERER
+	COMPONENT_RENDERER,
+	COMPONENT_COLLIDER
 } Component;
 
 typedef struct Object Object;

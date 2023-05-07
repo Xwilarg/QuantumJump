@@ -19,6 +19,7 @@ void RENDER_Destroy();
 void RENDER_Clear();
 void RENDER_Render();
 
-void RENDER_RenderObject(Mesh* mesh, Transform* t);
+void RENDER_RenderCube(Vector min, Vector max, Vector rotation, Vector scale);
+void RENDER_RenderMesh(Mesh* mesh, Transform* t);
 
 extern LPDIRECT3DDEVICE9 d3dDevice;
