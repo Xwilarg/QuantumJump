@@ -11,15 +11,17 @@ void GAME_USERInit(Game* g, Context* ctx)
 {
 	(void)ctx;
 
-	g->Object = OBJECT_New();
-	g->Object->transform->position.z = -200.f;
+	Object* dynObj = OBJECT_New();
+	dynObj->transform->position.z = -200.f;
 
 	Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 	Rigidbody* rb = RIGIDBODY_New();
 	RIGIDBODY_AddForce(rb, VECTOR_New(0.f, 25.f, 0.f));
 
-	OBJECT_AddComponent(g->Object, r->parent);
-	OBJECT_AddComponent(g->Object, rb->parent);
+	OBJECT_AddComponent(dynObj, r->parent);
+	OBJECT_AddComponent(dynObj, rb->parent);
+
+	GAME_AddObject(g, dynObj);
 }
 
 // END
@@ -29,23 +31,43 @@ Game* GAME_Init()
 	Game* g = malloc(sizeof(Game));
 	if (g == NULL) return NULL;
 
-	g->Object = NULL;
+	g->objects = malloc(sizeof(Object*));
+	if (g->objects == NULL)
+		return NULL;
+
+	g->objects[0] = NULL;
 	return g;
 }
 
 void GAME_Destroy(Game* g)
 {
-	if (g->Object != NULL)
+	for (Object** o = g->objects; *o != NULL; o++)
 	{
-		OBJECT_Destroy(g->Object);
+		OBJECT_Destroy(*o);
 	}
 	free(g);
 }
 
+void GAME_AddObject(Game* g, Object* obj)
+{
+	int size = 0;
+	Object** o = g->objects;
+	while (*(o++) != NULL)
+	{
+		size++;
+	};
+	g->objects = realloc(g->objects, sizeof(Object*) * (size + 2));
+	if (g->objects == NULL)
+		return; // TODO
+
+	g->objects[size] = obj;
+	g->objects[size + 1] = NULL;
+}
+
 void GAME_Update(Game* g, Context* ctx)
 {
-	if (g->Object != NULL)
+	for (Object** o = g->objects; *o != NULL; o++)
 	{
-		OBJECT_Update(g->Object, ctx);
+		OBJECT_Update(*o, ctx);
 	}
 }
