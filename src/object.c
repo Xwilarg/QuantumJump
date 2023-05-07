@@ -18,8 +18,8 @@ Object* OBJECT_New()
 void OBJECT_AddComponent(Object* o, AComponent *newAc)
 {
 	int size = 0;
-	AComponent * *ac = o->components;
-	while ((*ac)++ != NULL)
+	AComponent** ac = o->components;
+	while (*(ac++) != NULL)
 	{
 		size++;
 	};
