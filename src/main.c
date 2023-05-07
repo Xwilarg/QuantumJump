@@ -18,7 +18,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		return 1;
 	}
 
-	Object* object = OBJECT_NewObject("demo.mesh");
+	Object* object = OBJECT_New("demo.mesh");
 
 	object->transform->position->z = -200.f;
 	//
@@ -45,7 +45,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	RENDER_Destroy();
 
-	OBJECT_DestroyObject(object);
+	OBJECT_Destroy(object);
 
 	return 0;
 }

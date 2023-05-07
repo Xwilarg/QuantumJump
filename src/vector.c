@@ -4,15 +4,15 @@
 
 Vector* VECTOR_Zero()
 {
-	return VECTOR_NewVector(0.f, 0.f, 0.f);
+	return VECTOR_New(0.f, 0.f, 0.f);
 }
 
 Vector* VECTOR_One()
 {
-	return VECTOR_NewVector(1.f, 1.f, 1.f);
+	return VECTOR_New(1.f, 1.f, 1.f);
 }
 
-Vector* VECTOR_NewVector(float x, float y, float z)
+Vector* VECTOR_New(float x, float y, float z)
 {
 	Vector* v = malloc(sizeof(Vector));
 	if (v == NULL) return NULL;
@@ -20,9 +20,10 @@ Vector* VECTOR_NewVector(float x, float y, float z)
 	v->x = x;
 	v->y = y;
 	v->z = z;
+	return v;
 }
 
-void VECTOR_DestroyVector(Vector* v)
+void VECTOR_Destroy(Vector* v)
 {
 	free(v);
 }

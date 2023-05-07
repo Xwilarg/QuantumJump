@@ -9,6 +9,6 @@ typedef struct {
 	void* self;
 } AComponent;
 
-AComponent* ACOMPONENT_NewAComponent(void* self, void (*update)(void), void (*destroy)(void*));
-void ACOMPONENT_DestroyComponent(AComponent* ac);
+AComponent* ACOMPONENT_New(void* self, void (*update)(Object*, void*), void (*destroy)(void*));
+void ACOMPONENT_Destroy(AComponent* ac);
 void ACOMPONENT_Update(AComponent* ac, Object* o);

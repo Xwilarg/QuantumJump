@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "component/transform.h"
 
-Transform* TRANSFORM_NewTransform(Vector* position)
+Transform* TRANSFORM_New(Vector* position)
 {
 	Transform* t = malloc(sizeof(Transform));
 	if (t == NULL) return NULL;
@@ -12,10 +12,10 @@ Transform* TRANSFORM_NewTransform(Vector* position)
 	return t;
 }
 
-void TRANSFORM_DestroyTransform(Transform* t)
+void TRANSFORM_Destroy(Transform* t)
 {
-	VECTOR_DestroyVector(t->position);
-	VECTOR_DestroyVector(t->rotation);
-	VECTOR_DestroyVector(t->scale);
+	VECTOR_Destroy(t->position);
+	VECTOR_Destroy(t->rotation);
+	VECTOR_Destroy(t->scale);
 	free(t);
 }

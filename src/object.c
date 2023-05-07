@@ -1,26 +1,26 @@
 #include "object.h"
 #include "component/renderer.h"
 
-Object* OBJECT_NewObject(char* meshPath)
+Object* OBJECT_New(char* meshPath)
 {
 	Object* o = malloc(sizeof(Object));
 	if (o == NULL) return NULL;
 
-	o->transform = TRANSFORM_NewTransform(VECTOR_NewVector(0.f, 0.f, 0.f));
+	o->transform = TRANSFORM_New(VECTOR_New(0.f, 0.f, 0.f));
 
 	o->components = malloc(sizeof(AComponent*) * 2);
 	if (o->components == NULL) return NULL;
-	o->components[0] = RENDERER_NewRenderer(meshPath)->parent;
+	o->components[0] = RENDERER_New(meshPath)->parent;
 	o->components[1] = NULL;
 	return o;
 }
 
-void OBJECT_DestroyObject(Object* o)
+void OBJECT_Destroy(Object* o)
 {
-	TRANSFORM_DestroyTransform(o->transform);
+	TRANSFORM_Destroy(o->transform);
 	for (AComponent** ac = o->components; *ac != NULL; ac++)
 	{
-		ACOMPONENT_DestroyComponent(*ac);
+		ACOMPONENT_Destroy(*ac);
 	}
 	free(o);
 }

@@ -11,6 +11,6 @@ struct Object
 	AComponent** components;
 };
 
-Object* OBJECT_NewObject(char* meshPath);
-void OBJECT_DestroyObject(Object* o);
+Object* OBJECT_New(char* meshPath);
+void OBJECT_Destroy(Object* o);
 void OBJECT_Update(Object *o);

@@ -1,5 +1,6 @@
 #include "component/renderer.h"
 #include "object.h"
+#include "render.h"
 
 static void Update(Object* o, void* self)
 {
@@ -22,13 +23,13 @@ static void Destroy(void* self)
 	free(r);
 }
 
-Renderer* RENDERER_NewRenderer(const char* meshPath)
+Renderer* RENDERER_New(const char* meshPath)
 {
 	Renderer* r = malloc(sizeof(Renderer));
 	if (r == NULL) return NULL;
 
 	r->mesh = MESH_Load(meshPath);
 
-	r->parent = ACOMPONENT_NewAComponent(r, &Update, &Destroy);
+	r->parent = ACOMPONENT_New(r, &Update, &Destroy);
 	return r;
 }

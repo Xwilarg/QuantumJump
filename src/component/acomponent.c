@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "component/acomponent.h"
 
-AComponent* ACOMPONENT_NewAComponent(void* self, void (*update)(void), void (*destroy)(void*))
+AComponent* ACOMPONENT_New(void* self, void (*update)(Object*, void*), void (*destroy)(void*))
 {
 	AComponent* ac = malloc(sizeof(AComponent));
 	if (ac == NULL) return NULL;
@@ -14,7 +14,7 @@ AComponent* ACOMPONENT_NewAComponent(void* self, void (*update)(void), void (*de
 	return ac;
 }
 
-void ACOMPONENT_DestroyComponent(AComponent* ac)
+void ACOMPONENT_Destroy(AComponent* ac)
 {
 	ac->Destroy(ac->self);
 	free(ac);

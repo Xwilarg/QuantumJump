@@ -8,6 +8,6 @@ typedef struct {
 	Vector* scale;
 } Transform;
 
-Transform* TRANSFORM_NewTransform(Vector* position);
+Transform* TRANSFORM_New(Vector* position);
 
-void TRANSFORM_DestroyTransform(Transform* t);
+void TRANSFORM_Destroy(Transform* t);
