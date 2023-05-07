@@ -28,9 +28,12 @@ static bool GetRenderVertex(Mesh* mesh, RenderVertex** buffer, int* size)
 	// convert to render vertex
 	for (unsigned int i = 0; i < mesh->numVertices; i++)
 	{
+#pragma warning(push)
+#pragma warning(disable: 6386)
 		vertices[i].x = mesh->vertices[i * 3];
 		vertices[i].y = mesh->vertices[(i * 3) + 1];
 		vertices[i].z = mesh->vertices[(i * 3) + 2];
+#pragma warning(pop)
 
 		vertices[i].u = mesh->uvs[i * 2];
 		vertices[i].v = mesh->uvs[(i * 2) + 1];
