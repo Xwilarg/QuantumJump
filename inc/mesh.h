@@ -16,5 +16,5 @@ typedef struct
 	LPDIRECT3DINDEXBUFFER9 indexBuffer;
 } Mesh;
 
-bool MESH_Load(const char* filename, Mesh* mesh);
+Mesh* MESH_Load(const char* filename);
 void MESH_Free(Mesh* mesh);

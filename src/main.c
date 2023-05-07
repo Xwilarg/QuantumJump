@@ -1,6 +1,8 @@
 #include <Windows.h>
 #include <d3dx9.h>
 
+#include "component/renderer.h"
+
 #include "render.h"
 #include "mesh.h"
 #include "object.h"
@@ -16,13 +18,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		return 1;
 	}
 
-	// demo object code, rotating object
-	Mesh mesh;
-	MESH_Load("demo.mesh", &mesh);
+	Object* object = OBJECT_NewObject("demo.mesh");
 
-	Object* object = OBJECT_NewObject(&mesh);
-
-	OBJECT_NewObject(&mesh, &object);
 	object->transform->position->z = -200.f;
 	//
 

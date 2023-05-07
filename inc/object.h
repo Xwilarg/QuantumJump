@@ -1,13 +1,14 @@
 #pragma once
 
 #include "component/transform.h"
+#include "component/renderer.h"
 #include "mesh.h"
 
 typedef struct
 {
 	Transform* transform;
 
-	Mesh* mesh;
+	Renderer* renderer;
 } Object;
 
 Object* OBJECT_NewObject(Mesh* mesh);

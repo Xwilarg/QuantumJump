@@ -17,13 +17,16 @@ typedef struct
 
 bool CreateBuffers(Mesh* mesh);
 
-bool MESH_Load(const char* filename, Mesh* mesh)
+Mesh* MESH_Load(const char* filename)
 {
+	Mesh* mesh = malloc(sizeof(Mesh));
+	if (mesh == NULL) return false;
+
 	FILE* f;
 	if (fopen_s(&f, filename, "rb") != 0)
 	{
 		assert(!"Failed to open mesh");
-		return false;
+		return NULL;
 	}
 
 	// read the mesh header
@@ -36,14 +39,14 @@ bool MESH_Load(const char* filename, Mesh* mesh)
 	void* vertices = malloc(sizeof(short) * header.numVertices * 3);
 	if (!vertices)
 	{
-		return false;
+		return NULL;
 	}
 
 	void* indices = malloc(sizeof(unsigned short) * header.numIndices);
 	if (!indices)
 	{
 		free(vertices);
-		return false;
+		return NULL;
 	}
 
 	void* uvs = malloc(sizeof(float) * header.numVertices * 2);
@@ -51,7 +54,7 @@ bool MESH_Load(const char* filename, Mesh* mesh)
 	{
 		free(vertices);
 		free(indices);
-		return false;
+		return NULL;
 	}
 
 	fread(vertices, sizeof(short), header.numVertices * 3, f);
@@ -65,12 +68,12 @@ bool MESH_Load(const char* filename, Mesh* mesh)
 	// create the render buffers
 	if (!CreateBuffers(mesh))
 	{
-		return false;
+		return NULL;
 	}
 
 	fclose(f);
 
-	return true;
+	return mesh;
 }
 
 static bool GetRenderVertex(Mesh* mesh, RenderVertex** buffer, int* size)

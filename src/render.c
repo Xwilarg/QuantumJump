@@ -168,7 +168,7 @@ void RENDER_Render()
 // Render an object
 void RENDER_RenderObject(Object* object)
 {
-	Mesh* mesh = object->mesh;
+	Mesh* mesh = object->renderer->mesh;
 
 	// transform the object
 	//
