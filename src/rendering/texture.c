@@ -72,7 +72,7 @@ static bool UploadTexture(Texture* texture, int width, int height, void* data)
 	}
 
 	D3DLOCKED_RECT rect;
-	resource->lpVtbl->LockRect(resource, 0, &rect, NULL, NULL);
+	resource->lpVtbl->LockRect(resource, 0, &rect, NULL, 0);
 
 	// upload the texture data
 	memcpy(rect.pBits, data, width * height * 4);
