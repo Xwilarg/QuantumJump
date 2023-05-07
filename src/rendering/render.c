@@ -188,12 +188,17 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 	D3DMATRIX matRotation;
 	D3DXMatrixRotationYawPitchRoll(&matRotation, t->rotation.y, t->rotation.x, t->rotation.z);
 
-	D3DMATRIX matTransform;
-	D3DXMatrixMultiply(&matTransform, &matRotation, &matPosition);
+	// scale
+	D3DMATRIX matScale;
+	D3DXMatrixScaling(&matScale, t->scale.x, t->scale.y, t->scale.z);
 
-	//TODO: Handle scale
+	// rotation * scale * position
+	D3DMATRIX transformRotScale;
+	D3DMATRIX transformRotScalePos;
+	D3DXMatrixMultiply(&transformRotScale, &matRotation, &matScale);
+	D3DXMatrixMultiply(&transformRotScalePos, &transformRotScale, &matPosition);
 
-	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_WORLD, &matTransform);
+	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_WORLD, &transformRotScalePos);
 
 	// set the vertex source and indices buffer
 	d3dDevice->lpVtbl->SetFVF(d3dDevice, RENDERFVF);
