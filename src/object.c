@@ -1,5 +1,6 @@
 #include "object.h"
 #include "component/renderer.h"
+#include "component/rigidbody.h"
 
 Object* OBJECT_New(char* meshPath)
 {
@@ -8,10 +9,13 @@ Object* OBJECT_New(char* meshPath)
 
 	o->transform = TRANSFORM_New(VECTOR_New(0.f, 0.f, 0.f));
 
-	o->components = malloc(sizeof(AComponent*) * 2);
+	Rigidbody* rb = RIGIDBODY_New();
+	RIGIDBODY_AddTorque(rb, VECTOR_New(0.f, .1f, 0.f));
+	o->components = malloc(sizeof(AComponent*) * 3);
 	if (o->components == NULL) return NULL;
 	o->components[0] = RENDERER_New(meshPath)->parent;
-	o->components[1] = NULL;
+	o->components[1] = rb->parent;
+	o->components[2] = NULL;
 	return o;
 }
 
@@ -27,9 +31,6 @@ void OBJECT_Destroy(Object* o)
 
 void OBJECT_Update(Object* o)
 {
-	// rotate the object
-	o->transform->rotation->y += 0.1f;
-
 	for (AComponent** ac = o->components; *ac != NULL; ac++)
 	{
 		ACOMPONENT_Update(*ac, o);
