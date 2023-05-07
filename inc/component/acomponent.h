@@ -3,8 +3,8 @@
 #include "context/context.h"
 
 typedef enum {
-	COMPONENT_Rigidbody,
-	COMPONENT_Renderer
+	COMPONENT_RIGIDBODY,
+	COMPONENT_RENDERER
 } Component;
 
 typedef struct Object Object;

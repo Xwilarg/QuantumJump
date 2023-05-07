@@ -44,7 +44,7 @@ Rigidbody* RIGIDBODY_New()
 	rb->linearDrag = 0.f;
 	rb->angularDrag = 0.f;
 
-	rb->parent = ACOMPONENT_New(rb, COMPONENT_Rigidbody, &Update, &Destroy);
+	rb->parent = ACOMPONENT_New(rb, COMPONENT_RIGIDBODY, &Update, &Destroy);
 	return rb;
 }
 
