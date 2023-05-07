@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 #include "component/acomponent.h"
 #include "utils/vector.h"
 
@@ -12,6 +14,8 @@ typedef struct
 
 	float linearDrag;
 	float angularDrag;
+
+	bool useGravity;
 } Rigidbody;
 
 Rigidbody* RIGIDBODY_New();

@@ -16,9 +16,7 @@ void GAME_USERInit(Game* g, Context* ctx)
 
 	Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 	Rigidbody* rb = RIGIDBODY_New();
-	RIGIDBODY_AddTorque(rb, VECTOR_New(0.f, 10.f, 0.f));
-	RIGIDBODY_AddForce(rb, VECTOR_New(-25.f, 0.f, 0.f));
-	rb->angularDrag = .25f;
+	RIGIDBODY_AddForce(rb, VECTOR_New(0.f, 25.f, 0.f));
 
 	OBJECT_AddComponent(g->Object, r->parent);
 	OBJECT_AddComponent(g->Object, rb->parent);
