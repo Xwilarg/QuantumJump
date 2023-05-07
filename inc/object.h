@@ -1,15 +1,15 @@
 #pragma once
 
 #include "component/transform.h"
-#include "component/renderer.h"
+#include "component/acomponent.h"
 #include "mesh.h"
 
-typedef struct
+struct Object
 {
 	Transform* transform;
 
-	Renderer* renderer;
-} Object;
+	AComponent** components;
+};
 
 Object* OBJECT_NewObject(char* meshPath);
 void OBJECT_DestroyObject(Object* o);

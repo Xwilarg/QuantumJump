@@ -166,20 +166,15 @@ void RENDER_Render()
 }
 
 // Render an object
-void RENDER_RenderObject(Object* object)
+void RENDER_RenderObject(Mesh* mesh, Transform *t)
 {
-	Mesh* mesh = object->renderer->mesh;
-
-	// transform the object
-	//
-
 	// position
 	D3DMATRIX matPosition;
-	D3DXMatrixTranslation(&matPosition, object->transform->position->x, object->transform->position->y, object->transform->position->z);
+	D3DXMatrixTranslation(&matPosition, t->position->x, t->position->y, t->position->z);
 
 	// rotation
 	D3DMATRIX matRotation;
-	D3DXMatrixRotationYawPitchRoll(&matRotation, object->transform->rotation->y, object->transform->rotation->x, object->transform->rotation->z);
+	D3DXMatrixRotationYawPitchRoll(&matRotation, t->rotation->y, t->rotation->x, t->rotation->z);
 
 	D3DMATRIX matTransform;
 	D3DXMatrixMultiply(&matTransform, &matRotation, &matPosition);

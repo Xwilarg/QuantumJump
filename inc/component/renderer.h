@@ -10,5 +10,3 @@ typedef struct {
 } Renderer;
 
 Renderer* RENDERER_NewRenderer(const char* meshPath);
-
-void RENDERER_DestroyRenderer();

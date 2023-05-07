@@ -1,8 +1,25 @@
 #include "component/renderer.h"
+#include "object.h"
 
-static void Update(void)
+static void Update(Object* o, void* self)
 {
+	Renderer* r = (Renderer*)self;
 
+	// begin the frame
+	RENDER_Clear();
+
+	// rotate the object
+	RENDER_RenderObject(r->mesh, o->transform);
+	//
+
+	RENDER_Render();
+}
+
+static void Destroy(void* self)
+{
+	Renderer* r = (Renderer*)self;
+	MESH_Free(r->mesh);
+	free(r);
 }
 
 Renderer* RENDERER_NewRenderer(const char* meshPath)
@@ -12,14 +29,7 @@ Renderer* RENDERER_NewRenderer(const char* meshPath)
 
 	r->mesh = MESH_Load(meshPath);
 
-	r->parent = malloc(sizeof(AComponent));
+	r->parent = ACOMPONENT_NewAComponent(r, &Update, &Destroy);
 	r->parent->Update = &Update;
 	return r;
-}
-
-void RENDERER_DestroyRenderer(Renderer* r)
-{
-	free(r->parent);
-	MESH_Free(r->mesh);
-	free(r);
 }

@@ -18,6 +18,6 @@ void RENDER_Destroy();
 void RENDER_Clear();
 void RENDER_Render();
 
-void RENDER_RenderObject(Object* object);
+void RENDER_RenderObject(Mesh* mesh, Transform* t);
 
 extern LPDIRECT3DDEVICE9 d3dDevice;
