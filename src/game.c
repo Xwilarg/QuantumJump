@@ -12,7 +12,7 @@ void GAME_USERInit(Game* g, Context* ctx)
 	(void)ctx;
 
 	g->Object = OBJECT_New();
-	g->Object->transform->position->z = -200.f;
+	g->Object->transform->position.z = -200.f;
 
 	Renderer* r = RENDERER_New("demo.mesh");
 	Rigidbody* rb = RIGIDBODY_New();

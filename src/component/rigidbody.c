@@ -7,30 +7,16 @@ static void Update(Object* o, Context* ctx, void* self)
 {
 	Rigidbody* rb = (Rigidbody*)self;
 
-	//TODO: Clean code and implement arithmetic in vector.h
+	rb->linearVelocity = VECTOR_Multiply(rb->linearVelocity, 1 - rb->linearDrag * ctx->time->deltaTime);
+	rb->linearVelocity = VECTOR_Multiply(rb->angularVelocity, 1 - rb->angularDrag * ctx->time->deltaTime);
 
-	rb->linearVelocity->x *= 1 - rb->linearDrag * ctx->time->deltaTime;
-	rb->linearVelocity->y *= 1 - rb->linearDrag * ctx->time->deltaTime;
-	rb->linearVelocity->z *= 1 - rb->linearDrag * ctx->time->deltaTime;
-
-	rb->angularVelocity->x *= 1 - rb->angularDrag * ctx->time->deltaTime;
-	rb->angularVelocity->y *= 1 - rb->angularDrag * ctx->time->deltaTime;
-	rb->angularVelocity->z *= 1 - rb->angularDrag * ctx->time->deltaTime;
-
-	o->transform->position->x += rb->linearVelocity->x * ctx->time->deltaTime;
-	o->transform->position->y += rb->linearVelocity->y * ctx->time->deltaTime;
-	o->transform->position->z += rb->linearVelocity->z * ctx->time->deltaTime;
-
-	o->transform->rotation->x += rb->angularVelocity->x * ctx->time->deltaTime;
-	o->transform->rotation->y += rb->angularVelocity->y * ctx->time->deltaTime;
-	o->transform->rotation->z += rb->angularVelocity->z * ctx->time->deltaTime;
+	o->transform->position = VECTOR_Add(o->transform->position, VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime));
+	o->transform->rotation = VECTOR_Add(o->transform->rotation, VECTOR_Multiply(rb->angularVelocity, ctx->time->deltaTime));
 }
 
 static void Destroy(void* self)
 {
 	Rigidbody* rb = (Rigidbody*)self;
-	free(rb->linearVelocity);
-	free(rb->angularVelocity);
 	free(rb);
 }
 
@@ -48,16 +34,12 @@ Rigidbody* RIGIDBODY_New()
 	return rb;
 }
 
-void RIGIDBODY_AddForce(Rigidbody* rb, Vector* v)
+void RIGIDBODY_AddForce(Rigidbody* rb, Vector v)
 {
-	rb->linearVelocity->x += v->x;
-	rb->linearVelocity->y += v->y;
-	rb->linearVelocity->z += v->z;
+	rb->linearVelocity = VECTOR_Add(rb->linearVelocity, v);
 }
 
-void RIGIDBODY_AddTorque(Rigidbody* rb, Vector* v)
+void RIGIDBODY_AddTorque(Rigidbody* rb, Vector v)
 {
-	rb->angularVelocity->x += v->x;
-	rb->angularVelocity->y += v->y;
-	rb->angularVelocity->z += v->z;
+	rb->angularVelocity = VECTOR_Add(rb->angularVelocity, v);
 }

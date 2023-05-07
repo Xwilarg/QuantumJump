@@ -170,11 +170,11 @@ void RENDER_RenderObject(Mesh* mesh, Transform *t)
 {
 	// position
 	D3DMATRIX matPosition;
-	D3DXMatrixTranslation(&matPosition, t->position->x, t->position->y, t->position->z);
+	D3DXMatrixTranslation(&matPosition, t->position.x, t->position.y, t->position.z);
 
 	// rotation
 	D3DMATRIX matRotation;
-	D3DXMatrixRotationYawPitchRoll(&matRotation, t->rotation->y, t->rotation->x, t->rotation->z);
+	D3DXMatrixRotationYawPitchRoll(&matRotation, t->rotation.y, t->rotation.x, t->rotation.z);
 
 	D3DMATRIX matTransform;
 	D3DXMatrixMultiply(&matTransform, &matRotation, &matPosition);
