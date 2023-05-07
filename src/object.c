@@ -18,7 +18,7 @@ Object* OBJECT_NewObject(char* meshPath)
 void OBJECT_DestroyObject(Object* o)
 {
 	TRANSFORM_DestroyTransform(o->transform);
-	for (AComponent** ac = o->components; ac != NULL; ac++)
+	for (AComponent** ac = o->components; *ac != NULL; ac++)
 	{
 		ACOMPONENT_DestroyComponent(*ac);
 	}
@@ -30,7 +30,7 @@ void OBJECT_Update(Object* o)
 	// rotate the object
 	o->transform->rotation->y += 0.1f;
 
-	for (AComponent** ac = o->components; ac != NULL; ac++)
+	for (AComponent** ac = o->components; *ac != NULL; ac++)
 	{
 		ACOMPONENT_Update(*ac, o);
 	}
