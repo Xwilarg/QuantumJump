@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(4MBJam)
 
+string(REPLACE "/O2" "/O1" CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
 SET(CMAKE_C_FLAGS "/W4 /WX")
 
 include_directories(./inc/ SYSTEM $ENV{DXSDK_DIR}Include)
