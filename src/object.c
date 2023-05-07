@@ -31,6 +31,18 @@ void OBJECT_AddComponent(Object* o, AComponent *newAc)
 	o->components[size + 1] = NULL;
 }
 
+void* OBJECT_GetComponent(Object* o, Component component)
+{
+	for (AComponent** ac = o->components; *ac != NULL; ac++)
+	{
+		if ((*ac)->component == component)
+		{
+			return *ac;
+		}
+	}
+	return NULL;
+}
+
 void OBJECT_Destroy(Object* o)
 {
 	TRANSFORM_Destroy(o->transform);

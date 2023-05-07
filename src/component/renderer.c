@@ -24,6 +24,6 @@ Renderer* RENDERER_New(const char* meshPath)
 
 	r->mesh = MESH_Load(meshPath);
 
-	r->parent = ACOMPONENT_New(r, &Update, &Destroy);
+	r->parent = ACOMPONENT_New(r, COMPONENT_Renderer, &Update, &Destroy);
 	return r;
 }

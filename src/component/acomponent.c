@@ -3,12 +3,13 @@
 #include <stdlib.h>
 #include "component/acomponent.h"
 
-AComponent* ACOMPONENT_New(void* self, void (*update)(Object*, Context*, void*), void (*destroy)(void*))
+AComponent* ACOMPONENT_New(void* self, Component component, void (*update)(Object*, Context*, void*), void (*destroy)(void*))
 {
 	AComponent* ac = malloc(sizeof(AComponent));
 	if (ac == NULL) return NULL;
 
 	ac->self = self;
+	ac->component = component;
 	ac->Update = update;
 	ac->Destroy = destroy;
 	return ac;
