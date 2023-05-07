@@ -175,14 +175,16 @@ void RENDER_RenderObject(Object* object)
 
 	// position
 	D3DMATRIX matPosition;
-	D3DXMatrixTranslation(&matPosition, object->position.x, object->position.y, object->position.z);
+	D3DXMatrixTranslation(&matPosition, object->transform->position->x, object->transform->position->y, object->transform->position->z);
 
 	// rotation
 	D3DMATRIX matRotation;
-	D3DXMatrixRotationYawPitchRoll(&matRotation, object->rotation.y, object->rotation.x, object->rotation.z);
+	D3DXMatrixRotationYawPitchRoll(&matRotation, object->transform->rotation->y, object->transform->rotation->x, object->transform->rotation->z);
 
 	D3DMATRIX matTransform;
 	D3DXMatrixMultiply(&matTransform, &matRotation, &matPosition);
+
+	//TODO: Handle scale
 
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_WORLD, &matTransform);
 

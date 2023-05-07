@@ -1,14 +1,14 @@
 #pragma once
 
-#include "vector.h"
+#include "component/transform.h"
 #include "mesh.h"
 
 typedef struct
 {
-	Vector position;
-	Vector rotation;
+	Transform* transform;
 
 	Mesh* mesh;
 } Object;
 
-void OBJECT_NewObject(Mesh* mesh, Object* object);
+Object* OBJECT_NewObject(Mesh* mesh);
+void OBJECT_DestroyObject(Object* o);

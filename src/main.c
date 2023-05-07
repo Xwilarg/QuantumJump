@@ -20,11 +20,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Mesh mesh;
 	MESH_Load("demo.mesh", &mesh);
 
-	Object object;
-	memset(&object, 0, sizeof(object));
+	Object* object = OBJECT_NewObject(&mesh);
 
 	OBJECT_NewObject(&mesh, &object);
-	object.position.z = -200.f;
+	object->transform->position->z = -200.f;
 	//
 
 	// enter the main loop
@@ -46,8 +45,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		RENDER_Clear();
 
 		// rotate the object
-		object.rotation.y += 0.01f;
-		RENDER_RenderObject(&object);
+		object->transform->rotation->y += 0.1f;
+		RENDER_RenderObject(object);
 		//
 
 		RENDER_Render();
@@ -56,6 +55,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	RENDER_Destroy();
+
+	OBJECT_DestroyObject(object);
 
 	return 0;
 }
