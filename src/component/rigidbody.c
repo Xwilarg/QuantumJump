@@ -7,6 +7,16 @@ static void Update(Object* o, Context* ctx, void* self)
 {
 	Rigidbody* rb = (Rigidbody*)self;
 
+	//TODO: Clean code and implement arithmetic in vector.h
+
+	rb->linearVelocity->x *= 1 - rb->linearDrag * ctx->time->deltaTime;
+	rb->linearVelocity->y *= 1 - rb->linearDrag * ctx->time->deltaTime;
+	rb->linearVelocity->z *= 1 - rb->linearDrag * ctx->time->deltaTime;
+
+	rb->angularVelocity->x *= 1 - rb->angularDrag * ctx->time->deltaTime;
+	rb->angularVelocity->y *= 1 - rb->angularDrag * ctx->time->deltaTime;
+	rb->angularVelocity->z *= 1 - rb->angularDrag * ctx->time->deltaTime;
+
 	o->transform->position->x += rb->linearVelocity->x * ctx->time->deltaTime;
 	o->transform->position->y += rb->linearVelocity->y * ctx->time->deltaTime;
 	o->transform->position->z += rb->linearVelocity->z * ctx->time->deltaTime;
