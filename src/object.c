@@ -11,6 +11,7 @@ Object* OBJECT_New(char* meshPath)
 
 	Rigidbody* rb = RIGIDBODY_New();
 	RIGIDBODY_AddTorque(rb, VECTOR_New(0.f, 10.f, 0.f));
+	RIGIDBODY_AddForce(rb, VECTOR_New(-25.f, 0.f, 0.f));
 	rb->angularDrag = .25f;
 	o->components = malloc(sizeof(AComponent*) * 3);
 	if (o->components == NULL) return NULL;
@@ -27,6 +28,7 @@ void OBJECT_Destroy(Object* o)
 	{
 		ACOMPONENT_Destroy(*ac);
 	}
+	free(o->components);
 	free(o);
 }
 
