@@ -205,6 +205,8 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 	d3dDevice->lpVtbl->SetStreamSource(d3dDevice, 0, mesh->vertexBuffer, 0, sizeof(RenderVertex));
 	d3dDevice->lpVtbl->SetIndices(d3dDevice, mesh->indexBuffer);
 
+	d3dDevice->lpVtbl->SetTexture(d3dDevice, 0, mesh->texture->handle);
+
 	d3dDevice->lpVtbl->DrawIndexedPrimitive(d3dDevice, D3DPT_TRIANGLELIST, 0, 0, mesh->numVertices, 0, mesh->numIndices);
 }
 

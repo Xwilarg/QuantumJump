@@ -17,12 +17,12 @@ static void Destroy(void* self)
 	free(r);
 }
 
-Renderer* RENDERER_New(const char* meshPath)
+Renderer* RENDERER_New(const char* meshPath, const char* texturePath)
 {
 	Renderer* r = malloc(sizeof(Renderer));
 	if (r == NULL) return NULL;
 
-	r->mesh = MESH_Load(meshPath);
+	r->mesh = MESH_Load(meshPath, texturePath);
 
 	r->parent = ACOMPONENT_New(r, COMPONENT_RENDERER, &Update, &Destroy);
 	return r;

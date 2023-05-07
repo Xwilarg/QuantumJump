@@ -5,7 +5,7 @@
 
 typedef struct
 {
-	LPDIRECT3DTEXTURE9 handle;
+	LPDIRECT3DBASETEXTURE9 handle;
 } Texture;
 
 bool TEXTURE_Load(const char* filename, Texture* texture);

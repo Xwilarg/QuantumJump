@@ -79,6 +79,6 @@ static bool UploadTexture(Texture* texture, int width, int height, void* data)
 
 	resource->lpVtbl->UnlockRect(resource, 0);
 
-	texture->handle = resource;
+	texture->handle = (LPDIRECT3DBASETEXTURE9)resource;
 	return true;
 }

@@ -84,13 +84,33 @@ static bool CreateBuffers(Mesh* mesh)
 	return true;
 }
 
-Mesh* MESH_Load(const char* filename)
+static bool LoadTexture(Mesh* mesh, const char* filename)
+{
+	Texture* texture = malloc(sizeof(Texture));
+
+	if (!texture)
+	{
+		return false;
+	}
+
+	if (!TEXTURE_Load(filename, texture))
+	{
+		free(texture);
+		return false;
+	}
+
+	mesh->texture = texture;
+
+	return true;
+}
+
+Mesh* MESH_Load(const char* meshPath, const char* texturePath)
 {
 	Mesh* mesh = malloc(sizeof(Mesh));
 	if (mesh == NULL) return false;
 
 	FILE* f;
-	if (fopen_s(&f, filename, "rb") != 0)
+	if (fopen_s(&f, meshPath, "rb") != 0)
 	{
 		assert(!"Failed to open mesh");
 		return NULL;
@@ -138,6 +158,11 @@ Mesh* MESH_Load(const char* filename)
 		return NULL;
 	}
 
+	if (!LoadTexture(mesh, texturePath))
+	{
+		return NULL;
+	}
+
 	fclose(f);
 
 	return mesh;
@@ -148,4 +173,6 @@ void MESH_Free(Mesh* mesh)
 	free(mesh->indices);
 	free(mesh->vertices);
 	free(mesh->uvs);
+
+	free(mesh->texture);
 }

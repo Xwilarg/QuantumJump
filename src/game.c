@@ -14,7 +14,7 @@ void GAME_USERInit(Game* g, Context* ctx)
 	g->Object = OBJECT_New();
 	g->Object->transform->position.z = -200.f;
 
-	Renderer* r = RENDERER_New("demo.mesh");
+	Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 	Rigidbody* rb = RIGIDBODY_New();
 	RIGIDBODY_AddTorque(rb, VECTOR_New(0.f, 10.f, 0.f));
 	RIGIDBODY_AddForce(rb, VECTOR_New(-25.f, 0.f, 0.f));

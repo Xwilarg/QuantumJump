@@ -9,4 +9,4 @@ typedef struct {
 	Mesh* mesh;
 } Renderer;
 
-Renderer* RENDERER_New(const char* meshPath);
+Renderer* RENDERER_New(const char* meshPath, const char* texturePath);
