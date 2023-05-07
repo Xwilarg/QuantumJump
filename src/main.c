@@ -3,8 +3,7 @@
 #include <stdbool.h>
 
 #include "rendering/render.h"
-#include "context/context.h"
-#include "object.h"
+#include "game.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
@@ -18,9 +17,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	Context* ctx = CONTEXT_New();
-	Object* object = OBJECT_New("demo.mesh");
+	Game* game = GAME_Init();
 
-	object->transform->position->z = -200.f;
+	GAME_USERInit(game, ctx);
 	//
 
 	// enter the main loop
@@ -38,15 +37,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		}
 
+		// begin the frame
+		RENDER_Clear();
+
 		CONTEXT_Update(ctx);
-		OBJECT_Update(object, ctx);
+
+		RENDER_Render();
 
 		Sleep(10);
 	}
 
 	RENDER_Destroy();
 	CONTEXT_Destroy(ctx);
-	OBJECT_Destroy(object);
+	GAME_Destroy(game);
 
 	return 0;
 }

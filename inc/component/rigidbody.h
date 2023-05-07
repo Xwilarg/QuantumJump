@@ -1,7 +1,7 @@
 #pragma once
 
 #include "component/acomponent.h"
-#include "vector.h"
+#include "utils/vector.h"
 
 typedef struct
 {

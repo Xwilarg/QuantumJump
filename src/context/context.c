@@ -13,7 +13,7 @@ Context* CONTEXT_New()
 
 void CONTEXT_Destroy(Context* ctx)
 {
-	TIME_Destroy(ctx);
+	TIME_Destroy(ctx->time);
 	free(ctx);
 }
 

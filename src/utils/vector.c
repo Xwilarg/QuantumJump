@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "vector.h"
+#include "utils/vector.h"
 
 Vector* VECTOR_Zero()
 {

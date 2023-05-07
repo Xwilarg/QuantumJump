@@ -7,12 +7,7 @@ static void Update(Object* o, Context* ctx, void* self)
 	(void)ctx;
 	Renderer* r = (Renderer*)self;
 
-	// begin the frame
-	RENDER_Clear();
-
 	RENDER_RenderObject(r->mesh, o->transform);
-
-	RENDER_Render();
 }
 
 static void Destroy(void* self)
