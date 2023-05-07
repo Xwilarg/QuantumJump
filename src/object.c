@@ -20,7 +20,7 @@ void OBJECT_DestroyObject(Object* o)
 	TRANSFORM_DestroyTransform(o->transform);
 	for (AComponent** ac = o->components; ac != NULL; ac++)
 	{
-		(*ac)->Destroy(o);
+		ACOMPONENT_DestroyComponent(*ac);
 	}
 	free(o);
 }
@@ -32,6 +32,6 @@ void OBJECT_Update(Object* o)
 
 	for (AComponent** ac = o->components; ac != NULL; ac++)
 	{
-		(*ac)->Update(o);
+		ACOMPONENT_Update(*ac, o);
 	}
 }

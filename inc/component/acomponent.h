@@ -3,7 +3,7 @@
 typedef struct Object Object;
 
 typedef struct {
-	void (*Update)(Object* o);
+	void (*Update)(Object*, void*);
 	void (*Destroy)(void*);
 
 	void* self;
