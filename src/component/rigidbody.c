@@ -3,17 +3,17 @@
 #include "component/rigidbody.h"
 #include "object.h"
 
-static void Update(Object* o, void* self)
+static void Update(Object* o, Context* ctx, void* self)
 {
 	Rigidbody* rb = (Rigidbody*)self;
 
-	o->transform->position->x += rb->linearVelocity->x;
-	o->transform->position->y += rb->linearVelocity->y;
-	o->transform->position->z += rb->linearVelocity->z;
+	o->transform->position->x += rb->linearVelocity->x * ctx->time->deltaTime;
+	o->transform->position->y += rb->linearVelocity->y * ctx->time->deltaTime;
+	o->transform->position->z += rb->linearVelocity->z * ctx->time->deltaTime;
 
-	o->transform->rotation->x += rb->angularVelocity->x;
-	o->transform->rotation->y += rb->angularVelocity->y;
-	o->transform->rotation->z += rb->angularVelocity->z;
+	o->transform->rotation->x += rb->angularVelocity->x * ctx->time->deltaTime;
+	o->transform->rotation->y += rb->angularVelocity->y * ctx->time->deltaTime;
+	o->transform->rotation->z += rb->angularVelocity->z * ctx->time->deltaTime;
 }
 
 static void Destroy(void* self)

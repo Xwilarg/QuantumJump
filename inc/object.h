@@ -2,6 +2,7 @@
 
 #include "component/transform.h"
 #include "component/acomponent.h"
+#include "context/context.h"
 
 struct Object
 {
@@ -12,4 +13,4 @@ struct Object
 
 Object* OBJECT_New(char* meshPath);
 void OBJECT_Destroy(Object* o);
-void OBJECT_Update(Object *o);
+void OBJECT_Update(Object *o, Context* ctx);

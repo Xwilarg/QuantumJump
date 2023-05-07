@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "rendering/render.h"
+#include "context/context.h"
 #include "object.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
@@ -16,6 +17,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		return 1;
 	}
 
+	Context* ctx = CONTEXT_New();
 	Object* object = OBJECT_New("demo.mesh");
 
 	object->transform->position->z = -200.f;
@@ -36,13 +38,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		}
 
-		OBJECT_Update(object);
+		CONTEXT_Update(ctx);
+		OBJECT_Update(object, ctx);
 
 		Sleep(10);
 	}
 
 	RENDER_Destroy();
-
+	CONTEXT_Destroy(ctx);
 	OBJECT_Destroy(object);
 
 	return 0;

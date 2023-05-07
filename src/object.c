@@ -10,7 +10,7 @@ Object* OBJECT_New(char* meshPath)
 	o->transform = TRANSFORM_New(VECTOR_New(0.f, 0.f, 0.f));
 
 	Rigidbody* rb = RIGIDBODY_New();
-	RIGIDBODY_AddTorque(rb, VECTOR_New(0.f, .1f, 0.f));
+	RIGIDBODY_AddTorque(rb, VECTOR_New(0.f, 1.f, 0.f));
 	o->components = malloc(sizeof(AComponent*) * 3);
 	if (o->components == NULL) return NULL;
 	o->components[0] = RENDERER_New(meshPath)->parent;
@@ -29,10 +29,10 @@ void OBJECT_Destroy(Object* o)
 	free(o);
 }
 
-void OBJECT_Update(Object* o)
+void OBJECT_Update(Object* o, Context* ctx)
 {
 	for (AComponent** ac = o->components; *ac != NULL; ac++)
 	{
-		ACOMPONENT_Update(*ac, o);
+		ACOMPONENT_Update(*ac, o, ctx);
 	}
 }

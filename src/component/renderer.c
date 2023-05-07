@@ -2,16 +2,15 @@
 #include "object.h"
 #include "rendering/render.h"
 
-static void Update(Object* o, void* self)
+static void Update(Object* o, Context* ctx, void* self)
 {
+	(void)ctx;
 	Renderer* r = (Renderer*)self;
 
 	// begin the frame
 	RENDER_Clear();
 
-	// rotate the object
 	RENDER_RenderObject(r->mesh, o->transform);
-	//
 
 	RENDER_Render();
 }
