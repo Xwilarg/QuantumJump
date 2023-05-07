@@ -1,6 +1,6 @@
 #pragma once
 
-#include "component/acomponent.h"
+#include "component/renderer.h"
 #include "utils/vector.h"
 
 typedef struct {

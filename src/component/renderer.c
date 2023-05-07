@@ -7,7 +7,7 @@ static void Update(Object* o, Context* ctx, void* self)
 	(void)ctx;
 	Renderer* r = (Renderer*)self;
 
-	RENDER_RenderObject(r->mesh, o->transform);
+	RENDER_RenderMesh(r->mesh, o->transform);
 }
 
 static void Destroy(void* self)

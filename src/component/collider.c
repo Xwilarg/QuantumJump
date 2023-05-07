@@ -1,18 +1,21 @@
 #include <stdlib.h>
 
 #include "component/collider.h"
-#include "component/renderer.h"
 #include "object.h"
+#include "rendering/render.h"
 
 static void Update(Object* o, Context* ctx, void* self)
 {
+	(void)ctx;
 	Collider* coll = (Collider*)self;
+
+	RENDER_RenderCube(coll->min, coll->max, o->transform->rotation);
 }
 
 static void Destroy(void* self)
 {
 	Collider* coll = (Collider*)self;
-	free(rb);
+	free(coll);
 }
 
 Collider* COLLIDER_New(Renderer* r)
@@ -21,11 +24,11 @@ Collider* COLLIDER_New(Renderer* r)
 	if (coll == NULL) return NULL;
 
 	Mesh* mesh = r->mesh;
-	int xMin = (float)mesh->vertices[0], xMax = xMin;
-	int yMin = (float)mesh->vertices[1], yMax = yMin;
-	int zMin = (float)mesh->vertices[2], zMax = zMin;
+	float xMin = (float)mesh->vertices[0], xMax = xMin;
+	float yMin = (float)mesh->vertices[1], yMax = yMin;
+	float zMin = (float)mesh->vertices[2], zMax = zMin;
 
-	for (int i = 3; i < mesh->numVertices; i += 3)
+	for (size_t i = 3; i < mesh->numVertices; i += 3)
 	{
 		float x = (float)mesh->vertices[i];
 		float y = (float)mesh->vertices[i + 1];
@@ -42,6 +45,6 @@ Collider* COLLIDER_New(Renderer* r)
 	coll->min = VECTOR_New(xMin, yMin, zMin);
 	coll->max = VECTOR_New(xMax, yMax, zMax);
 
-	rb->parent = ACOMPONENT_New(rb, COMPONENT_COLLIDER, &Update, &Destroy);
-	return rb;
+	coll->parent = ACOMPONENT_New(coll, COMPONENT_COLLIDER, &Update, &Destroy);
+	return coll;
 }

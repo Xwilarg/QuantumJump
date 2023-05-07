@@ -165,8 +165,13 @@ void RENDER_Render()
 	d3dDevice->lpVtbl->Present(d3dDevice, NULL, NULL, NULL, NULL);
 }
 
-void RENDER_RenderCube(Vector min, Vector max, Vector rotation, Vector scale)
+void RENDER_RenderCube(Vector min, Vector max, Vector rotation)
 {
+	// Indra my love, please implement this
+	(void)min;
+	(void)max;
+	(void)rotation;
+
 	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 }
 
