@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <d3d9.h>
 
 typedef struct
 {
@@ -10,6 +11,9 @@ typedef struct
 	short* vertices;
 	unsigned short* indices;
 	float* uvs;
+
+	LPDIRECT3DVERTEXBUFFER9 vertexBuffer;
+	LPDIRECT3DINDEXBUFFER9 indexBuffer;
 } Mesh;
 
 bool MESH_Load(const char* filename, Mesh* mesh);

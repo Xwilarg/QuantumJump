@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "render.h"
+
 #pragma pack(push, 1)
 typedef struct
 {
@@ -12,6 +14,8 @@ typedef struct
 	uint16_t numIndices;
 } MeshHeader;
 #pragma pack(pop)
+
+bool CreateBuffers(Mesh* mesh);
 
 bool MESH_Load(const char* filename, Mesh* mesh)
 {
@@ -58,7 +62,80 @@ bool MESH_Load(const char* filename, Mesh* mesh)
 	mesh->indices = indices;
 	mesh->uvs = uvs;
 
+	// create the render buffers
+	if (!CreateBuffers(mesh))
+	{
+		return false;
+	}
+
 	fclose(f);
+
+	return true;
+}
+
+static bool GetRenderVertex(Mesh* mesh, RenderVertex** buffer, int* size)
+{
+	// allocate the vertex buffer
+	RenderVertex* vertices = malloc(sizeof(RenderVertex) * mesh->numVertices);
+
+	if (!vertices)
+	{
+		assert(vertices);
+		return false;
+	}
+
+	// convert to render vertex
+	for (unsigned int i = 0; i < mesh->numVertices; i++)
+	{
+		vertices[i].x = mesh->vertices[i * 3];
+		vertices[i].y = mesh->vertices[(i * 3) + 1];
+		vertices[i].z = mesh->vertices[(i * 3) + 2];
+
+		vertices[i].u = mesh->uvs[i * 2];
+		vertices[i].v = mesh->uvs[(i * 2) + 1];
+	}
+
+	*buffer = vertices;
+	*size = sizeof(RenderVertex) * mesh->numVertices;
+
+	return true;
+}
+
+static bool CreateBuffers(Mesh* mesh)
+{
+	RenderVertex* vertices;
+	int vertexBufferSize;
+
+	int indexBufferSize = sizeof(short) * mesh->numIndices;
+
+	if (!GetRenderVertex(mesh, &vertices, &vertexBufferSize))
+	{
+		return false;
+	}
+
+	if (FAILED(d3dDevice->lpVtbl->CreateVertexBuffer(d3dDevice, vertexBufferSize, NULL, RENDERFVF, D3DPOOL_DEFAULT, &mesh->vertexBuffer, NULL)))
+	{
+		return false;
+	}
+
+	void* buffer;
+
+	// copy the vertices to the buffer
+	mesh->vertexBuffer->lpVtbl->Lock(mesh->vertexBuffer, 0, 0, &buffer, 0);
+	memcpy(buffer, vertices, vertexBufferSize);
+	mesh->vertexBuffer->lpVtbl->Unlock(mesh->vertexBuffer);
+
+	free(vertices);
+
+	if (FAILED(d3dDevice->lpVtbl->CreateIndexBuffer(d3dDevice, indexBufferSize, NULL, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &mesh->indexBuffer, NULL)))
+	{
+		return false;
+	}
+
+	// copy the indices to the buffer
+	mesh->indexBuffer->lpVtbl->Lock(mesh->indexBuffer, 0, 0, &buffer, 0);
+	memcpy(buffer, mesh->indices, indexBufferSize);
+	mesh->indexBuffer->lpVtbl->Unlock(mesh->indexBuffer);
 
 	return true;
 }

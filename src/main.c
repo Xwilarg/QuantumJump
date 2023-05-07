@@ -1,6 +1,9 @@
 #include <Windows.h>
+#include <d3dx9.h>
 
 #include "render.h"
+#include "mesh.h"
+#include "object.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
@@ -12,6 +15,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		MessageBoxA(NULL, "Failed to create renderer.", "Failed", MB_OK | MB_ICONERROR);
 		return 1;
 	}
+
+	// demo object code, rotating object
+	Mesh mesh;
+	MESH_Load("demo.mesh", &mesh);
+
+	Object object;
+	memset(&object, 0, sizeof(object));
+
+	OBJECT_NewObject(&mesh, &object);
+	object.position.z = -200.f;
+	//
 
 	// enter the main loop
 	while (true)
@@ -27,6 +41,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{
 			break;
 		}
+
+		// begin the frame
+		RENDER_Clear();
+
+		// rotate the object
+		object.rotation.y += 0.01f;
+		RENDER_RenderObject(&object);
+		//
 
 		RENDER_Render();
 
