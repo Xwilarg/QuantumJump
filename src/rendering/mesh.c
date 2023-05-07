@@ -1,11 +1,10 @@
-#include "mesh.h"
-
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
-#include "render.h"
+#include "rendering/render.h"
+#include "rendering/mesh.h"
 
 #pragma pack(push, 1)
 typedef struct

@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <d3dx9.h>
 
-#include "render.h"
+#include "rendering/render.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 

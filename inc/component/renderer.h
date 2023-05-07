@@ -1,7 +1,7 @@
 #pragma once
 
 #include "component/acomponent.h"
-#include "mesh.h"
+#include "rendering/mesh.h"
 
 typedef struct {
 	AComponent* parent;

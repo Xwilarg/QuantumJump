@@ -1,10 +1,8 @@
 #include <Windows.h>
 #include <d3dx9.h>
+#include <stdbool.h>
 
-#include "component/renderer.h"
-
-#include "render.h"
-#include "mesh.h"
+#include "rendering/render.h"
 #include "object.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)

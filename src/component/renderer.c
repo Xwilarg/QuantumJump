@@ -1,6 +1,6 @@
 #include "component/renderer.h"
 #include "object.h"
-#include "render.h"
+#include "rendering/render.h"
 
 static void Update(Object* o, void* self)
 {

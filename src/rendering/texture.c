@@ -6,8 +6,8 @@
 #include <assert.h>
 #include <errno.h>
 
-#include "texture.h"
-#include "render.h"
+#include "rendering/texture.h"
+#include "rendering/render.h"
 
 #pragma pack(push, 1)
 typedef struct

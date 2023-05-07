@@ -2,7 +2,6 @@
 
 #include "component/transform.h"
 #include "component/acomponent.h"
-#include "mesh.h"
 
 struct Object
 {

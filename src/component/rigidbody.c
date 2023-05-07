@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "component/rigidbody.h"
 #include "object.h"
 

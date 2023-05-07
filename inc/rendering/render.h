@@ -3,6 +3,7 @@
 #include <d3d9.h>
 #include <stdbool.h>
 
+#include "rendering/mesh.h"
 #include "object.h"
 
 typedef struct
