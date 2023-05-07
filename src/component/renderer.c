@@ -30,6 +30,5 @@ Renderer* RENDERER_NewRenderer(const char* meshPath)
 	r->mesh = MESH_Load(meshPath);
 
 	r->parent = ACOMPONENT_NewAComponent(r, &Update, &Destroy);
-	r->parent->Update = &Update;
 	return r;
 }
