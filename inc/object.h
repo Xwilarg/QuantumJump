@@ -11,5 +11,6 @@ typedef struct
 	Renderer* renderer;
 } Object;
 
-Object* OBJECT_NewObject(Mesh* mesh);
+Object* OBJECT_NewObject(char* meshPath);
 void OBJECT_DestroyObject(Object* o);
+void OBJECT_Update(Object *o);

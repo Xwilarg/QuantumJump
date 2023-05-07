@@ -38,15 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		}
 
-		// begin the frame
-		RENDER_Clear();
-
-		// rotate the object
-		object->transform->rotation->y += 0.1f;
-		RENDER_RenderObject(object);
-		//
-
-		RENDER_Render();
+		OBJECT_Update(object);
 
 		Sleep(10);
 	}

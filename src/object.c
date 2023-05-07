@@ -16,3 +16,16 @@ void OBJECT_DestroyObject(Object* o)
 	RENDERER_DestroyRenderer(o->renderer);
 	free(o);
 }
+
+void OBJECT_Update(Object* o)
+{
+	// begin the frame
+	RENDER_Clear();
+
+	// rotate the object
+	o->transform->rotation->y += 0.1f;
+	RENDER_RenderObject(o);
+	//
+
+	RENDER_Render();
+}
