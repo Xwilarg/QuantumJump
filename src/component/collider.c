@@ -50,20 +50,24 @@ Collider* COLLIDER_New(Renderer* r)
 	return coll;
 }
 
-bool Collider_Check(Object* o, Game* game)
+bool Collider_Check(Object* o, Vector incrPos, Game* game)
 {
 	Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 	if (coll == NULL)
 	{
 		return false;
 	}
+	Vector offT = VECTOR_Add(o->transform->position, incrPos);
 	for (Object** to = game->objects; *to != NULL; to++)
 	{
 		Collider* targetColl = OBJECT_GetComponent(*to, COMPONENT_COLLIDER);
 		if (targetColl != NULL)
 		{
-			return ((coll->min.x >= targetColl->min.x && coll->min.x <= targetColl->max.x) || (coll->max.x >= targetColl->min.x && coll->max.x <= targetColl->max.x))
-				&& ((coll->min.y >= targetColl->min.y && coll->min.y <= targetColl->max.y) || (coll->max.y >= targetColl->min.y && coll->max.y <= targetColl->max.y));
+			return ((offT.x + coll->min.x >= (*to)->transform->position.x + targetColl->min.x && offT.x + coll->min.x <= (*to)->transform->position.x + targetColl->max.x)
+				|| (offT.x + coll->max.x >= (*to)->transform->position.x + targetColl->min.x && offT.x + coll->max.x <= (*to)->transform->position.x + targetColl->max.x))
+				&&
+				((offT.y + coll->min.y >= (*to)->transform->position.y + targetColl->min.y && offT.y + coll->min.y <= (*to)->transform->position.y + targetColl->max.y)
+				|| (offT.y + coll->max.y >= (*to)->transform->position.y + targetColl->min.y && offT.y + coll->max.y <= (*to)->transform->position.y + targetColl->max.y));
 		}
 	}
 	return false;
