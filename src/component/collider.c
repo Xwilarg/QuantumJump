@@ -71,8 +71,9 @@ bool COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 		{
 			Vector tarMin = VECTOR_Add((*to)->transform->position, targetColl->min);
 			Vector tarMax = VECTOR_Add((*to)->transform->position, targetColl->min);
-			if (((oMin.x >= tarMin.x && oMin.x <= tarMax.x) || (oMax.x >= tarMin.x && oMax.x <= tarMax.x))
-				&& ((oMin.y >= tarMin.y && oMin.y <= tarMax.y) || (oMax.y >= tarMin.y && oMax.y <= tarMax.y)))
+			bool xCheck = (oMin.x >= tarMin.x && oMin.x <= tarMax.x) || (oMax.x >= tarMin.x && oMax.x <= tarMax.x);
+			bool yCheck = (oMin.y >= tarMin.y && oMin.y <= tarMax.y) || (oMax.y >= tarMin.y && oMax.y <= tarMax.y);
+			if (xCheck && yCheck)
 			{
 				return true;
 			}
