@@ -13,6 +13,6 @@ struct Object
 
 Object* OBJECT_New();
 void OBJECT_Destroy(Object* o);
-void OBJECT_Update(Object *o, Context* ctx);
+void OBJECT_Update(Object *o, Game* game, Context* ctx);
 void OBJECT_AddComponent(Object* o, AComponent* newAc);
 void* OBJECT_GetComponent(Object* o, Component component);

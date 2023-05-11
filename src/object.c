@@ -54,10 +54,10 @@ void OBJECT_Destroy(Object* o)
 	free(o);
 }
 
-void OBJECT_Update(Object* o, Context* ctx)
+void OBJECT_Update(Object* o, Game* game, Context* ctx)
 {
 	for (AComponent** ac = o->components; *ac != NULL; ac++)
 	{
-		ACOMPONENT_Update(*ac, o, ctx);
+		ACOMPONENT_Update(*ac, o, game, ctx);
 	}
 }

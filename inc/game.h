@@ -3,9 +3,9 @@
 #include "object.h"
 #include "context/context.h"
 
-typedef struct {
+struct Game {
 	Object** objects;
-} Game;
+};
 
 Game* GAME_Init();
 void GAME_Destroy(Game* g);

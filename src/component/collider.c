@@ -4,8 +4,9 @@
 #include "object.h"
 #include "rendering/render.h"
 
-static void Update(Object* o, Context* ctx, void* self)
+static void Update(Object* o, Game* game, Context* ctx, void* self)
 {
+	(void)game;
 	(void)ctx;
 	Collider* coll = (Collider*)self;
 

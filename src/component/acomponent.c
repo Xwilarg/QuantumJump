@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "component/acomponent.h"
 
-AComponent* ACOMPONENT_New(void* self, Component component, void (*update)(Object*, Context*, void*), void (*destroy)(void*))
+AComponent* ACOMPONENT_New(void* self, Component component, void (*update)(Object*, Game*, Context*, void*), void (*destroy)(void*))
 {
 	AComponent* ac = malloc(sizeof(AComponent));
 	if (ac == NULL) return NULL;
@@ -21,7 +21,7 @@ void ACOMPONENT_Destroy(AComponent* ac)
 	free(ac);
 }
 
-void ACOMPONENT_Update(AComponent* ac, Object* o, Context* ctx)
+void ACOMPONENT_Update(AComponent* ac, Object* o, Game* game, Context* ctx)
 {
-	ac->Update(o, ctx, ac->self);
+	ac->Update(o, game, ctx, ac->self);
 }

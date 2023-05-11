@@ -4,8 +4,9 @@
 #include "component/collider.h"
 #include "object.h"
 
-static void Update(Object* o, Context* ctx, void* self)
+static void Update(Object* o, Game* game, Context* ctx, void* self)
 {
+	(void)game;
 	Rigidbody* rb = (Rigidbody*)self;
 
 	rb->linearVelocity = VECTOR_Multiply(rb->linearVelocity, 1.f - rb->linearDrag * ctx->time->deltaTime);

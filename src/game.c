@@ -44,6 +44,6 @@ void GAME_Update(Game* g, Context* ctx)
 {
 	for (Object** o = g->objects; *o != NULL; o++)
 	{
-		OBJECT_Update(*o, ctx);
+		OBJECT_Update(*o, g, ctx);
 	}
 }

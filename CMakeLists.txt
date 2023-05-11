@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(4MBJam)
 
-SET(CMAKE_C_FLAGS "/W4 /WX")
+SET(CMAKE_C_FLAGS "/W4")
 
 include_directories(./inc/ SYSTEM $ENV{DXSDK_DIR}Include)
 link_directories($ENV{DXSDK_DIR}Lib/x86)
