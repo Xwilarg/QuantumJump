@@ -4,6 +4,7 @@
 
 #include "rendering/render.h"
 #include "game.h"
+#include "user.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
@@ -19,7 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Context* ctx = CONTEXT_New();
 	Game* game = GAME_Init();
 
-	GAME_USERInit(game, ctx);
+	USER_Init(game, ctx);
 	//
 
 	// enter the main loop

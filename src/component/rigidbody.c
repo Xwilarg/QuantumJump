@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "component/rigidbody.h"
+#include "component/collider.h"
 #include "object.h"
 
 static void Update(Object* o, Context* ctx, void* self)
