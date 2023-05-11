@@ -60,14 +60,21 @@ bool Collider_Check(Object* o, Vector incrPos, Game* game)
 	Vector offT = VECTOR_Add(o->transform->position, incrPos);
 	for (Object** to = game->objects; *to != NULL; to++)
 	{
+		if (*to == o)
+		{
+			continue;
+		}
 		Collider* targetColl = OBJECT_GetComponent(*to, COMPONENT_COLLIDER);
 		if (targetColl != NULL)
 		{
-			return ((offT.x + coll->min.x >= (*to)->transform->position.x + targetColl->min.x && offT.x + coll->min.x <= (*to)->transform->position.x + targetColl->max.x)
+			if (((offT.x + coll->min.x >= (*to)->transform->position.x + targetColl->min.x && offT.x + coll->min.x <= (*to)->transform->position.x + targetColl->max.x)
 				|| (offT.x + coll->max.x >= (*to)->transform->position.x + targetColl->min.x && offT.x + coll->max.x <= (*to)->transform->position.x + targetColl->max.x))
 				&&
 				((offT.y + coll->min.y >= (*to)->transform->position.y + targetColl->min.y && offT.y + coll->min.y <= (*to)->transform->position.y + targetColl->max.y)
-				|| (offT.y + coll->max.y >= (*to)->transform->position.y + targetColl->min.y && offT.y + coll->max.y <= (*to)->transform->position.y + targetColl->max.y));
+					|| (offT.y + coll->max.y >= (*to)->transform->position.y + targetColl->min.y && offT.y + coll->max.y <= (*to)->transform->position.y + targetColl->max.y)))
+			{
+				return true;
+			}
 		}
 	}
 	return false;
