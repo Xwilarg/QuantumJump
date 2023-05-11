@@ -14,7 +14,8 @@ static void Update(Object* o, Context* ctx, void* self)
 	}
 	rb->angularVelocity = VECTOR_Multiply(rb->angularVelocity, 1.f - rb->angularDrag * ctx->time->deltaTime);
 
-	o->transform->position = VECTOR_Add(o->transform->position, VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime));
+	Vector targetPos = VECTOR_Add(o->transform->position, VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime));
+	o->transform->position = targetPos;
 	o->transform->rotation = VECTOR_Add(o->transform->rotation, VECTOR_Multiply(rb->angularVelocity, ctx->time->deltaTime));
 }
 

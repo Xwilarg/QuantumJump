@@ -48,3 +48,22 @@ Collider* COLLIDER_New(Renderer* r)
 	coll->parent = ACOMPONENT_New(coll, COMPONENT_COLLIDER, &Update, &Destroy);
 	return coll;
 }
+
+bool Collider_Check(Object* o, Game* game)
+{
+	Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
+	if (coll == NULL)
+	{
+		return false;
+	}
+	for (Object** to = game->objects; *to != NULL; to++)
+	{
+		Collider* targetColl = OBJECT_GetComponent(*to, COMPONENT_COLLIDER);
+		if (targetColl != NULL)
+		{
+			return ((coll->min.x >= targetColl->min.x && coll->min.x <= targetColl->max.x) || (coll->max.x >= targetColl->min.x && coll->max.x <= targetColl->max.x))
+				&& ((coll->min.y >= targetColl->min.y && coll->min.y <= targetColl->max.y) || (coll->max.y >= targetColl->min.y && coll->max.y <= targetColl->max.y));
+		}
+	}
+	return false;
+}
