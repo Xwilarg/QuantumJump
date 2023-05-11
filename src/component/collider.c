@@ -58,6 +58,8 @@ bool COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 		return false;
 	}
 	Vector offT = VECTOR_Add(o->transform->position, incrPos);
+	Vector oMin = VECTOR_Add(offT, coll->min);
+	Vector oMax = VECTOR_Add(offT, coll->max);
 	for (Object** to = game->objects; *to != NULL; to++)
 	{
 		if (*to == o)
@@ -67,11 +69,10 @@ bool COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 		Collider* targetColl = OBJECT_GetComponent(*to, COMPONENT_COLLIDER);
 		if (targetColl != NULL)
 		{
-			if (((offT.x + coll->min.x >= (*to)->transform->position.x + targetColl->min.x && offT.x + coll->min.x <= (*to)->transform->position.x + targetColl->max.x)
-				|| (offT.x + coll->max.x >= (*to)->transform->position.x + targetColl->min.x && offT.x + coll->max.x <= (*to)->transform->position.x + targetColl->max.x))
-				&&
-				((offT.y + coll->min.y >= (*to)->transform->position.y + targetColl->min.y && offT.y + coll->min.y <= (*to)->transform->position.y + targetColl->max.y)
-					|| (offT.y + coll->max.y >= (*to)->transform->position.y + targetColl->min.y && offT.y + coll->max.y <= (*to)->transform->position.y + targetColl->max.y)))
+			Vector tarMin = VECTOR_Add((*to)->transform->position, targetColl->min);
+			Vector tarMax = VECTOR_Add((*to)->transform->position, targetColl->min);
+			if (((oMin.x >= tarMin.x && oMin.x <= tarMax.x) || (oMax.x >= tarMin.x && oMax.x <= tarMax.x))
+				&& ((oMin.y >= tarMin.y && oMin.y <= tarMax.y) || (oMax.y >= tarMin.y && oMax.y <= tarMax.y)))
 			{
 				return true;
 			}
