@@ -17,7 +17,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	rb->angularVelocity = VECTOR_Multiply(rb->angularVelocity, 1.f - rb->angularDrag * ctx->time->deltaTime);
 
 	Vector targetPos = VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime);
-	if (!Collider_Check(o, targetPos, game))
+	if (!COLLIDER_Check(o, targetPos, game))
 	{
 		o->transform->position = VECTOR_Add(o->transform->position, targetPos);
 	}

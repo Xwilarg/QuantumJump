@@ -13,5 +13,5 @@ typedef struct {
 	Vector max;
 } Collider;
 
-Collider* Collider_New(Renderer* r);
-bool Collider_Check(Object* o, Vector incrPos, Game* game);
+Collider* COLLIDER_New(Renderer* r);
+bool COLLIDER_Check(Object* o, Vector incrPos, Game* game);
