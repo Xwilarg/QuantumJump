@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "rendering/render.h"
+#include "audio/audio.h"
 #include "game.h"
 #include "user.h"
 
@@ -15,6 +16,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	{
 		MessageBoxA(NULL, "Failed to create renderer.", "Failed", MB_OK | MB_ICONERROR);
 		return 1;
+	}
+
+	if (!AUDIO_Init())
+	{
+		MessageBoxA(NULL, "Failed to initialize audio", "Failed", MB_OK | MB_ICONERROR);
 	}
 
 	Context* ctx = CONTEXT_New();
@@ -49,6 +55,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		Sleep(10);
 	}
 
+	AUDIO_Destroy();
 	RENDER_Destroy();
 	CONTEXT_Destroy(ctx);
 	GAME_Destroy(game);
