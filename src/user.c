@@ -29,7 +29,9 @@ void USER_Init(Game* g, Context* ctx)
 		ref->transform->position.y = -70.f;
 
 		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
+		Collider* coll = COLLIDER_New(r);
 
+		OBJECT_AddComponent(ref, r->parent);
 		OBJECT_AddComponent(ref, r->parent);
 
 		GAME_AddObject(g, ref);
