@@ -10,7 +10,6 @@ void USER_Init(Game* g, Context* ctx)
 	{
 		Object* dynObj = OBJECT_New();
 		dynObj->transform->position.z = -200.f;
-		dynObj->transform->position.y = -80.f;
 
 		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 		Collider* coll = COLLIDER_New(r);

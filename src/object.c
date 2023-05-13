@@ -37,7 +37,7 @@ void* OBJECT_GetComponent(Object* o, Component component)
 	{
 		if ((*ac)->component == component)
 		{
-			return *ac;
+			return (*ac)->self;
 		}
 	}
 	return NULL;
