@@ -13,7 +13,7 @@ static int height;
 
 LPDIRECT3DDEVICE9 d3dDevice;
 
-static void UpdateClientArea()
+static void UpdateClientArea(void)
 {
 	RECT rect;
 	GetClientRect(hWnd, &rect);
@@ -76,7 +76,7 @@ static bool InitWindow(HINSTANCE hInstance)
 	return true;
 }
 
-static bool CreateDevice()
+static bool CreateDevice(void)
 {
 	// create the dx9 object
 	if ((d3d = Direct3DCreate9(D3D_SDK_VERSION)) == NULL)
@@ -148,7 +148,7 @@ bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 }
 
 // Begin the frame
-void RENDER_Clear()
+void RENDER_Clear(void)
 {
 	// clear the screen and the depth buffer
 	d3dDevice->lpVtbl->Clear(d3dDevice, 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.f, 0);
@@ -158,7 +158,7 @@ void RENDER_Clear()
 }
 
 // End the frame
-void RENDER_Render()
+void RENDER_Render(void)
 {
 	d3dDevice->lpVtbl->EndScene(d3dDevice);
 
@@ -210,7 +210,7 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 	d3dDevice->lpVtbl->DrawIndexedPrimitive(d3dDevice, D3DPT_TRIANGLELIST, 0, 0, mesh->numVertices, 0, mesh->numIndices);
 }
 
-void RENDER_Destroy()
+void RENDER_Destroy(void)
 {
 	d3dDevice->lpVtbl->Release(d3dDevice);
 	d3d->lpVtbl->Release(d3d);

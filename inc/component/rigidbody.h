@@ -18,7 +18,7 @@ typedef struct
 	bool useGravity;
 } Rigidbody;
 
-Rigidbody* RIGIDBODY_New();
+Rigidbody* RIGIDBODY_New(void);
 
 void RIGIDBODY_AddForce(Rigidbody* rb, Vector v);
 void RIGIDBODY_AddTorque(Rigidbody* rb, Vector v);

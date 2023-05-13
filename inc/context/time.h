@@ -8,6 +8,6 @@ typedef struct {
 	float deltaTime;
 } Time;
 
-Time* TIME_New();
+Time* TIME_New(void);
 void TIME_Destroy(Time* t);
 void TIME_Update(Time* t);

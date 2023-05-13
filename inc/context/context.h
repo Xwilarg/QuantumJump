@@ -6,6 +6,6 @@ typedef struct {
 	Time* time;
 } Context;
 
-Context* CONTEXT_New();
+Context* CONTEXT_New(void);
 void CONTEXT_Destroy(Context* ctx);
 void CONTEXT_Update(Context* ctx);

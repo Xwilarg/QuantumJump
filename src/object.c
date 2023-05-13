@@ -2,7 +2,7 @@
 #include "component/renderer.h"
 #include "component/rigidbody.h"
 
-Object* OBJECT_New()
+Object* OBJECT_New(void)
 {
 	Object* o = malloc(sizeof(Object));
 	if (o == NULL) return NULL;

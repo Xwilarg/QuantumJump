@@ -11,12 +11,12 @@ Vector VECTOR_New(float x, float y, float z)
 	return v;
 }
 
-Vector VECTOR_Zero()
+Vector VECTOR_Zero(void)
 {
 	return VECTOR_New(0.f, 0.f, 0.f);
 }
 
-Vector VECTOR_One()
+Vector VECTOR_One(void)
 {
 	return VECTOR_New(1.f, 1.f, 1.f);
 }

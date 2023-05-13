@@ -11,7 +11,7 @@ struct Object
 	AComponent** components;
 };
 
-Object* OBJECT_New();
+Object* OBJECT_New(void);
 void OBJECT_Destroy(Object* o);
 void OBJECT_Update(Object *o, Game* game, Context* ctx);
 void OBJECT_AddComponent(Object* o, AComponent* newAc);

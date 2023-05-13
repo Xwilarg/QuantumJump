@@ -2,7 +2,7 @@
 
 #include "game.h"
 
-Game* GAME_Init()
+Game* GAME_Init(void)
 {
 	Game* g = malloc(sizeof(Game));
 	if (g == NULL) return NULL;

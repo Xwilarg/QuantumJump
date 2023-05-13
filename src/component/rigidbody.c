@@ -30,7 +30,7 @@ static void Destroy(void* self)
 	free(rb);
 }
 
-Rigidbody* RIGIDBODY_New()
+Rigidbody* RIGIDBODY_New(void)
 {
 	Rigidbody* rb = malloc(sizeof(Rigidbody));
 	if (rb == NULL) return NULL;

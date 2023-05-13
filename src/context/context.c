@@ -2,7 +2,7 @@
 
 #include "context/context.h"
 
-Context* CONTEXT_New()
+Context* CONTEXT_New(void)
 {
 	Context* ctx = malloc(sizeof(Context));
 	if (ctx == NULL) return NULL;

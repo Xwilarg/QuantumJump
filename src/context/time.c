@@ -2,7 +2,7 @@
 
 #include "context/time.h"
 
-Time* TIME_New()
+Time* TIME_New(void)
 {
 	Time* t = malloc(sizeof(Time));
 	if (t == NULL) return NULL;

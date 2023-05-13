@@ -15,9 +15,9 @@ typedef struct
 #define RENDERFVF D3DFVF_XYZ | D3DFVF_TEX2
 
 bool RENDER_Init(HINSTANCE hInstance, int nShowCmd);
-void RENDER_Destroy();
-void RENDER_Clear();
-void RENDER_Render();
+void RENDER_Destroy(void);
+void RENDER_Clear(void);
+void RENDER_Render(void);
 
 void RENDER_RenderCube(Vector min, Vector max, Vector rotation);
 void RENDER_RenderMesh(Mesh* mesh, Transform* t);
