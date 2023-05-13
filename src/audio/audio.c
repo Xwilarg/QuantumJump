@@ -11,7 +11,13 @@ static IXAudio2MasteringVoice* masterVoice;
 
 bool AUDIO_Init()
 {
-	if (FAILED(XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR)))
+#ifdef _DEBUG
+	int flags = XAUDIO2_DEBUG_ENGINE;
+#else
+	int flag = 0;
+#endif
+
+	if (FAILED(XAudio2Create(&xAudio2, flags, XAUDIO2_DEFAULT_PROCESSOR)))
 	{
 		return false;
 	}
@@ -21,6 +27,15 @@ bool AUDIO_Init()
 	{
 		return false;
 	}
+
+#ifdef _DEBUG
+	XAUDIO2_DEBUG_CONFIGURATION debugConfiguration;
+	memset(&debugConfiguration, 0, sizeof(debugConfiguration));
+
+	debugConfiguration.TraceMask = XAUDIO2_LOG_INFO | XAUDIO2_LOG_WARNINGS | XAUDIO2_LOG_ERRORS;
+
+	xAudio2->lpVtbl->SetDebugConfiguration(xAudio2, &debugConfiguration, NULL);
+#endif
 
 	return true;
 }
@@ -66,18 +81,25 @@ Sound* AUDIO_Load(const char* soundPath)
 	buffer.pAudioData = data;
 
 	// create audio source
-	WAVEFORMAT waveFormat;
-	memset(&waveFormat, 0, sizeof(waveFormat));
+	WAVEFORMAT* waveFormat = malloc(sizeof(PCMWAVEFORMAT));
 
-	// TODO from audio file header
-	waveFormat.nBlockAlign = 1024;
-	waveFormat.nAvgBytesPerSec = 16000;
-	waveFormat.nChannels = 1;
-	waveFormat.nSamplesPerSec = 44100;
-	waveFormat.wFormatTag = WAVE_FORMAT_ADPCM;
+	if (!waveFormat)
+	{
+		return NULL;
+	}
+
+	// TODO
+	waveFormat->wFormatTag = WAVE_FORMAT_PCM;
+	waveFormat->nChannels = 1;
+	waveFormat->nSamplesPerSec = 44100;
+	waveFormat->nAvgBytesPerSec = 88200;
+	waveFormat->nBlockAlign = 2;
+
+	PCMWAVEFORMAT* pcmWaveFormat = (PCMWAVEFORMAT*)waveFormat;
+	pcmWaveFormat->wBitsPerSample = 16;
 
 	IXAudio2SourceVoice* sourceVoice;
-	if (FAILED(xAudio2->lpVtbl->CreateSourceVoice(xAudio2, &sourceVoice, &waveFormat, 0, 1.0, NULL, NULL, NULL)))
+	if (FAILED(xAudio2->lpVtbl->CreateSourceVoice(xAudio2, &sourceVoice, waveFormat, 0, 1.0, NULL, NULL, NULL)))
 	{
 		return NULL;
 	}
