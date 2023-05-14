@@ -2,12 +2,22 @@
 #include <xaudio2.h>
 
 #include <stdio.h>
+#include <stdint.h>
 
 #include "audio/audio.h"
 #include "audio/sound.h"
 
 static IXAudio2* xAudio2;
 static IXAudio2MasteringVoice* masterVoice;
+
+#pragma pack(push, 1)
+typedef struct
+{
+	uint32_t size;
+	uint16_t sampleRate;
+	uint16_t blockAlign;
+} SoundHeader;
+#pragma pack(pop)
 
 bool AUDIO_Init()
 {
@@ -57,12 +67,12 @@ Sound* AUDIO_Load(const char* soundPath)
 		return NULL;
 	}
 
-	// read the size
-	unsigned int size;
-	fread(&size, 1, sizeof(unsigned int), f);
+	// read the sound header
+	SoundHeader header;
+	fread(&header, 1, sizeof(header), f);
 
 	// allocate audio buffer
-	void* data = malloc(size);
+	void* data = malloc(header.size);
 
 	if (!data)
 	{
@@ -70,14 +80,14 @@ Sound* AUDIO_Load(const char* soundPath)
 		return NULL;
 	}
 
-	fread(data, 1, size, f);
+	fread(data, 1, header.size, f);
 
 	// create the xaudio buffer
 	XAUDIO2_BUFFER buffer;
 	memset(&buffer, 0, sizeof(buffer));
 
 	buffer.Flags = XAUDIO2_END_OF_STREAM;
-	buffer.AudioBytes = size;
+	buffer.AudioBytes = header.size;
 	buffer.pAudioData = data;
 
 	// create audio source
@@ -88,12 +98,13 @@ Sound* AUDIO_Load(const char* soundPath)
 		return NULL;
 	}
 
-	// TODO
 	waveFormat->wFormatTag = WAVE_FORMAT_PCM;
 	waveFormat->nChannels = 1;
-	waveFormat->nSamplesPerSec = 44100;
-	waveFormat->nAvgBytesPerSec = 88200;
-	waveFormat->nBlockAlign = 2;
+
+	// from the sound header
+	waveFormat->nSamplesPerSec = header.sampleRate;
+	waveFormat->nAvgBytesPerSec = header.sampleRate * header.blockAlign;
+	waveFormat->nBlockAlign = header.blockAlign;
 
 	PCMWAVEFORMAT* pcmWaveFormat = (PCMWAVEFORMAT*)waveFormat;
 	pcmWaveFormat->wBitsPerSample = 16;
