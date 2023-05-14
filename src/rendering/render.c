@@ -2,6 +2,7 @@
 #include <d3dx9.h>
 
 #include "rendering/render.h"
+#include "user.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -28,7 +29,7 @@ static void UpdateClientArea(void)
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_PROJECTION, &matProjection);
 }
 
-static void BuildViewTransform(Vector* position)
+static void BuildViewTransform(const Vector* position)
 {
 	D3DXVECTOR3 lookAt;
 	D3DXVECTOR3 up;
@@ -117,6 +118,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		UpdateClientArea();
 		break;
 
+	case WM_KEYDOWN:
+		USER_Input(wParam, true);
+		break;
+
+	case WM_KEYUP:
+		USER_Input(wParam, false);
+		break;
+
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
@@ -138,10 +147,6 @@ bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 
 	UpdateClientArea();
 
-	Vector camera;
-	camera.x = 0.f; camera.y = 0.f; camera.z = 10.f;
-	BuildViewTransform(&camera);
-
 	ShowWindow(hWnd, nShowCmd);
 
 	return true;
@@ -155,6 +160,8 @@ void RENDER_Clear(void)
 
 	// begin a new scene
 	d3dDevice->lpVtbl->BeginScene(d3dDevice);
+
+	BuildViewTransform(GetCameraPosition());
 }
 
 // End the frame

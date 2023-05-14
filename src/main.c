@@ -42,6 +42,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		RENDER_Clear();
 
 		CONTEXT_Update(ctx);
+		USER_Update(game, ctx);
 		GAME_Update(game, ctx);
 
 		RENDER_Render();

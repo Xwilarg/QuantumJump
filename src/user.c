@@ -3,9 +3,56 @@
 #include "component/collider.h"
 #include "user.h"
 
+static Vector _cameraPos;
+static bool _isUpPressed, _isDownPressed, _isLeftPressed, _isRightPressed;
+
+const Vector* GetCameraPosition(void)
+{
+	return &_cameraPos;
+}
+
+void USER_Input(int key, bool isPressed)
+{
+	switch (key)
+	{
+	case 87: // W
+		_isUpPressed = isPressed;
+		break;
+
+	case 83: // S
+		_isDownPressed = isPressed;
+		break;
+
+	case 65: // A
+		_isLeftPressed = isPressed;
+		break;
+
+	case 68: // D
+		_isRightPressed = isPressed;
+		break;
+	}
+}
+
+void USER_Update(Game* g, Context* ctx)
+{
+	(void)g;
+
+	_cameraPos = VECTOR_Add(_cameraPos, VECTOR_Multiply(VECTOR_New(
+		(_isLeftPressed ? -1.f : 0.f) + (_isRightPressed ? 1.f : 0.f),
+		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f),
+		.0f
+	), ctx->time->deltaTime * 5.f));
+}
+
 void USER_Init(Game* g, Context* ctx)
 {
 	(void)ctx;
+
+	_cameraPos = VECTOR_New(0.f, 0.f, 10.f);
+	_isLeftPressed = false;
+	_isRightPressed = false;
+	_isUpPressed = false;
+	_isDownPressed = false;
 
 	{
 		Object* dynObj = OBJECT_New();
