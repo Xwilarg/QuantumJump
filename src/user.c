@@ -5,7 +5,9 @@
 
 static Vector _cameraPos;
 static bool _isUpPressed, _isDownPressed, _isLeftPressed, _isRightPressed;
+
 static Object* _player;
+static Rigidbody* _playerRb;
 
 static bool _canJump;
 
@@ -21,7 +23,7 @@ void USER_Input(int key, bool isPressed)
 	case 32: // Spacebar
 		if (_canJump)
 		{
-			RIGIDBODY_AddForce(OBJECT_GetComponent(_player, COMPONENT_RIGIDBODY), VECTOR_New(.0f, 50.f, .0f));
+			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, 50.f, .0f));
 		}
 		break;
 
@@ -47,18 +49,19 @@ void USER_Update(Game* g, Context* ctx)
 {
 	(void)g;
 
-	_cameraPos = VECTOR_Add(_cameraPos, VECTOR_Multiply(VECTOR_New(
+	Vector dirVector = VECTOR_Multiply(VECTOR_New(
 		(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
 		.0f,
 		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
-	), ctx->time->deltaTime * 75.f));
+	), ctx->time->deltaTime * 75.f);
+	_playerRb->linearVelocity = dirVector;
 }
 
 void USER_Init(Game* g, Context* ctx)
 {
 	(void)ctx;
 
-	_cameraPos = VECTOR_New(0.f, 300.f, 10.f);
+	_cameraPos = VECTOR_New(0.f, 300.f, 100.f);
 	_isLeftPressed = false;
 	_isRightPressed = false;
 	_isUpPressed = false;
@@ -71,10 +74,10 @@ void USER_Init(Game* g, Context* ctx)
 
 		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 		Collider* coll = COLLIDER_New(r);
-		Rigidbody* rb = RIGIDBODY_New();
+		_playerRb = RIGIDBODY_New();
 
 		OBJECT_AddComponent(_player, r->parent);
-		OBJECT_AddComponent(_player, rb->parent);
+		OBJECT_AddComponent(_player, _playerRb->parent);
 		OBJECT_AddComponent(_player, coll->parent);
 
 		GAME_AddObject(g, _player);

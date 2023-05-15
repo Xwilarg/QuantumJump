@@ -19,7 +19,33 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	Vector targetPos = VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime);
 	if (COLLIDER_Check(o, targetPos, game) || o->transform->position.y + targetPos.y < .0f)
 	{
-		rb->linearVelocity = VECTOR_Zero();
+		/*Vector x = VECTOR_New(targetPos.x, .0f, .0f);
+		Vector y = VECTOR_New(.0f, targetPos.y, .0f);
+		Vector z = VECTOR_New(.0f, .0f, targetPos.z);
+		if (COLLIDER_Check(o, y, game) || o->transform->position.y + targetPos.y < .0f)
+		{
+			rb->linearVelocity.y = 0;
+		}
+		else
+		{
+			o->transform->position = VECTOR_Add(o->transform->position, y);
+		}
+		if (COLLIDER_Check(o, x, game))
+		{
+			rb->linearVelocity.x = 0;
+		}
+		else
+		{
+			o->transform->position = VECTOR_Add(o->transform->position, x);
+		}
+		if (COLLIDER_Check(o, z, game))
+		{
+			rb->linearVelocity.z = 0;
+		}
+		else
+		{
+			o->transform->position = VECTOR_Add(o->transform->position, z);
+		}*/
 	}
 	else
 	{
