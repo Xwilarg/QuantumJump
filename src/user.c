@@ -17,7 +17,7 @@ static Vector _cameraPos;
 static Vector _camOffset;
 
 // Constants
-static const _playerSpeed = 7500.f;
+static const float _playerSpeed = 7500.f;
 
 const Vector* GetCameraPosition(void)
 {
