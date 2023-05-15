@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "component/renderer.h"
 #include "component/rigidbody.h"
 #include "component/collider.h"
@@ -94,6 +96,11 @@ void USER_Update(Game* g, Context* ctx)
 	_playerRb->linearVelocity.x = dirVector.x;
 	_playerRb->linearVelocity.z = dirVector.z;
 
+	if (dirVector.x != 0.f || dirVector.z != 0.f)
+	{
+		_player->transform->rotation = VECTOR_New(.0f, atan2(dirVector.x, dirVector.z), .0f);
+	}
+
 	// Set camera position to follow player
 	UpdateCameraPosition();
 }
@@ -102,7 +109,7 @@ void USER_Init(Game* g, Context* ctx)
 {
 	(void)ctx;
 
-	_cameraPos = VECTOR_New(0.f, 300.f, 10.f);
+	_cameraPos = VECTOR_New(0.f, 400.f, 200.f);
 	_isLeftPressed = false;
 	_isRightPressed = false;
 	_isUpPressed = false;
