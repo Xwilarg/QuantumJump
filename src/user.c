@@ -3,20 +3,34 @@
 #include "component/collider.h"
 #include "user.h"
 
-static Vector _cameraPos;
+// Key info
 static bool _isUpPressed, _isDownPressed, _isLeftPressed, _isRightPressed;
 
+// Player info
 static Object* _player;
 static Rigidbody* _playerRb;
-
 static bool _canJump;
+static Vector _initialPos;
+
+// Camera info
+static Vector _cameraPos;
 static Vector _camOffset;
 
+// Constants
 static const _playerSpeed = 7500.f;
 
 const Vector* GetCameraPosition(void)
 {
 	return &_cameraPos;
+}
+
+static void UpdateCameraPosition()
+{
+	_cameraPos = VECTOR_New(
+		_camOffset.x + _player->transform->position.x,
+		_camOffset.y + _player->transform->position.y,
+		_camOffset.z + _player->transform->position.z
+	);
 }
 
 void USER_Input(int key, bool isPressed)
@@ -45,6 +59,11 @@ void USER_Input(int key, bool isPressed)
 	case 68: // D
 		_isRightPressed = isPressed;
 		break;
+
+	case 82: // R
+		_player->transform->position = _initialPos;
+		UpdateCameraPosition();
+		break;
 	}
 }
 
@@ -62,11 +81,7 @@ void USER_Update(Game* g, Context* ctx)
 	_playerRb->linearVelocity.z = dirVector.z;
 
 	// Set camera position to follow player
-	_cameraPos = VECTOR_New(
-		_camOffset.x + _player->transform->position.x,
-		_camOffset.y + _player->transform->position.y,
-		_camOffset.z + _player->transform->position.z
-	);
+	UpdateCameraPosition();
 }
 
 void USER_Init(Game* g, Context* ctx)
@@ -111,6 +126,7 @@ void USER_Init(Game* g, Context* ctx)
 		GAME_AddObject(g, ref);
 	}
 
+	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
 		_cameraPos.x - _player->transform->position.x,
 		_cameraPos.y - _player->transform->position.y,
