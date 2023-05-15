@@ -16,6 +16,8 @@ typedef struct
 	float angularDrag;
 
 	bool useGravity;
+
+	bool isOnGround;
 } Rigidbody;
 
 Rigidbody* RIGIDBODY_New(void);

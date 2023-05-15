@@ -21,9 +21,9 @@ void USER_Input(int key, bool isPressed)
 	switch (key)
 	{
 	case 32: // Spacebar
-		if (_canJump)
+		if (_playerRb->isOnGround)
 		{
-			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, 50.f, .0f));
+			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, 100.f, .0f));
 		}
 		break;
 

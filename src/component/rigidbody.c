@@ -17,6 +17,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	rb->angularVelocity = VECTOR_Multiply(rb->angularVelocity, 1.f - rb->angularDrag * ctx->time->deltaTime);
 
 	Vector targetPos = VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime);
+	rb->isOnGround = false;
 	if (COLLIDER_Check(o, targetPos, game) || o->transform->position.y + targetPos.y < .0f)
 	{
 		Vector x = VECTOR_New(targetPos.x, .0f, .0f);
@@ -25,6 +26,10 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 		if (COLLIDER_Check(o, y, game) || o->transform->position.y + targetPos.y < .0f)
 		{
 			rb->linearVelocity.y = 0;
+			if (targetPos.y < 0.f) // We are going down
+			{
+				rb->isOnGround = true;
+			}
 		}
 		else
 		{
@@ -69,6 +74,7 @@ Rigidbody* RIGIDBODY_New(void)
 	rb->angularVelocity = VECTOR_Zero();
 	rb->linearDrag = 0.f;
 	rb->angularDrag = 0.f;
+	rb->isOnGround = false;
 
 	rb->useGravity = true;
 
