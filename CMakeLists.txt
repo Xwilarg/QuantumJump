@@ -10,7 +10,8 @@ aux_source_directory(./src/component SRCS)
 aux_source_directory(./src/rendering SRCS)
 aux_source_directory(./src/context SRCS)
 aux_source_directory(./src/utils SRCS)
+aux_source_directory(./src/audio SRCS)
 
 add_executable(4MBJam WIN32 ${SRCS})
 
-target_link_libraries(4MBJam d3d9 d3dx9)
+target_link_libraries(4MBJam d3d9 d3dx9 xaudio2)
