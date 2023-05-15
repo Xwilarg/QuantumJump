@@ -15,3 +15,5 @@ aux_source_directory(./src/audio SRCS)
 add_executable(4MBJam WIN32 ${SRCS})
 
 target_link_libraries(4MBJam d3d9 d3dx9 xaudio2)
+
+file(COPY res DESTINATION .)

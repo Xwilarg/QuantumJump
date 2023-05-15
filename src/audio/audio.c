@@ -91,7 +91,7 @@ Sound* AUDIO_Load(const char* soundPath)
 	buffer.pAudioData = data;
 
 	// create audio source
-	WAVEFORMAT* waveFormat = malloc(sizeof(PCMWAVEFORMAT));
+	WAVEFORMATEX* waveFormat = malloc(sizeof(WAVEFORMATEX));
 
 	if (!waveFormat)
 	{

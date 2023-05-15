@@ -4,8 +4,8 @@
 
 #include "sound.h"
 
-bool AUDIO_Init();
-void AUDIO_Destroy();
+bool AUDIO_Init(void);
+void AUDIO_Destroy(void);
 
 Sound* AUDIO_Load(const char* soundPath);
 void AUDIO_Play(Sound* sound);

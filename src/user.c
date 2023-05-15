@@ -1,6 +1,7 @@
 #include "component/renderer.h"
 #include "component/rigidbody.h"
 #include "component/collider.h"
+#include "audio/audio.h"
 #include "user.h"
 
 // Key info
@@ -107,6 +108,8 @@ void USER_Init(Game* g, Context* ctx)
 	_isUpPressed = false;
 	_isDownPressed = false;
 	_canJump = true;
+
+	AUDIO_Play(AUDIO_Load("res/BGM.sound"));
 
 	{
 		_player = OBJECT_New();
