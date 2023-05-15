@@ -10,6 +10,9 @@ static Object* _player;
 static Rigidbody* _playerRb;
 
 static bool _canJump;
+static Vector _camOffset;
+
+static const _playerSpeed = 7500.f;
 
 const Vector* GetCameraPosition(void)
 {
@@ -49,13 +52,21 @@ void USER_Update(Game* g, Context* ctx)
 {
 	(void)g;
 
+	// Move player
 	Vector dirVector = VECTOR_Multiply(VECTOR_New(
 		(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
 		.0f,
 		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
-	), ctx->time->deltaTime * 5000.f);
+	), ctx->time->deltaTime * _playerSpeed);
 	_playerRb->linearVelocity.x = dirVector.x;
 	_playerRb->linearVelocity.z = dirVector.z;
+
+	// Set camera position to follow player
+	_cameraPos = VECTOR_New(
+		_camOffset.x + _player->transform->position.x,
+		_camOffset.y + _player->transform->position.y,
+		_camOffset.z + _player->transform->position.z
+	);
 }
 
 void USER_Init(Game* g, Context* ctx)
@@ -99,4 +110,10 @@ void USER_Init(Game* g, Context* ctx)
 
 		GAME_AddObject(g, ref);
 	}
+
+	_camOffset = VECTOR_New(
+		_cameraPos.x - _player->transform->position.x,
+		_cameraPos.y - _player->transform->position.y,
+		_cameraPos.z - _player->transform->position.z
+	);
 }
