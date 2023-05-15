@@ -39,8 +39,8 @@ void USER_Update(Game* g, Context* ctx)
 
 	_cameraPos = VECTOR_Add(_cameraPos, VECTOR_Multiply(VECTOR_New(
 		(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
-		(_isUpPressed ? 1.f : 0.f) + (_isDownPressed ? -1.f : 0.f),
-		.0f
+		.0f,
+		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
 	), ctx->time->deltaTime * 75.f));
 }
 
@@ -48,7 +48,7 @@ void USER_Init(Game* g, Context* ctx)
 {
 	(void)ctx;
 
-	_cameraPos = VECTOR_New(0.f, 0.f, 10.f);
+	_cameraPos = VECTOR_New(0.f, 200.f, 10.f);
 	_isLeftPressed = false;
 	_isRightPressed = false;
 	_isUpPressed = false;

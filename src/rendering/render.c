@@ -34,7 +34,7 @@ static void BuildViewTransform(const Vector* position)
 	D3DXVECTOR3 lookAt;
 	D3DXVECTOR3 up;
 
-	lookAt.x = position->x; lookAt.y = position->y; lookAt.z = 0.f;
+	lookAt.x = position->x; lookAt.y = position->y - 10.f; lookAt.z = position->z - 10.f;
 	up.x = 0.f; up.y = 1.f; up.z = 0.f;
 
 	D3DXMATRIX matView;
