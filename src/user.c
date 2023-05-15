@@ -109,7 +109,7 @@ void USER_Init(Game* g, Context* ctx)
 	_isDownPressed = false;
 	_canJump = true;
 
-	AUDIO_Play(AUDIO_Load("res/BGM.sound"));
+	// AUDIO_Play(AUDIO_Load("res/BGM.sound")); // TODO: Make it loop
 
 	{
 		_player = OBJECT_New();
