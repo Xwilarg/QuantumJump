@@ -8,6 +8,7 @@ Object* OBJECT_New(void)
 	if (o == NULL) return NULL;
 
 	o->transform = TRANSFORM_New(VECTOR_New(0.f, 0.f, 0.f));
+	o->tag = (UserTag)(-1);
 
 	o->components = malloc(sizeof(AComponent*));
 	if (o->components == NULL) return NULL;

@@ -4,11 +4,15 @@
 #include "component/acomponent.h"
 #include "context/context.h"
 
+typedef enum UserTag UserTag;
+
 struct Object
 {
 	Transform* transform;
 
 	AComponent** components;
+
+	UserTag tag;
 };
 
 Object* OBJECT_New(void);

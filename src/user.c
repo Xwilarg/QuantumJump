@@ -33,6 +33,20 @@ static void UpdateCameraPosition()
 	);
 }
 
+static void ResetPlayer()
+{
+	_player->transform->position = _initialPos;
+	UpdateCameraPosition();
+}
+
+static void OnPlayerCollision(const Object* collision)
+{
+	if (collision->tag == USERTAG_TRAP)
+	{
+		ResetPlayer();
+	}
+}
+
 void USER_Input(int key, bool isPressed)
 {
 	switch (key)
@@ -61,8 +75,7 @@ void USER_Input(int key, bool isPressed)
 		break;
 
 	case 82: // R
-		_player->transform->position = _initialPos;
-		UpdateCameraPosition();
+		ResetPlayer();
 		break;
 	}
 }
@@ -103,6 +116,8 @@ void USER_Init(Game* g, Context* ctx)
 		Collider* coll = COLLIDER_New(r);
 		_playerRb = RIGIDBODY_New();
 
+		coll->onCollision = OnPlayerCollision;
+
 		OBJECT_AddComponent(_player, r->parent);
 		OBJECT_AddComponent(_player, _playerRb->parent);
 		OBJECT_AddComponent(_player, coll->parent);
@@ -111,19 +126,21 @@ void USER_Init(Game* g, Context* ctx)
 	}
 
 	{
-		Object* ref = OBJECT_New();
-		ref->transform->position.z = -200.f;
-		ref->transform->position.x = -100.f;
+		Object* trap = OBJECT_New();
+		trap->transform->position.z = -200.f;
+		trap->transform->position.x = -300.f;
+
+		trap->tag = USERTAG_TRAP;
 
 		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 		Collider* coll = COLLIDER_New(r);
 		Rigidbody* rb = RIGIDBODY_New();
 
-		OBJECT_AddComponent(ref, r->parent);
-		OBJECT_AddComponent(ref, rb->parent);
-		OBJECT_AddComponent(ref, coll->parent);
+		OBJECT_AddComponent(trap, r->parent);
+		OBJECT_AddComponent(trap, rb->parent);
+		OBJECT_AddComponent(trap, coll->parent);
 
-		GAME_AddObject(g, ref);
+		GAME_AddObject(g, trap);
 	}
 
 	_initialPos = _player->transform->position;
