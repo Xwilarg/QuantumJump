@@ -109,6 +109,40 @@ void USER_Update(Game* g, Context* ctx)
 	UpdateCameraPosition();
 }
 
+static void AddProjectile(Game* game, int x, int z)
+{
+	Object* obj = OBJECT_New();
+	obj->transform->position.z = -200.f + z;
+	obj->transform->position.x = x;
+
+	obj->tag = USERTAG_OBJECTIVE;
+
+	Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
+	Collider* coll = COLLIDER_New(r);
+
+	OBJECT_AddComponent(obj, r->parent);
+	OBJECT_AddComponent(obj, coll->parent);
+
+	GAME_AddObject(game, obj);
+}
+
+static void AddTrap(Game* game, int x, int z)
+{
+	Object* obj = OBJECT_New();
+	obj->transform->position.z = -200.f + z;
+	obj->transform->position.x = x;
+
+	obj->tag = USERTAG_TRAP;
+
+	Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
+	Collider* coll = COLLIDER_New(r);
+
+	OBJECT_AddComponent(obj, r->parent);
+	OBJECT_AddComponent(obj, coll->parent);
+
+	GAME_AddObject(game, obj);
+}
+
 void USER_Init(Game* g, Context* ctx)
 {
 	(void)ctx;
@@ -138,38 +172,8 @@ void USER_Init(Game* g, Context* ctx)
 
 		GAME_AddObject(g, _player);
 	}
-
-	{
-		Object* trap = OBJECT_New();
-		trap->transform->position.z = -200.f;
-		trap->transform->position.x = -300.f;
-
-		trap->tag = USERTAG_TRAP;
-
-		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
-		Collider* coll = COLLIDER_New(r);
-
-		OBJECT_AddComponent(trap, r->parent);
-		OBJECT_AddComponent(trap, coll->parent);
-
-		GAME_AddObject(g, trap);
-	}
-
-	{
-		Object* obj = OBJECT_New();
-		obj->transform->position.z = -200.f;
-		obj->transform->position.x = 300.f;
-
-		obj->tag = USERTAG_OBJECTIVE;
-
-		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
-		Collider* coll = COLLIDER_New(r);
-
-		OBJECT_AddComponent(obj, r->parent);
-		OBJECT_AddComponent(obj, coll->parent);
-
-		GAME_AddObject(g, obj);
-	}
+	AddTrap(g, -300.f, 0.f);
+	AddProjectile(g, 300.f, 0.f);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
