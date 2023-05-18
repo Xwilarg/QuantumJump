@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "game.h"
 
@@ -40,34 +41,23 @@ void GAME_AddObject(Game* g, Object* obj)
 	g->objects[size + 1] = NULL;
 }
 
-void GAME_RemoveObject(Game* g, const Object* obj)
+void GAME_RemoveObject(Game* g, Object* obj)
 {
 	int size = 0;
-	Object** o = g->objects;
-	while (*(o++) != NULL)
+	Object** tmp = g->objects;
+	while (*(tmp++) != NULL)
 	{
 		size++;
 	};
-	Object** newList = malloc(sizeof(Object*) * size);
-	if (newList == NULL)
+	for (Object** o = g->objects; *o != NULL; o++)
 	{
-		return;
-		// FAILURE
+		size--;
+		if (*o == obj)
+		{
+			memcpy(o, o + 1, size + 1);
+		}
 	}
-	Object** old = g->objects;
-
-	Object** listIt = newList;
-	for (int i = 0; *(old + i) != NULL; i++)
-	{
-		if (*(old + i) == obj)
-			continue;
-
-		*listIt = *(old + i);
-		listIt++;
-	}
-	g->objects = newList;
-
-	free(old);
+	OBJECT_Destroy(obj);
 }
 
 void GAME_Update(Game* g, Context* ctx)

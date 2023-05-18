@@ -42,7 +42,7 @@ static void ResetPlayer()
 	UpdateCameraPosition();
 }
 
-static void OnPlayerCollision(Game* game, const Object* collision)
+static void OnPlayerCollision(Game* game, Object* collision)
 {
 	if (collision->tag == USERTAG_TRAP)
 	{
@@ -65,19 +65,19 @@ void USER_Input(int key, bool isPressed)
 		}
 		break;
 
-	case 87: // W
+	case 87: case 38: // W
 		_isUpPressed = isPressed;
 		break;
 
-	case 83: // S
+	case 83: case 40: // S
 		_isDownPressed = isPressed;
 		break;
 
-	case 65: // A
+	case 65: case 37: // A
 		_isLeftPressed = isPressed;
 		break;
 
-	case 68: // D
+	case 68: case 39: // D
 		_isRightPressed = isPressed;
 		break;
 

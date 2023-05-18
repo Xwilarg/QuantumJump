@@ -20,7 +20,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	// Check collisions
 	Vector targetPos = VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime);
 	rb->isOnGround = false;
-	const Object* collision = COLLIDER_Check(o, targetPos, game);
+	Object* collision = COLLIDER_Check(o, targetPos, game);
 	if (collision != NULL || o->transform->position.y + targetPos.y < .0f)
 	{
 		// Fire collision event

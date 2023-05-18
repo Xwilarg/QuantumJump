@@ -12,8 +12,8 @@ typedef struct {
 	Vector min;
 	Vector max;
 
-	void (*onCollision)(Game*, const Object*);
+	void (*onCollision)(Game*, Object*);
 } Collider;
 
 Collider* COLLIDER_New(Renderer* r);
-const Object *COLLIDER_Check(Object* o, Vector incrPos, Game* game);
+Object *COLLIDER_Check(Object* o, Vector incrPos, Game* game);

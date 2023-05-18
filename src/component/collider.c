@@ -51,7 +51,7 @@ Collider* COLLIDER_New(Renderer* r)
 	return coll;
 }
 
-const Object* COLLIDER_Check(Object* o, Vector incrPos, Game* game)
+Object* COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 {
 	Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 	if (coll == NULL)
