@@ -173,6 +173,7 @@ void USER_Init(Game* g, Context* ctx)
 		GAME_AddObject(g, _player);
 	}
 	AddTrap(g, -300.f, 0.f);
+	AddProjectile(g, 0.f, 300.f);
 	AddProjectile(g, 300.f, 0.f);
 
 	_initialPos = _player->transform->position;
