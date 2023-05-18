@@ -32,12 +32,42 @@ void GAME_AddObject(Game* g, Object* obj)
 	{
 		size++;
 	};
-	g->objects = realloc(g->objects, sizeof(Object*) * (size + 2));
+	g->objects = realloc(g->objects, sizeof(Object*) * (size + 2)); // TODO: For performances should probably allocate bigger size each time
 	if (g->objects == NULL)
 		return; // TODO
 
 	g->objects[size] = obj;
 	g->objects[size + 1] = NULL;
+}
+
+void GAME_RemoveObject(Game* g, const Object* obj)
+{
+	int size = 0;
+	Object** o = g->objects;
+	while (*(o++) != NULL)
+	{
+		size++;
+	};
+	Object** newList = malloc(sizeof(Object*) * size);
+	if (newList == NULL)
+	{
+		return;
+		// FAILURE
+	}
+	Object** old = g->objects;
+
+	Object** listIt = newList;
+	for (int i = 0; *(old + i) != NULL; i++)
+	{
+		if (*(old + i) == obj)
+			continue;
+
+		*listIt = *(old + i);
+		listIt++;
+	}
+	g->objects = newList;
+
+	free(old);
 }
 
 void GAME_Update(Game* g, Context* ctx)

@@ -42,11 +42,15 @@ static void ResetPlayer()
 	UpdateCameraPosition();
 }
 
-static void OnPlayerCollision(const Object* collision)
+static void OnPlayerCollision(Game* game, const Object* collision)
 {
 	if (collision->tag == USERTAG_TRAP)
 	{
 		ResetPlayer();
+	}
+	else if (collision->tag == USERTAG_OBJECTIVE)
+	{
+		GAME_RemoveObject(game, collision);
 	}
 }
 
@@ -98,7 +102,7 @@ void USER_Update(Game* g, Context* ctx)
 
 	if (dirVector.x != 0.f || dirVector.z != 0.f)
 	{
-		_player->transform->rotation = VECTOR_New(.0f, atan2(dirVector.x, dirVector.z), .0f);
+		_player->transform->rotation = VECTOR_New(.0f, (float)atan2(dirVector.x, dirVector.z), .0f);
 	}
 
 	// Set camera position to follow player
@@ -144,13 +148,27 @@ void USER_Init(Game* g, Context* ctx)
 
 		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 		Collider* coll = COLLIDER_New(r);
-		Rigidbody* rb = RIGIDBODY_New();
 
 		OBJECT_AddComponent(trap, r->parent);
-		OBJECT_AddComponent(trap, rb->parent);
 		OBJECT_AddComponent(trap, coll->parent);
 
 		GAME_AddObject(g, trap);
+	}
+
+	{
+		Object* obj = OBJECT_New();
+		obj->transform->position.z = -200.f;
+		obj->transform->position.x = 300.f;
+
+		obj->tag = USERTAG_OBJECTIVE;
+
+		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
+		Collider* coll = COLLIDER_New(r);
+
+		OBJECT_AddComponent(obj, r->parent);
+		OBJECT_AddComponent(obj, coll->parent);
+
+		GAME_AddObject(g, obj);
 	}
 
 	_initialPos = _player->transform->position;

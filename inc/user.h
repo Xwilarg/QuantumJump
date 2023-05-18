@@ -6,7 +6,8 @@
 #include "context/context.h"
 
 enum UserTag {
-	USERTAG_TRAP
+	USERTAG_TRAP,
+	USERTAG_OBJECTIVE
 };
 
 void USER_Init(Game* g, Context* ctx);

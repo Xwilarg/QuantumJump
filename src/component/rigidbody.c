@@ -29,7 +29,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 			Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 			if (coll->onCollision != NULL)
 			{
-				coll->onCollision(collision);
+				coll->onCollision(game, collision);
 			}
 		}
 

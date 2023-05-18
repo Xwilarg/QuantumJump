@@ -12,7 +12,7 @@ typedef struct {
 	Vector min;
 	Vector max;
 
-	void (*onCollision)(const Object*);
+	void (*onCollision)(Game*, const Object*);
 } Collider;
 
 Collider* COLLIDER_New(Renderer* r);
