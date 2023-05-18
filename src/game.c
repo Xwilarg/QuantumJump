@@ -54,7 +54,11 @@ void GAME_RemoveObject(Game* g, Object* obj)
 		size--;
 		if (*o == obj)
 		{
-			memcpy(o, o + 1, size + 1);
+			if (size > 0)
+			{
+				memcpy(o, (o + 1), size * sizeof(Object*));
+			}
+			*(o + size) = NULL;
 		}
 	}
 	OBJECT_Destroy(obj);
