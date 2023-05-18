@@ -6,6 +6,8 @@
 #include "audio/audio.h"
 #include "user.h"
 
+#include "config.h"
+
 // Key info
 static bool _isUpPressed, _isDownPressed, _isLeftPressed, _isRightPressed;
 
@@ -19,15 +21,12 @@ static Vector _initialPos;
 static Vector _cameraPos;
 static Vector _camOffset;
 
-// Constants
-static const float _playerSpeed = 7500.f;
-
 const Vector* GetCameraPosition(void)
 {
 	return &_cameraPos;
 }
 
-static void UpdateCameraPosition()
+static void UpdateCameraPosition(void)
 {
 	_cameraPos = VECTOR_New(
 		_camOffset.x + _player->transform->position.x,
@@ -36,7 +35,7 @@ static void UpdateCameraPosition()
 	);
 }
 
-static void ResetPlayer()
+static void ResetPlayer(void)
 {
 	_player->transform->position = _initialPos;
 	UpdateCameraPosition();
@@ -61,7 +60,7 @@ void USER_Input(int key, bool isPressed)
 	case 32: // Spacebar
 		if (_playerRb->isOnGround)
 		{
-			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, 100.f, .0f));
+			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, CONFIG_JUMP_FORCE, .0f));
 		}
 		break;
 
@@ -96,7 +95,7 @@ void USER_Update(Game* g, Context* ctx)
 		(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
 		.0f,
 		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
-	), ctx->time->deltaTime * _playerSpeed);
+	), ctx->time->deltaTime * CONFIG_SPEED);
 	_playerRb->linearVelocity.x = dirVector.x;
 	_playerRb->linearVelocity.z = dirVector.z;
 
@@ -109,7 +108,7 @@ void USER_Update(Game* g, Context* ctx)
 	UpdateCameraPosition();
 }
 
-static void AddProjectile(Game* game, int x, int z)
+static void AddProjectile(Game* game, float x, float z)
 {
 	Object* obj = OBJECT_New();
 	obj->transform->position.z = -200.f + z;
@@ -126,7 +125,7 @@ static void AddProjectile(Game* game, int x, int z)
 	GAME_AddObject(game, obj);
 }
 
-static void AddTrap(Game* game, int x, int z)
+static void AddTrap(Game* game, float x, float z)
 {
 	Object* obj = OBJECT_New();
 	obj->transform->position.z = -200.f + z;

@@ -4,6 +4,8 @@
 #include "component/collider.h"
 #include "object.h"
 
+#include "config.h"
+
 static void Update(Object* o, Game* game, Context* ctx, void* self)
 {
 	(void)game;
@@ -13,7 +15,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	rb->linearVelocity = VECTOR_Multiply(rb->linearVelocity, 1.f - rb->linearDrag * ctx->time->deltaTime);
 	if (rb->useGravity)
 	{
-		rb->linearVelocity = VECTOR_Add(rb->linearVelocity, VECTOR_New(0.f, -100.f * ctx->time->deltaTime, 0.f));
+		rb->linearVelocity = VECTOR_Add(rb->linearVelocity, VECTOR_New(0.f, CONFIG_GRAVITY * ctx->time->deltaTime, 0.f));
 	}
 	rb->angularVelocity = VECTOR_Multiply(rb->angularVelocity, 1.f - rb->angularDrag * ctx->time->deltaTime);
 
