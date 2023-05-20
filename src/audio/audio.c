@@ -56,7 +56,7 @@ void AUDIO_Destroy()
 	xAudio2->lpVtbl->Release(xAudio2);
 }
 
-Sound* AUDIO_Load(const char* soundPath)
+Sound* AUDIO_Load(const char* soundPath, bool loop)
 {
 	Sound* sound = malloc(sizeof(Sound));
 	if (sound == NULL) return false;
@@ -89,6 +89,7 @@ Sound* AUDIO_Load(const char* soundPath)
 	buffer.Flags = XAUDIO2_END_OF_STREAM;
 	buffer.AudioBytes = header.size;
 	buffer.pAudioData = data;
+	buffer.LoopCount = loop ? XAUDIO2_LOOP_INFINITE : 0;
 
 	// create audio source
 	WAVEFORMATEX* waveFormat = malloc(sizeof(WAVEFORMATEX));
