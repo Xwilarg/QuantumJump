@@ -16,6 +16,7 @@ typedef struct {
 	void (*Update)(Object*, Game*, Context*, void*);
 	void (*Destroy)(void*);
 
+	Object* object;
 	void* self;
 	Component component;
 } AComponent;

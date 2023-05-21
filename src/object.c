@@ -30,6 +30,7 @@ void OBJECT_AddComponent(Object* o, AComponent *newAc)
 
 	o->components[size] = newAc;
 	o->components[size + 1] = NULL;
+	newAc->object = o;
 }
 
 void* OBJECT_GetComponent(Object* o, Component component)

@@ -29,7 +29,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 		Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 		if (coll->onCollision != NULL)
 		{
-			coll->onCollision(game, collision == NULL ? NULL : collision->parent);
+			coll->onCollision(game, collision == NULL ? NULL : collision->parent->object);
 		}
 
 		if (collision == NULL || collision->triggerOnly) // We only wanted the collision event, no collision actually applied
