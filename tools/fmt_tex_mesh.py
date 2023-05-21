@@ -13,7 +13,7 @@ def writeTexture(data, width, height, bs):
     bs.writeUShort(width)
     bs.writeUShort(height)
 
-    data = rapi.imageEncodeRaw(data, width, height, "a8r8g8b8")
+    data = rapi.imageEncodeRaw(data, width, height, "b8g8r8a8")
 
     bs.writeBytes(data)
 
