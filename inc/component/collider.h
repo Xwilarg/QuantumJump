@@ -13,6 +13,8 @@ typedef struct {
 	Vector max;
 
 	void (*onCollision)(Game*, Object*);
+
+	bool triggerOnly;
 } Collider;
 
 Collider* COLLIDER_New(Renderer* r);
