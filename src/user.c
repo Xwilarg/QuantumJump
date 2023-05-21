@@ -21,6 +21,8 @@ static Vector _initialPos;
 static Vector _cameraPos;
 static Vector _camOffset;
 
+static int collectibleLeft;
+
 const Vector* GetCameraPosition(void)
 {
 	return &_cameraPos;
@@ -51,6 +53,11 @@ static void OnPlayerCollision(Game* game, Object* collision)
 	else if (collision->tag == USERTAG_OBJECTIVE)
 	{
 		GAME_RemoveObject(game, collision);
+		collectibleLeft--;
+		if (collectibleLeft == 0)
+		{
+			// TODO: Victory
+		}
 	}
 }
 
@@ -141,6 +148,8 @@ static void AddObjective(Game* game, float x, float y, float z)
 	OBJECT_AddComponent(obj, coll->parent);
 
 	GAME_AddObject(game, obj);
+
+	collectibleLeft++;
 }
 
 static void AddTrap(Game* game, float x, float z)
@@ -170,6 +179,7 @@ void USER_Init(Game* g, Context* ctx)
 	_isUpPressed = false;
 	_isDownPressed = false;
 	_canJump = true;
+	collectibleLeft = 0;
 
 	AUDIO_Play(AUDIO_Load("res/BGM.sound", true));
 
