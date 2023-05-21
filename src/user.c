@@ -40,6 +40,7 @@ static void UpdateCameraPosition(void)
 static void ResetPlayer(void)
 {
 	_player->transform->position = _initialPos;
+	_playerRb->linearVelocity = VECTOR_Zero(); // Reset player velocity so it doesn't go through platform
 	UpdateCameraPosition();
 }
 
@@ -116,57 +117,40 @@ void USER_Update(Game* g, Context* ctx)
 	UpdateCameraPosition();
 }
 
-static void AddPlatform(Game* game, float x, float y, float z)
+static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* texture)
 {
 	Object* obj = OBJECT_New();
-	obj->transform->position.z = -200.f + z;
-	obj->transform->position.y = y;
-	obj->transform->position.x = x;
+	obj->transform->position = VECTOR_New(CONFIG_GRID_UNIT * x, CONFIG_GRID_UNIT_UP * y, CONFIG_GRID_UNIT * z - 200.f);
 
-	Renderer* r = RENDERER_New("res/plane.mesh", "demo.tex");
+	Renderer* r = RENDERER_New(mesh, texture);
 	Collider* coll = COLLIDER_New(r);
 
 	OBJECT_AddComponent(obj, r->parent);
 	OBJECT_AddComponent(obj, coll->parent);
 
 	GAME_AddObject(game, obj);
+
+	return obj;
 }
 
-static void AddObjective(Game* game, float x, float y, float z)
+static void AddPlatform(Game* game, int x, int y, int z)
 {
-	Object* obj = OBJECT_New();
-	obj->transform->position.z = -200.f + z;
-	obj->transform->position.y = y;
-	obj->transform->position.x = x;
+	AddObject(game, x, y, z, "res/plane.mesh", "demo.tex");
+}
+
+static void AddObjective(Game* game, int x, int y, int z)
+{
+	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex");
 
 	obj->tag = USERTAG_OBJECTIVE;
-
-	Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
-	Collider* coll = COLLIDER_New(r);
-
-	OBJECT_AddComponent(obj, r->parent);
-	OBJECT_AddComponent(obj, coll->parent);
-
-	GAME_AddObject(game, obj);
-
 	collectibleLeft++;
 }
 
-static void AddTrap(Game* game, float x, float z)
+static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = OBJECT_New();
-	obj->transform->position.z = -200.f + z;
-	obj->transform->position.x = x;
+	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex");
 
 	obj->tag = USERTAG_TRAP;
-
-	Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
-	Collider* coll = COLLIDER_New(r);
-
-	OBJECT_AddComponent(obj, r->parent);
-	OBJECT_AddComponent(obj, coll->parent);
-
-	GAME_AddObject(game, obj);
 }
 
 void USER_Init(Game* g, Context* ctx)
@@ -200,11 +184,18 @@ void USER_Init(Game* g, Context* ctx)
 
 		GAME_AddObject(g, _player);
 	}
-	AddTrap(g, -300.f, 0.f);
-	AddPlatform(g, 0.f, 50.f, 0.f);
+	AddPlatform(g, 0, 1, 0);
 
-	AddPlatform(g, 400.f, 50.f, 0.f);
-	AddObjective(g, 400.f, 100.f, 0.f);
+	AddPlatform(g, 1, 1, 0);
+	AddObjective(g, 1, 2, 0);
+
+	AddPlatform(g, -1, 1, 0);
+	AddPlatform(g, -1, 1, 1);
+	AddPlatform(g, -2, 1, 1);
+	AddPlatform(g, -3, 1, 1);
+	AddPlatform(g, -3, 1, 0);
+	AddTrap(g, -2, 1, 0);
+	AddObjective(g, -3, 1, 0);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
