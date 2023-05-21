@@ -146,7 +146,7 @@ static void AddPlatform(Game* game, int x, int y, int z)
 
 static void AddObjective(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/blue.tex", true);
 
 	obj->tag = USERTAG_OBJECTIVE;
 	collectibleLeft++;
@@ -154,14 +154,14 @@ static void AddObjective(Game* game, int x, int y, int z)
 
 static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/trap.tex", true);
 
 	obj->tag = USERTAG_TRAP;
 }
 
 static void AddCheckpoint(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/blue.tex", true);
 
 	obj->tag = USERTAG_CHECKPOINT;
 }
@@ -185,7 +185,7 @@ void USER_Init(Game* g, Context* ctx)
 		_player->transform->position.z = -200.f; // TODO: Probably can do so we don't hardcode that uh
 		_player->transform->position.y = 100.f;
 
-		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
+		Renderer* r = RENDERER_New("res/player.mesh", "res/blue.tex");
 		Collider* coll = COLLIDER_New(r);
 		_playerRb = RIGIDBODY_New();
 
