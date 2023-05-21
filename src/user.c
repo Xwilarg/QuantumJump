@@ -146,7 +146,7 @@ static void AddPlatform(Game* game, int x, int y, int z)
 
 static void AddObjective(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/blue.tex", true);
 
 	obj->tag = USERTAG_OBJECTIVE;
 	collectibleLeft++;
@@ -154,14 +154,14 @@ static void AddObjective(Game* game, int x, int y, int z)
 
 static void AddCheckpoint(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/blue.tex", true);
 
 	obj->tag = USERTAG_CHECKPOINT;
 }
 
 static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/plane.mesh", "demo.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/plane.mesh", "res/trap.tex", true);
 
 	obj->tag = USERTAG_TRAP;
 }
