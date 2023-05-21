@@ -26,13 +26,10 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	if (collision != NULL || o->transform->position.y + targetPos.y < .0f)
 	{
 		// Fire collision event
-		if (collision != NULL)
+		Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
+		if (coll->onCollision != NULL)
 		{
-			Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
-			if (coll->onCollision != NULL)
-			{
-				coll->onCollision(game, collision);
-			}
+			coll->onCollision(game, collision);
 		}
 
 		// Check collisions on all axises

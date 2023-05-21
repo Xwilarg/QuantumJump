@@ -43,7 +43,8 @@ static void ResetPlayer(void)
 
 static void OnPlayerCollision(Game* game, Object* collision)
 {
-	if (collision->tag == USERTAG_TRAP)
+	// If collision is NULL, it means we falled from a platform
+	if (collision == NULL || collision->tag == USERTAG_TRAP)
 	{
 		ResetPlayer();
 	}
@@ -124,10 +125,11 @@ static void AddPlatform(Game* game, float x, float y, float z)
 	GAME_AddObject(game, obj);
 }
 
-static void AddObjective(Game* game, float x, float z)
+static void AddObjective(Game* game, float x, float y, float z)
 {
 	Object* obj = OBJECT_New();
 	obj->transform->position.z = -200.f + z;
+	obj->transform->position.y = y;
 	obj->transform->position.x = x;
 
 	obj->tag = USERTAG_OBJECTIVE;
@@ -189,9 +191,10 @@ void USER_Init(Game* g, Context* ctx)
 		GAME_AddObject(g, _player);
 	}
 	AddTrap(g, -300.f, 0.f);
-	AddObjective(g, 0.f, 300.f);
-	AddObjective(g, 300.f, 0.f);
 	AddPlatform(g, 0.f, 50.f, 0.f);
+
+	AddPlatform(g, 400.f, 50.f, 0.f);
+	AddObjective(g, 400.f, 100.f, 0.f);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
