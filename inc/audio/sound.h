@@ -5,4 +5,5 @@
 typedef struct
 {
 	IXAudio2SourceVoice* sourceVoice;
+	void* data;
 } Sound;

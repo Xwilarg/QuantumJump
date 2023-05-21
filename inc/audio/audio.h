@@ -9,3 +9,4 @@ void AUDIO_Destroy(void);
 
 Sound* AUDIO_Load(const char* soundPath, bool loop);
 void AUDIO_Play(Sound* sound);
+void AUDIO_Free(Sound* sound);

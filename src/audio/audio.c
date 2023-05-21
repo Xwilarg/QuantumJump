@@ -122,6 +122,10 @@ Sound* AUDIO_Load(const char* soundPath, bool loop)
 	}
 
 	sound->sourceVoice = sourceVoice;
+	sound->data = data;
+
+	free(waveFormat);
+	fclose(f);
 
 	return sound;
 }
@@ -129,4 +133,13 @@ Sound* AUDIO_Load(const char* soundPath, bool loop)
 void AUDIO_Play(Sound* sound)
 {
 	sound->sourceVoice->lpVtbl->Start(sound->sourceVoice, 0, 0);
+}
+
+void AUDIO_Free(Sound* sound)
+{
+	sound->sourceVoice->lpVtbl->Stop(sound->sourceVoice, 0, 0);
+	sound->sourceVoice->lpVtbl->DestroyVoice(sound->sourceVoice);
+	
+	free(sound->data);
+	free(sound);
 }
