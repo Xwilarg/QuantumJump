@@ -108,7 +108,23 @@ void USER_Update(Game* g, Context* ctx)
 	UpdateCameraPosition();
 }
 
-static void AddProjectile(Game* game, float x, float z)
+static void AddPlatform(Game* game, float x, float y, float z)
+{
+	Object* obj = OBJECT_New();
+	obj->transform->position.z = -200.f + z;
+	obj->transform->position.y = y;
+	obj->transform->position.x = x;
+
+	Renderer* r = RENDERER_New("res/plane.mesh", "demo.tex");
+	Collider* coll = COLLIDER_New(r);
+
+	OBJECT_AddComponent(obj, r->parent);
+	OBJECT_AddComponent(obj, coll->parent);
+
+	GAME_AddObject(game, obj);
+}
+
+static void AddObjective(Game* game, float x, float z)
 {
 	Object* obj = OBJECT_New();
 	obj->transform->position.z = -200.f + z;
@@ -158,6 +174,7 @@ void USER_Init(Game* g, Context* ctx)
 	{
 		_player = OBJECT_New();
 		_player->transform->position.z = -200.f; // TODO: Probably can do so we don't hardcode that uh
+		_player->transform->position.y = 100.f;
 
 		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
 		Collider* coll = COLLIDER_New(r);
@@ -172,8 +189,9 @@ void USER_Init(Game* g, Context* ctx)
 		GAME_AddObject(g, _player);
 	}
 	AddTrap(g, -300.f, 0.f);
-	AddProjectile(g, 0.f, 300.f);
-	AddProjectile(g, 300.f, 0.f);
+	AddObjective(g, 0.f, 300.f);
+	AddObjective(g, 300.f, 0.f);
+	AddPlatform(g, 0.f, 50.f, 0.f);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(

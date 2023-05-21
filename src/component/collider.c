@@ -29,11 +29,11 @@ Collider* COLLIDER_New(Renderer* r)
 	float yMin = (float)mesh->vertices[1], yMax = yMin;
 	float zMin = (float)mesh->vertices[2], zMax = zMin;
 
-	for (size_t i = 3; i < mesh->numVertices; i += 3)
+	for (size_t i = 0; i < mesh->numVertices; i ++)
 	{
-		float x = (float)mesh->vertices[i];
-		float y = (float)mesh->vertices[i + 1];
-		float z = (float)mesh->vertices[i + 2];
+		float x = (float)mesh->vertices[i * 3];
+		float y = (float)mesh->vertices[i * 3 + 1];
+		float z = (float)mesh->vertices[i * 3 + 2];
 
 		if (x < xMin) xMin = x;
 		if (x > xMax) xMax = x;
@@ -41,6 +41,12 @@ Collider* COLLIDER_New(Renderer* r)
 		if (y > yMax) yMax = y;
 		if (z < zMin) zMin = z;
 		if (z > zMax) zMax = z;
+	}
+
+	if (yMin == yMax)
+	{
+		yMin -= 1.f;
+		yMax += 1.f;
 	}
 
 	coll->min = VECTOR_New(xMin, yMin, zMin);
