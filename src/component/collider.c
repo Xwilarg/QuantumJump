@@ -49,6 +49,7 @@ Collider* COLLIDER_New(Renderer* r)
 		yMax += 1.f;
 	}
 
+	coll->triggerOnly = false;
 	coll->min = VECTOR_New(xMin, yMin, zMin);
 	coll->max = VECTOR_New(xMax, yMax, zMax);
 	coll->onCollision = NULL;
@@ -89,7 +90,10 @@ bool COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 				{
 					coll->onCollision(game, *to);
 				}
-				didCollide = true;
+				if (!targetColl->triggerOnly)
+				{
+					didCollide = true;
+				}
 			}
 		}
 	}
