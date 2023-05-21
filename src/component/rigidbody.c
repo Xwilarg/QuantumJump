@@ -23,7 +23,16 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	Vector targetPos = VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime);
 	rb->isOnGround = false;
 	Object* collision = COLLIDER_Check(o, targetPos, game);
-	if (collision != NULL || o->transform->position.y + targetPos.y < .0f)
+
+	if (o->transform->position.y + targetPos.y < .0f) // We are under the map
+	{
+		Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
+		if (coll->onCollision != NULL)
+		{
+			coll->onCollision(game, NULL);
+		}
+	}
+	if (collision != NULL)
 	{
 		// Fire collision event
 		Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
@@ -36,7 +45,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 		Vector x = VECTOR_New(targetPos.x, .0f, .0f);
 		Vector y = VECTOR_New(.0f, targetPos.y, .0f);
 		Vector z = VECTOR_New(.0f, .0f, targetPos.z);
-		if (COLLIDER_Check(o, y, game) || o->transform->position.y + targetPos.y < .0f)
+		if (COLLIDER_Check(o, y, game))
 		{
 			rb->linearVelocity.y = 0;
 			if (targetPos.y < 0.f) // We are going down
