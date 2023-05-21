@@ -16,4 +16,4 @@ typedef struct {
 } Collider;
 
 Collider* COLLIDER_New(Renderer* r);
-Object *COLLIDER_Check(Object* o, Vector incrPos, Game* game);
+bool COLLIDER_Check(Object* o, Vector incrPos, Game* game);

@@ -57,16 +57,18 @@ Collider* COLLIDER_New(Renderer* r)
 	return coll;
 }
 
-Object* COLLIDER_Check(Object* o, Vector incrPos, Game* game)
+bool COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 {
 	Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 	if (coll == NULL)
 	{
-		return NULL;
+		return false;
 	}
 	Vector offT = VECTOR_Add(o->transform->position, incrPos);
 	Vector oMin = VECTOR_Add(offT, coll->min);
 	Vector oMax = VECTOR_Add(offT, coll->max);
+
+	bool didCollide = false;
 	for (Object** to = game->objects; *to != NULL; to++)
 	{
 		if (*to == o)
@@ -83,9 +85,13 @@ Object* COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 			bool zCheck = (oMin.z >= tarMin.z && oMin.z <= tarMax.z) || (oMax.z >= tarMin.z && oMax.z <= tarMax.z);
 			if (xCheck && yCheck && zCheck)
 			{
-				return *to;
+				if (coll->onCollision != NULL)
+				{
+					coll->onCollision(game, *to);
+				}
+				didCollide = true;
 			}
 		}
 	}
-	return NULL;
+	return didCollide;
 }

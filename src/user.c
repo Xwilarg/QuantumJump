@@ -148,7 +148,7 @@ static void AddObjective(Game* game, int x, int y, int z)
 
 static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex");
+	Object* obj = AddObject(game, x, y, z, "res/plane.mesh", "demo.tex");
 
 	obj->tag = USERTAG_TRAP;
 }
