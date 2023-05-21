@@ -22,47 +22,58 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	// Check collisions
 	Vector targetPos = VECTOR_Multiply(rb->linearVelocity, ctx->time->deltaTime);
 	rb->isOnGround = false;
-	Object* collision = COLLIDER_Check(o, targetPos, game);
+	Collider* collision = COLLIDER_Check(o, targetPos, game);
 	if (collision != NULL || o->transform->position.y + targetPos.y < .0f)
 	{
 		// Fire collision event
 		Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 		if (coll->onCollision != NULL)
 		{
-			coll->onCollision(game, collision);
+			coll->onCollision(game, collision == NULL ? NULL : collision->parent);
 		}
 
-		// Check collisions on all axises
-		Vector x = VECTOR_New(targetPos.x, .0f, .0f);
-		Vector y = VECTOR_New(.0f, targetPos.y, .0f);
-		Vector z = VECTOR_New(.0f, .0f, targetPos.z);
-		if (COLLIDER_Check(o, y, game) || o->transform->position.y + targetPos.y < .0f)
+		if (collision == NULL || collision->triggerOnly) // We only wanted the collision event, no collision actually applied
 		{
-			rb->linearVelocity.y = 0;
-			if (targetPos.y < 0.f) // We are going down
+			o->transform->position = VECTOR_Add(o->transform->position, targetPos);
+		}
+		else
+		{
+			// Check collisions on all axises
+			Vector x = VECTOR_New(targetPos.x, .0f, .0f);
+			Vector y = VECTOR_New(.0f, targetPos.y, .0f);
+			Vector z = VECTOR_New(.0f, .0f, targetPos.z);
+
+			Collider* xColl = COLLIDER_Check(o, x, game);
+			Collider* yColl = COLLIDER_Check(o, y, game);
+			Collider* zColl = COLLIDER_Check(o, z, game);
+			if ((yColl != NULL && !yColl->triggerOnly) || o->transform->position.y + targetPos.y < .0f)
 			{
-				rb->isOnGround = true;
+				rb->linearVelocity.y = 0;
+				if (targetPos.y < 0.f) // We are going down
+				{
+					rb->isOnGround = true;
+				}
 			}
-		}
-		else
-		{
-			o->transform->position = VECTOR_Add(o->transform->position, y);
-		}
-		if (COLLIDER_Check(o, x, game))
-		{
-			rb->linearVelocity.x = 0;
-		}
-		else
-		{
-			o->transform->position = VECTOR_Add(o->transform->position, x);
-		}
-		if (COLLIDER_Check(o, z, game))
-		{
-			rb->linearVelocity.z = 0;
-		}
-		else
-		{
-			o->transform->position = VECTOR_Add(o->transform->position, z);
+			else
+			{
+				o->transform->position = VECTOR_Add(o->transform->position, y);
+			}
+			if (xColl != NULL && !xColl->triggerOnly)
+			{
+				rb->linearVelocity.x = 0;
+			}
+			else
+			{
+				o->transform->position = VECTOR_Add(o->transform->position, x);
+			}
+			if (zColl != NULL && !zColl->triggerOnly)
+			{
+				rb->linearVelocity.z = 0;
+			}
+			else
+			{
+				o->transform->position = VECTOR_Add(o->transform->position, z);
+			}
 		}
 	}
 	else

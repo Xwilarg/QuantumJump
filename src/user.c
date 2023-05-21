@@ -60,6 +60,10 @@ static void OnPlayerCollision(Game* game, Object* collision)
 			// TODO: Victory
 		}
 	}
+	else if (collision->tag == USERTAG_CHECKPOINT)
+	{
+		_initialPos = VECTOR_New(collision->transform->position.x, _initialPos.y, collision->transform->position.z);
+	}
 }
 
 void USER_Input(int key, bool isPressed)
@@ -117,13 +121,15 @@ void USER_Update(Game* g, Context* ctx)
 	UpdateCameraPosition();
 }
 
-static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* texture)
+static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* texture, bool triggerOnly)
 {
 	Object* obj = OBJECT_New();
 	obj->transform->position = VECTOR_New(CONFIG_GRID_UNIT * x, CONFIG_GRID_UNIT_UP * y, CONFIG_GRID_UNIT * z - 200.f);
 
 	Renderer* r = RENDERER_New(mesh, texture);
 	Collider* coll = COLLIDER_New(r);
+
+	coll->triggerOnly = triggerOnly;
 
 	OBJECT_AddComponent(obj, r->parent);
 	OBJECT_AddComponent(obj, coll->parent);
@@ -135,12 +141,12 @@ static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* text
 
 static void AddPlatform(Game* game, int x, int y, int z)
 {
-	AddObject(game, x, y, z, "res/plane.mesh", "demo.tex");
+	AddObject(game, x, y, z, "res/plane.mesh", "demo.tex", false);
 }
 
 static void AddObjective(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex");
+	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
 
 	obj->tag = USERTAG_OBJECTIVE;
 	collectibleLeft++;
@@ -148,9 +154,16 @@ static void AddObjective(Game* game, int x, int y, int z)
 
 static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex");
+	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
 
 	obj->tag = USERTAG_TRAP;
+}
+
+static void AddCheckpoint(Game* game, int x, int y, int z)
+{
+	Object* obj = AddObject(game, x, y, z, "demo.mesh", "demo.tex", true);
+
+	obj->tag = USERTAG_CHECKPOINT;
 }
 
 void USER_Init(Game* g, Context* ctx)
@@ -196,6 +209,7 @@ void USER_Init(Game* g, Context* ctx)
 	AddPlatform(g, -3, 1, 0);
 	AddTrap(g, -2, 1, 0);
 	AddObjective(g, -3, 1, 0);
+	AddCheckpoint(g, -2, 1, 1);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(

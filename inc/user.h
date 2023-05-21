@@ -7,7 +7,8 @@
 
 enum UserTag {
 	USERTAG_TRAP,
-	USERTAG_OBJECTIVE
+	USERTAG_OBJECTIVE,
+	USERTAG_CHECKPOINT
 };
 
 void USER_Init(Game* g, Context* ctx);
