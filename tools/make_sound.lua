@@ -1,5 +1,6 @@
 if #arg < 1 then
     print("Usage: lua make_sound.lua [sound file]")
+    return
 end
 
 local input = arg[1]
@@ -14,7 +15,15 @@ local wav = io.open("temp.wav", "rb")
 wav:seek("set", 24)
 local sampleRate, _, blockAlign = string.unpack("<IIH", wav:read(10))
 
-wav:seek("set", 74)
+-- look for the data chunk
+while true do
+    local chunk = wav:read(4)
+    if chunk == "data" then break end
+
+    wav:seek("cur", -3)
+end
+
+-- read the data chunk
 local size = string.unpack("<I", wav:read(4))
 
 -- open output file
