@@ -163,6 +163,14 @@ static void AddPlatform(Game* game, int x, int y, int z)
 	AddObject(game, x, y, z, "res/plane.mesh", "res/blue.tex", false);
 }
 
+static void AddRotatingPlatform(Game* game, int x, int y, int z, float speed)
+{
+	Object* obj = AddObject(game, x, y, z, "res/plane.mesh", "res/blue.tex", false);
+	Rigidbody* rb = RIGIDBODY_New();
+	OBJECT_AddComponent(obj, rb->parent);
+	rb->angularVelocity.x = speed;
+}
+
 static void AddObjective(Game* game, int x, int y, int z)
 {
 	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/blue.tex", true);
@@ -215,19 +223,25 @@ void USER_Init(Game* g, Context* ctx)
 
 		GAME_AddObject(g, _player);
 	}
+	// Starting platform
 	AddPlatform(g, 0, 1, 0);
 
-	AddPlatform(g, 1, 1, 0);
+	// Objective on the left
+	AddRotatingPlatform(g, 1, 1, 0, 1.f);
 	AddObjective(g, 1, 2, 0);
 
+	// Serie of platform on the right
 	AddPlatform(g, -1, 1, 0);
 	AddPlatform(g, -1, 1, 1);
 	AddPlatform(g, -2, 1, 1);
 	AddPlatform(g, -3, 1, 1);
 	AddPlatform(g, -3, 1, 0);
 	AddTrap(g, -2, 1, 0);
-	AddObjective(g, -3, 1, 0);
-	AddCheckpoint(g, -2, 1, 1);
+	AddObjective(g, -2, 1, 1);
+	AddCheckpoint(g, -3, 1, 0);
+
+	// Rotating platforms
+	AddRotatingPlatform(g, -4, 1, 0, 10.f);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
