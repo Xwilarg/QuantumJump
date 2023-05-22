@@ -26,7 +26,7 @@ static void UpdateClientArea(void)
 
 	// update the projection matrix
 	D3DXMATRIX matProjection;
-	D3DXMatrixPerspectiveFovLH(&matProjection, D3DXToRadian(45), (float)width / (float)height, 1.0f, 1000.f);
+	MATRIX_Projection(&matProjection, 1.0f, 1000.f, D3DXToRadian(45), (float)width / (float)height);
 
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_PROJECTION, &matProjection);
 }

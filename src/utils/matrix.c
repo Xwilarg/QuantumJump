@@ -45,3 +45,26 @@ void MATRIX_Position(D3DMATRIX* out, Vector* position)
 	out->_42 = position->y;
 	out->_43 = position->z;
 }
+
+void MATRIX_Rotation(D3DMATRIX* out, Vector* rotation)
+{
+	(void*)rotation;
+
+	BuildIdentity(out);
+}
+
+// https://learn.microsoft.com/en-us/windows/win32/direct3d9/projection-transform#setting-up-a-projection-matrix
+void MATRIX_Projection(D3DMATRIX* out, float nearZ, float farZ, float fov, float aspect)
+{
+	BuildIdentity(out);
+
+	float w = 1.f / (aspect * tanf(fov * 0.5f));
+	float h = 1.f / tanf(fov * 0.5f);
+	float q = farZ / (farZ - nearZ);
+
+	out->_11 = w;
+	out->_22 = h;
+	out->_33 = q;
+	out->_43 = -q * nearZ;
+	out->_34 = 1.f;
+}
