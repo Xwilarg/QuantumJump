@@ -24,7 +24,7 @@ bool AUDIO_Init()
 #ifdef _DEBUG
 	int flags = XAUDIO2_DEBUG_ENGINE;
 #else
-	int flag = 0;
+	int flags = 0;
 #endif
 
 	if (FAILED(XAudio2Create(&xAudio2, flags, XAUDIO2_DEFAULT_PROCESSOR)))
