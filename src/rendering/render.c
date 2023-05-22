@@ -134,6 +134,20 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+void EditWindowTitle(char* name)
+{
+	size_t size = strlen(CONFIG_GAME_NAME) + strlen(name) + 3;
+	char* title = calloc(size, sizeof(char));
+	if (title == NULL)
+	{
+		return;
+	}
+	strcat_s(title, size, CONFIG_GAME_NAME);
+	strcat_s(title, size, ": ");
+	strcat_s(title, size, name);
+	SetWindowTextA(hWnd, title);
+}
+
 bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 {
 	if (!InitWindow(hInstance))

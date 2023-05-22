@@ -21,5 +21,6 @@ void RENDER_Render(void);
 
 void RENDER_RenderCube(Vector min, Vector max, Vector rotation);
 void RENDER_RenderMesh(Mesh* mesh, Transform* t);
+void EditWindowTitle(char* name);
 
 extern LPDIRECT3DDEVICE9 d3dDevice;

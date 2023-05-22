@@ -5,6 +5,7 @@
 #include "component/collider.h"
 #include "audio/audio.h"
 #include "user.h"
+#include "rendering/render.h"
 
 #include "config.h"
 
@@ -22,6 +23,8 @@ static Vector _cameraPos;
 static Vector _camOffset;
 
 static int collectibleLeft;
+
+static float _quantumEnergy;
 
 const Vector* GetCameraPosition(void)
 {
@@ -73,7 +76,8 @@ void USER_Input(int key, bool isPressed)
 	case 32: // Spacebar
 		if (_playerRb->isOnGround)
 		{
-			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, CONFIG_JUMP_FORCE, .0f));
+			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, CONFIG_JUMP_FORCE * _quantumEnergy / 100.f, .0f));
+			_quantumEnergy = 0;
 		}
 		break;
 
@@ -99,6 +103,26 @@ void USER_Input(int key, bool isPressed)
 	}
 }
 
+static char* IntToString(int nb)
+{
+	int h = nb / 100;
+	int d = nb / 10;
+	int u = nb % 10;
+
+	int size = 2;
+	if (h > 0) size = 4;
+	else if (d > 0) size = 3;
+
+	char* str = malloc(sizeof(char) * size);
+	if (str == NULL) return NULL;
+	if (h > 0) str[0] = h + '0';
+	if (h > 0 || d > 0) str[size - 3] = d + '0';
+	str[size - 2] = u + '0';
+	str[size - 1] = 0;
+
+	return str;
+}
+
 void USER_Update(Game* g, Context* ctx)
 {
 	(void)g;
@@ -115,6 +139,21 @@ void USER_Update(Game* g, Context* ctx)
 	if (dirVector.x != 0.f || dirVector.z != 0.f)
 	{
 		_player->transform->rotation = VECTOR_New(.0f, (float)atan2(dirVector.x, dirVector.z), .0f);
+	}
+
+	if (_playerRb->isOnGround)
+	{
+		_quantumEnergy += ctx->time->deltaTime * CONFIg_ENERGY_RELOAD_RATE;
+		if (_quantumEnergy > 100.f) _quantumEnergy = 100.f;
+
+		char* nb = IntToString(_quantumEnergy);
+		char* label = "Energy - ";
+		size_t size = strlen(label) + strlen(nb) + 1;
+		char* title = calloc(size, sizeof(char));
+		strcat_s(title, size, label);
+		strcat_s(title, size, nb);
+		EditWindowTitle(title);
+		free(nb);
 	}
 
 	// Set camera position to follow player
@@ -177,6 +216,7 @@ void USER_Init(Game* g, Context* ctx)
 	_isDownPressed = false;
 	_canJump = true;
 	collectibleLeft = 0;
+	_quantumEnergy = 0.f;
 
 	{
 		_player = OBJECT_New();
