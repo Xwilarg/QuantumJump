@@ -33,8 +33,8 @@ void MATRIX_Scale(D3DMATRIX* out, Vector* scale)
 	BuildIdentity(out);
 
 	out->_11 = scale->x;
-	out->_22 = scale->x;
-	out->_33 = scale->x;
+	out->_22 = scale->y;
+	out->_33 = scale->z;
 }
 
 void MATRIX_Position(D3DMATRIX* out, Vector* position)
