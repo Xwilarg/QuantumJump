@@ -9,6 +9,7 @@ Time* TIME_New(void)
 
 	ftime(&t->lastUpdate);
 	t->deltaTime = 0.f;
+	t->timeSinceStart = 0.f;
 	return t;
 }
 
@@ -23,4 +24,5 @@ void TIME_Update(Time* t)
 	ftime(&newTime);
 	t->deltaTime = (float)(1000.0 * (newTime.time - t->lastUpdate.time) + (newTime.millitm - t->lastUpdate.millitm)) / 1000.f;
 	t->lastUpdate = newTime;
+	t->timeSinceStart += t->deltaTime;
 }

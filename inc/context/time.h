@@ -6,6 +6,7 @@ typedef struct {
 	struct timeb lastUpdate;
 
 	float deltaTime;
+	float timeSinceStart;
 } Time;
 
 Time* TIME_New(void);
