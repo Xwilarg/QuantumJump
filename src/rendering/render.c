@@ -33,14 +33,14 @@ static void UpdateClientArea(void)
 
 static void BuildViewTransform(const Vector* position)
 {
-	D3DXVECTOR3 lookAt;
-	D3DXVECTOR3 up;
+	Vector lookAt;
+	Vector up;
 
 	lookAt.x = position->x; lookAt.y = position->y - 10.f; lookAt.z = position->z - 10.f;
 	up.x = 0.f; up.y = 1.f; up.z = 0.f;
 
 	D3DXMATRIX matView;
-	D3DXMatrixLookAtLH(&matView, (D3DXVECTOR3*)position, &lookAt, &up);
+	MATRIX_LookAt(&matView, position, &lookAt, &up);
 
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_VIEW, &matView);
 }
@@ -209,7 +209,7 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 
 	// rotation
 	D3DMATRIX matRotation;
-	D3DXMatrixRotationYawPitchRoll(&matRotation, t->rotation.y, t->rotation.x, t->rotation.z);
+	MATRIX_Rotation(&matRotation, &t->rotation);
 
 	// scale
 	D3DMATRIX matScale;

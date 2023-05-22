@@ -10,3 +10,4 @@ void MATRIX_Position(D3DMATRIX* out, Vector* position);
 void MATRIX_Rotation(D3DMATRIX* out, Vector* rotation);
 
 void MATRIX_Projection(D3DMATRIX* out, float nearZ, float farZ, float fov, float aspect);
+void MATRIX_LookAt(D3DMATRIX* out, Vector* eye, Vector* at, Vector* up);

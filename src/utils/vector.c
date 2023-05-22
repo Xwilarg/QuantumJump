@@ -56,3 +56,13 @@ Vector VECTOR_Magnitude(Vector v)
 	}
 	return VECTOR_Divide(v, length);
 }
+
+Vector VECTOR_Cross(Vector v1, Vector v2)
+{
+	return VECTOR_New(v1.y * v2.z - v2.y * v1.z, v1.z * v2.x - v2.z * v1.x, v1.x * v2.y - v2.x * v1.y);
+}
+
+float VECTOR_Dot(Vector v1, Vector v2)
+{
+	return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+}

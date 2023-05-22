@@ -6,6 +6,7 @@ static void BuildIdentity(D3DMATRIX* out)
 		for (int j = 0; j < 4; j++)
 			out->m[i][j] = 0.f;
 
+	// https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dxmatrixidentity#remarks
 	out->_11 = 1.f;
 	out->_22 = 1.f;
 	out->_33 = 1.f;
@@ -48,9 +49,26 @@ void MATRIX_Position(D3DMATRIX* out, Vector* position)
 
 void MATRIX_Rotation(D3DMATRIX* out, Vector* rotation)
 {
-	(void*)rotation;
-
 	BuildIdentity(out);
+
+	float sroll = sinf(rotation->z);
+	float croll = cosf(rotation->z);
+	float spitch = sinf(rotation->x);
+	float cpitch = cosf(rotation->x);
+	float syaw = sinf(rotation->y);
+	float cyaw = cosf(rotation->y);
+
+	out->_11 = sroll * spitch * syaw + croll * cyaw;
+	out->_12 = sroll * cpitch;
+	out->_13 = sroll * spitch * cyaw - croll * syaw;
+
+	out->_21 = croll * spitch * syaw - sroll * cyaw;
+	out->_22 = croll * cpitch;
+	out->_23 = croll * spitch * cyaw + sroll * syaw;
+
+	out->_31 = cpitch * syaw;
+	out->_32 = -spitch;
+	out->_33 = cpitch * cyaw;
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/direct3d9/projection-transform#setting-up-a-projection-matrix
@@ -67,4 +85,27 @@ void MATRIX_Projection(D3DMATRIX* out, float nearZ, float farZ, float fov, float
 	out->_33 = q;
 	out->_43 = -q * nearZ;
 	out->_34 = 1.f;
+}
+
+// https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dxmatrixlookatlh#remarks
+void MATRIX_LookAt(D3DMATRIX* out, Vector* eye, Vector* at, Vector* up)
+{
+	BuildIdentity(out);
+
+	Vector z = VECTOR_Magnitude(VECTOR_Substract(*at, *eye));
+	Vector x = VECTOR_Magnitude(VECTOR_Cross(*up, z));
+	Vector y = VECTOR_Cross(z, x);
+
+	out->_11 = x.x;
+	out->_12 = y.x;
+	out->_13 = z.x;
+	out->_21 = x.y;
+	out->_22 = y.y;
+	out->_23 = z.y;
+	out->_31 = x.z;
+	out->_32 = y.z;
+	out->_33 = z.z;
+	out->_41 = -VECTOR_Dot(x, *eye);
+	out->_42 = -VECTOR_Dot(y, *eye);
+	out->_43 = -VECTOR_Dot(z, *eye);
 }

@@ -14,3 +14,5 @@ Vector VECTOR_Multiply(Vector v1, float f);
 Vector VECTOR_Divide(Vector v1, float f);
 float VECTOR_Length(Vector v);
 Vector VECTOR_Magnitude(Vector v);
+Vector VECTOR_Cross(Vector v1, Vector v2);
+float VECTOR_Dot(Vector v1, Vector v2);
