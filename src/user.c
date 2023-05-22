@@ -103,26 +103,6 @@ void USER_Input(int key, bool isPressed)
 	}
 }
 
-static char* IntToString(int nb)
-{
-	int h = nb / 100;
-	int d = nb / 10;
-	int u = nb % 10;
-
-	int size = 2;
-	if (h > 0) size = 4;
-	else if (d > 0) size = 3;
-
-	char* str = malloc(sizeof(char) * size);
-	if (str == NULL) return NULL;
-	if (h > 0) str[0] = h + '0';
-	if (h > 0 || d > 0) str[size - 3] = d + '0';
-	str[size - 2] = u + '0';
-	str[size - 1] = 0;
-
-	return str;
-}
-
 void USER_Update(Game* g, Context* ctx)
 {
 	(void)g;
@@ -146,14 +126,14 @@ void USER_Update(Game* g, Context* ctx)
 		_quantumEnergy += ctx->time->deltaTime * CONFIG_ENERGY_RELOAD_RATE;
 		if (_quantumEnergy > 100.f) _quantumEnergy = 100.f;
 
-		char* nb = IntToString(_quantumEnergy);
+		char nb[4];
+		_itoa_s(_quantumEnergy, nb, 4, 10);
 		char* label = "Energy - ";
 		size_t size = strlen(label) + strlen(nb) + 1;
 		char* title = calloc(size, sizeof(char));
 		strcat_s(title, size, label);
 		strcat_s(title, size, nb);
 		EditWindowTitle(title);
-		free(nb);
 	}
 
 	// Set camera position to follow player
