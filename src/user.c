@@ -76,7 +76,7 @@ void USER_Input(int key, bool isPressed)
 	case 32: // Spacebar
 		if (_playerRb->isOnGround)
 		{
-			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, CONFIG_JUMP_FORCE * _quantumEnergy / 100.f, .0f));
+			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, CONFIG_JUMP_FORCE * (_quantumEnergy * .5f / 100.f + .5f), .0f));
 			_quantumEnergy = 0;
 		}
 		break;
