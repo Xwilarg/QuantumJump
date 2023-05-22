@@ -2,6 +2,7 @@
 #include <d3dx9.h>
 
 #include "rendering/render.h"
+#include "utils/matrix.h"
 #include "user.h"
 #include "config.h"
 
@@ -217,8 +218,8 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 	// rotation * scale * position
 	D3DMATRIX transformRotScale;
 	D3DMATRIX transformRotScalePos;
-	D3DXMatrixMultiply(&transformRotScale, &matRotation, &matScale);
-	D3DXMatrixMultiply(&transformRotScalePos, &transformRotScale, &matPosition);
+	MATRIX_Multiply(&transformRotScale, &matRotation, &matScale);
+	MATRIX_Multiply(&transformRotScalePos, &transformRotScale, &matPosition);
 
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_WORLD, &transformRotScalePos);
 
