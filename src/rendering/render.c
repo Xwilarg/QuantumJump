@@ -205,7 +205,7 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 
 	// position
 	D3DMATRIX matPosition;
-	D3DXMatrixTranslation(&matPosition, t->position.x, t->position.y, t->position.z);
+	MATRIX_Position(&matPosition, &t->position);
 
 	// rotation
 	D3DMATRIX matRotation;
@@ -213,7 +213,7 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 
 	// scale
 	D3DMATRIX matScale;
-	D3DXMatrixScaling(&matScale, t->scale.x, t->scale.y, t->scale.z);
+	MATRIX_Scale(&matScale, &t->scale);
 
 	// rotation * scale * position
 	D3DMATRIX transformRotScale;
