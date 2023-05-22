@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 
 #include "utils/vector.h"
 
@@ -39,4 +40,19 @@ Vector VECTOR_Multiply(Vector v1, float f)
 Vector VECTOR_Divide(Vector v1, float f)
 {
 	return VECTOR_New(v1.x / f, v1.y / f, v1.z / f);
+}
+
+float VECTOR_Length(Vector v)
+{
+	return sqrt((double)v.x * v.x + (double)v.y * v.y + (double)v.z * v.z);
+}
+
+Vector VECTOR_Magnitude(Vector v)
+{
+	float length = VECTOR_Length(v);
+	if (length == 0)
+	{
+		return VECTOR_Zero();
+	}
+	return VECTOR_Divide(v, length);
 }

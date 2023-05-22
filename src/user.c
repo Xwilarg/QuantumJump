@@ -104,11 +104,11 @@ void USER_Update(Game* g, Context* ctx)
 	(void)g;
 
 	// Move player
-	Vector dirVector = VECTOR_Multiply(VECTOR_New(
+	Vector dirVector = VECTOR_Multiply(VECTOR_Magnitude(VECTOR_New(
 		(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
 		.0f,
 		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
-	), ctx->time->deltaTime * CONFIG_SPEED);
+	)), ctx->time->deltaTime * CONFIG_SPEED);
 	_playerRb->linearVelocity.x = dirVector.x;
 	_playerRb->linearVelocity.z = dirVector.z;
 
