@@ -3,6 +3,7 @@
 
 #include "rendering/render.h"
 #include "user.h"
+#include "config.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -58,7 +59,7 @@ static bool InitWindow(HINSTANCE hInstance)
 	// create the window
 	hWnd = CreateWindowA(
 		"static",
-		"Game",
+		CONFIG_GAME_NAME,
 
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,

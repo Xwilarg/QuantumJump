@@ -141,7 +141,7 @@ static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* text
 
 static void AddPlatform(Game* game, int x, int y, int z)
 {
-	AddObject(game, x, y, z, "res/plane.mesh", "demo.tex", false);
+	AddObject(game, x, y, z, "res/plane.mesh", "res/blue.tex", false);
 }
 
 static void AddObjective(Game* game, int x, int y, int z)
@@ -183,7 +183,7 @@ void USER_Init(Game* g, Context* ctx)
 		_player->transform->position.z = -200.f; // TODO: Probably can do so we don't hardcode that uh
 		_player->transform->position.y = CONFIG_GRID_UNIT_UP * 2.f;
 
-		Renderer* r = RENDERER_New("demo.mesh", "demo.tex");
+		Renderer* r = RENDERER_New("res/enemy.mesh", "res/blue.tex");
 		Collider* coll = COLLIDER_New(r);
 		_playerRb = RIGIDBODY_New();
 

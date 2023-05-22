@@ -5,3 +5,4 @@
 #define CONFIG_GRAVITY -300.f
 #define CONFIG_GRID_UNIT 400.f
 #define CONFIG_GRID_UNIT_UP 50.f
+#define CONFIG_GAME_NAME "Quantum Ranger"
