@@ -143,7 +143,7 @@ void USER_Update(Game* g, Context* ctx)
 
 	if (_playerRb->isOnGround)
 	{
-		_quantumEnergy += ctx->time->deltaTime * CONFIg_ENERGY_RELOAD_RATE;
+		_quantumEnergy += ctx->time->deltaTime * CONFIG_ENERGY_RELOAD_RATE;
 		if (_quantumEnergy > 100.f) _quantumEnergy = 100.f;
 
 		char* nb = IntToString(_quantumEnergy);
