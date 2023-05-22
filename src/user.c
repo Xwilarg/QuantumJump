@@ -178,8 +178,6 @@ void USER_Init(Game* g, Context* ctx)
 	_canJump = true;
 	collectibleLeft = 0;
 
-	AUDIO_Play(AUDIO_Load("res/BGM.sound", true));
-
 	{
 		_player = OBJECT_New();
 		_player->transform->position.z = -200.f; // TODO: Probably can do so we don't hardcode that uh

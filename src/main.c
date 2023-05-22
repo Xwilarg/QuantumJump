@@ -27,6 +27,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Game* game = GAME_Init();
 
 	USER_Init(game, ctx);
+
+	Sound* bgm = AUDIO_Load("res/BGM.sound", true);
+	AUDIO_Play(bgm);
 	//
 
 	// enter the main loop
@@ -56,6 +59,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		Sleep(10);
 	}
 
+	AUDIO_Free(bgm);
 	AUDIO_Destroy();
 	RENDER_Destroy();
 	CONTEXT_Destroy(ctx);
