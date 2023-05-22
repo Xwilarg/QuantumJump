@@ -44,7 +44,7 @@ Vector VECTOR_Divide(Vector v1, float f)
 
 float VECTOR_Length(Vector v)
 {
-	return sqrt((double)v.x * v.x + (double)v.y * v.y + (double)v.z * v.z);
+	return (float)sqrt((double)v.x * v.x + (double)v.y * v.y + (double)v.z * v.z);
 }
 
 Vector VECTOR_Magnitude(Vector v)
