@@ -127,7 +127,7 @@ void USER_Update(Game* g, Context* ctx)
 		if (_quantumEnergy > 100.f) _quantumEnergy = 100.f;
 
 		char nb[4];
-		_itoa_s(_quantumEnergy, nb, 4, 10);
+		_itoa_s((int)_quantumEnergy, nb, 4, 10);
 		char* label = "Energy - ";
 		size_t size = strlen(label) + strlen(nb) + 1;
 		char* title = calloc(size, sizeof(char));
