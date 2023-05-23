@@ -1,5 +1,4 @@
 #include <Windows.h>
-#include <d3dx9.h>
 #include <stdbool.h>
 
 #include "rendering/render.h"

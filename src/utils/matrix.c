@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "utils/matrix.h"
 
 static void BuildIdentity(D3DMATRIX* out)

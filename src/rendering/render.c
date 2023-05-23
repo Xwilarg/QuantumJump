@@ -1,8 +1,9 @@
 #include <Windows.h>
-#include <d3dx9.h>
+#include <d3d9.h>
 
 #include "rendering/render.h"
 #include "utils/matrix.h"
+#include "utils/math.h"
 #include "user.h"
 #include "config.h"
 
@@ -25,8 +26,8 @@ static void UpdateClientArea(void)
 	height = rect.bottom;
 
 	// update the projection matrix
-	D3DXMATRIX matProjection;
-	MATRIX_Projection(&matProjection, 1.0f, 1000.f, D3DXToRadian(45), (float)width / (float)height);
+	D3DMATRIX matProjection;
+	MATRIX_Projection(&matProjection, 1.0f, 1000.f, ToRadian(45), (float)width / (float)height);
 
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_PROJECTION, &matProjection);
 }
@@ -39,7 +40,7 @@ static void BuildViewTransform(const Vector* position)
 	lookAt.x = position->x; lookAt.y = position->y - 10.f; lookAt.z = position->z - 10.f;
 	up.x = 0.f; up.y = 1.f; up.z = 0.f;
 
-	D3DXMATRIX matView;
+	D3DMATRIX matView;
 	MATRIX_LookAt(&matView, position, &lookAt, &up);
 
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_VIEW, &matView);
