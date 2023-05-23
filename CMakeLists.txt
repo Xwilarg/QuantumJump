@@ -3,7 +3,7 @@ project(4MBJam)
 
 SET(CMAKE_C_FLAGS "/W4")
 
-include_directories(./inc/ SYSTEM $ENV{DXSDK_DIR}Include)
+include_directories(./inc/)
 aux_source_directory(./src SRCS)
 aux_source_directory(./src/component SRCS)
 aux_source_directory(./src/rendering SRCS)

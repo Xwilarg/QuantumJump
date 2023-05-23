@@ -33,7 +33,7 @@ bool AUDIO_Init()
 	}
 
 	if (FAILED(xAudio2->lpVtbl->CreateMasteringVoice(
-		xAudio2, &masterVoice, XAUDIO2_DEFAULT_CHANNELS, XAUDIO2_DEFAULT_SAMPLERATE, 0, 0, NULL)))
+		xAudio2, &masterVoice, XAUDIO2_DEFAULT_CHANNELS, XAUDIO2_DEFAULT_SAMPLERATE, 0, 0, NULL, 0)))
 	{
 		return false;
 	}
