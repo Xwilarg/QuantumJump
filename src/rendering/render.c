@@ -34,14 +34,11 @@ static void UpdateClientArea(void)
 
 static void BuildViewTransform(const Vector* position)
 {
-	Vector lookAt;
-	Vector up;
-
-	lookAt.x = position->x; lookAt.y = position->y - 10.f; lookAt.z = position->z - 10.f;
-	up.x = 0.f; up.y = 1.f; up.z = 0.f;
+	Vector lookAt = VECTOR_New(position->x, position->y - 10.f, position->z - 10.f);
+	Vector up = VECTOR_New(0.f, 1.f, 0.f);
 
 	D3DMATRIX matView;
-	MATRIX_LookAt(&matView, position, &lookAt, &up);
+	MATRIX_LookAt(&matView, (Vector*)position, &lookAt, &up);
 
 	d3dDevice->lpVtbl->SetTransform(d3dDevice, D3DTS_VIEW, &matView);
 }

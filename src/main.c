@@ -20,6 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	if (!AUDIO_Init())
 	{
 		MessageBoxA(NULL, "Failed to initialize audio", "Failed", MB_OK | MB_ICONERROR);
+		return 1;
 	}
 
 	Context* ctx = CONTEXT_New();
@@ -54,8 +55,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		USER_Update(game, ctx);
 
 		RENDER_Render();
-
-		Sleep(10);
 	}
 
 	AUDIO_Free(bgm);
