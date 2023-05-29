@@ -6,6 +6,7 @@
 #include "audio/audio.h"
 #include "user.h"
 #include "rendering/render.h"
+#include "rendering/font.h"
 
 #include "config.h"
 
@@ -125,15 +126,16 @@ void USER_Update(Game* g, Context* ctx)
 	{
 		_quantumEnergy += ctx->time->deltaTime * CONFIG_ENERGY_RELOAD_RATE;
 		if (_quantumEnergy > 100.f) _quantumEnergy = 100.f;
+	}
 
+	{
 		char nb[4];
 		_itoa_s((int)_quantumEnergy, nb, 4, 10);
-		char* label = "Energy - ";
-		size_t size = strlen(label) + strlen(nb) + 1;
-		char* title = calloc(size, sizeof(char));
-		strcat_s(title, size, label);
-		strcat_s(title, size, nb);
-		EditWindowTitle(title);
+
+		FONT_SetCursor(32, 16);
+
+		FONT_Print("Energy: ");
+		FONT_Print(nb);
 	}
 
 	// Set camera position to follow player
