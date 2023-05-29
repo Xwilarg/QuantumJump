@@ -231,6 +231,30 @@ void RENDER_RenderMesh(Mesh* mesh, Transform *t)
 	d3dDevice->lpVtbl->DrawIndexedPrimitive(d3dDevice, D3DPT_TRIANGLELIST, 0, 0, mesh->numVertices, 0, mesh->numIndices);
 }
 
+void RENDER_RenderTexture2d(Texture* texture, RenderBuffer* vertices, int numPrimitives)
+{
+	// set the default render state
+	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_FILLMODE, D3DFILL_SOLID);
+
+	// enable alpha blending
+	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_ALPHABLENDENABLE, true);
+
+	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	// set the vertex source
+	d3dDevice->lpVtbl->SetFVF(d3dDevice, RENDER2DFVF);
+	d3dDevice->lpVtbl->SetStreamSource(d3dDevice, 0, (LPDIRECT3DVERTEXBUFFER9)vertices->resource, 0, sizeof(RenderVertex2d));
+
+	d3dDevice->lpVtbl->SetTexture(d3dDevice, 0, texture->handle);
+
+	// draw our vertices as triangle strip
+	d3dDevice->lpVtbl->DrawPrimitive(d3dDevice, D3DPT_TRIANGLESTRIP, 0, numPrimitives);
+
+	// reset render state
+	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_ALPHABLENDENABLE, false);
+}
+
 void RENDER_Destroy(void)
 {
 	d3dDevice->lpVtbl->Release(d3dDevice);

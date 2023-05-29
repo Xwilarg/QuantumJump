@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 #include "rendering/render.h"
+#include "rendering/font.h"
 #include "audio/audio.h"
 #include "game.h"
 #include "user.h"
@@ -22,6 +23,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		MessageBoxA(NULL, "Failed to initialize audio", "Failed", MB_OK | MB_ICONERROR);
 		return 1;
 	}
+
+	FONT_Init();
 
 	Context* ctx = CONTEXT_New();
 	Game* game = GAME_Init();
@@ -58,6 +61,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	AUDIO_Free(bgm);
+
+	FONT_Destroy();
 	AUDIO_Destroy();
 	RENDER_Destroy();
 	CONTEXT_Destroy(ctx);
