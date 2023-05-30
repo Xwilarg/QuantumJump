@@ -1,6 +1,6 @@
 #pragma once
 
-#define CONFIG_SPEED 13000.f
+#define CONFIG_SPEED 130.f
 #define CONFIG_JUMP_FORCE 200.f
 #define CONFIG_GRAVITY -300.f
 #define CONFIG_ENERGY_RELOAD_RATE 25.f

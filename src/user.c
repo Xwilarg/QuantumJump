@@ -130,7 +130,7 @@ void USER_Update(Game* g, Context* ctx)
 		(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
 		.0f,
 		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
-	)), ctx->time->deltaTime * CONFIG_SPEED);
+	)), CONFIG_SPEED);
 	_playerRb->linearVelocity.x = dirVector.x;
 	_playerRb->linearVelocity.z = dirVector.z;
 
