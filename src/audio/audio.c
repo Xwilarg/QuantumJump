@@ -23,13 +23,7 @@ static ADPCMCOEFSET aCoef[] = {{256, 0}, {512, -256}, {0,0}, {192,64}, {240,0}, 
 
 bool AUDIO_Init()
 {
-#ifdef _DEBUG
-	int flags = XAUDIO2_DEBUG_ENGINE;
-#else
-	int flags = 0;
-#endif
-
-	if (FAILED(XAudio2Create(&xAudio2, flags, 0)))
+	if (FAILED(XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR)))
 	{
 		return false;
 	}
