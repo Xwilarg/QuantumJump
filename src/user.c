@@ -27,6 +27,10 @@ static int collectibleLeft;
 
 static float _quantumEnergy;
 
+static int _lastFramerate;
+static int _framerate;
+static float _framerateTimer;
+
 const Vector* GetCameraPosition(void)
 {
 	return &_cameraPos;
@@ -107,6 +111,19 @@ void USER_Input(int key, bool isPressed)
 void USER_Update(Game* g, Context* ctx)
 {
 	(void)g;
+
+	_framerate++;
+	_framerateTimer -= ctx->time->deltaTime;
+	if (_framerateTimer <= 0.f)
+	{
+		_lastFramerate = _framerate;
+		_framerate = 0;
+		_framerateTimer = 1.f;
+	}
+	char fps[5];
+	_itoa_s((int)_lastFramerate, fps, 5, 10);
+	FONT_SetCursor(32, 64);
+	FONT_Print(fps);
 
 	// Move player
 	Vector dirVector = VECTOR_Multiply(VECTOR_Magnitude(VECTOR_New(
@@ -199,6 +216,9 @@ void USER_Init(Game* g, Context* ctx)
 	_canJump = true;
 	collectibleLeft = 0;
 	_quantumEnergy = 0.f;
+	_lastFramerate = 0;
+	_framerate = 0;
+	_framerateTimer = 1.f;
 
 	{
 		_player = OBJECT_New();
