@@ -60,7 +60,7 @@ static bool InitWindow(HINSTANCE hInstance)
 		"static",
 		CONFIG_GAME_NAME,
 
-		WS_OVERLAPPEDWINDOW,
+		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 
 		NULL,
@@ -112,10 +112,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CLOSE:
 		PostQuitMessage(0);
-		break;
-
-	case WM_SIZE:
-		UpdateClientArea();
 		break;
 
 	case WM_KEYDOWN:
