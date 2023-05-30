@@ -6,8 +6,8 @@ end
 local input = arg[1]
 local output = input:sub(1, input:find(".", 1, true) - 1)
 
--- convert to 16-bit PCM with 1 channel
-os.execute(string.format("ffmpeg -i %s -ac 1 -f wav -acodec pcm_s16le temp.wav", input))
+--os.execute(string.format("ffmpeg -i %s -ac 1 -f wav -acodec pcm_s16le temp.wav", input))
+os.execute(string.format("adpcmencode3 %s temp.wav", input))
 
 local wav = io.open("temp.wav", "rb")
 

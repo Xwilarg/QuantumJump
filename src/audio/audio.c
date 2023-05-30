@@ -18,6 +18,9 @@ typedef struct
 } SoundHeader;
 #pragma pack(pop)
 
+// Microsoft ADPCM
+static ADPCMCOEFSET aCoef[] = {{256, 0}, {512, -256}, {0,0}, {192,64}, {240,0}, {460, -208}, {392,-232}};
+
 bool AUDIO_Init()
 {
 #ifdef _DEBUG
@@ -26,7 +29,7 @@ bool AUDIO_Init()
 	int flags = 0;
 #endif
 
-	if (FAILED(XAudio2Create(&xAudio2, flags, XAUDIO2_DEFAULT_PROCESSOR)))
+	if (FAILED(XAudio2Create(&xAudio2, flags, 0)))
 	{
 		return false;
 	}
@@ -41,7 +44,8 @@ bool AUDIO_Init()
 	XAUDIO2_DEBUG_CONFIGURATION debugConfiguration;
 	memset(&debugConfiguration, 0, sizeof(debugConfiguration));
 
-	debugConfiguration.TraceMask = XAUDIO2_LOG_INFO | XAUDIO2_LOG_WARNINGS | XAUDIO2_LOG_ERRORS;
+	debugConfiguration.TraceMask = XAUDIO2_LOG_INFO | XAUDIO2_LOG_WARNINGS | XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_FUNC_CALLS;
+	debugConfiguration.BreakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS;
 
 	xAudio2->lpVtbl->SetDebugConfiguration(xAudio2, &debugConfiguration, NULL);
 #endif
@@ -91,14 +95,14 @@ Sound* AUDIO_Load(const char* soundPath, bool loop)
 	buffer.LoopCount = loop ? XAUDIO2_LOOP_INFINITE : 0;
 
 	// create audio source
-	WAVEFORMATEX* waveFormat = malloc(sizeof(WAVEFORMATEX));
+	WAVEFORMATEX* waveFormat = malloc(sizeof(ADPCMWAVEFORMAT) + sizeof(aCoef));
 
 	if (!waveFormat)
 	{
 		return NULL;
 	}
 
-	waveFormat->wFormatTag = WAVE_FORMAT_PCM;
+	waveFormat->wFormatTag = WAVE_FORMAT_ADPCM;
 	waveFormat->nChannels = 1;
 
 	// from the sound header
@@ -106,8 +110,14 @@ Sound* AUDIO_Load(const char* soundPath, bool loop)
 	waveFormat->nAvgBytesPerSec = header.sampleRate * header.blockAlign;
 	waveFormat->nBlockAlign = header.blockAlign;
 
-	PCMWAVEFORMAT* pcmWaveFormat = (PCMWAVEFORMAT*)waveFormat;
-	pcmWaveFormat->wBitsPerSample = 16;
+	waveFormat->wBitsPerSample = 4;
+	waveFormat->cbSize = 32;
+
+	// adpcm specific
+	ADPCMWAVEFORMAT* adpcmWaveFormat = (ADPCMWAVEFORMAT*)waveFormat;
+	adpcmWaveFormat->wSamplesPerBlock = waveFormat->nBlockAlign * 2 / waveFormat->nChannels - 12;
+	adpcmWaveFormat->wNumCoef = 7;
+	memcpy(adpcmWaveFormat->aCoef, aCoef, sizeof(aCoef));
 
 	IXAudio2SourceVoice* sourceVoice;
 	if (FAILED(xAudio2->lpVtbl->CreateSourceVoice(xAudio2, &sourceVoice, waveFormat, 0, 1.0, NULL, NULL, NULL)))
