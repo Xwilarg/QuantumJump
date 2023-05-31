@@ -31,6 +31,8 @@ static int _lastFramerate;
 static int _framerate;
 static float _framerateTimer;
 
+static bool _didWon;
+
 const Vector* GetCameraPosition(void)
 {
 	return &_cameraPos;
@@ -65,7 +67,8 @@ static void OnPlayerCollision(Game* game, Object* collision)
 		collectibleLeft--;
 		if (collectibleLeft == 0)
 		{
-			// TODO: Victory
+			_didWon = true;
+			_playerRb->linearVelocity = VECTOR_Zero();
 		}
 	}
 	else if (collision->tag == USERTAG_CHECKPOINT)
@@ -125,38 +128,45 @@ void USER_Update(Game* g, Context* ctx)
 	FONT_SetCursor(32, 64);
 	FONT_Print(fps);
 
-	// Move player
-	Vector dirVector = VECTOR_Multiply(VECTOR_Magnitude(VECTOR_New(
-		(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
-		.0f,
-		(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
-	)), CONFIG_SPEED);
-	_playerRb->linearVelocity.x = dirVector.x;
-	_playerRb->linearVelocity.z = dirVector.z;
-
-	if (dirVector.x != 0.f || dirVector.z != 0.f)
+	if (_didWon)
 	{
-		_player->transform->rotation = VECTOR_New(.0f, (float)atan2(dirVector.x, dirVector.z), .0f);
-	}
-
-	if (_playerRb->isOnGround)
-	{
-		_quantumEnergy += ctx->time->deltaTime * CONFIG_ENERGY_RELOAD_RATE;
-		if (_quantumEnergy > 100.f) _quantumEnergy = 100.f;
-	}
-
-	{
-		char nb[4];
-		_itoa_s((int)_quantumEnergy, nb, 4, 10);
-
 		FONT_SetCursor(32, 16);
-
-		FONT_Print("Energy: ");
-		FONT_Print(nb);
+		FONT_Print("You Won");
 	}
+	else // Move player
+	{
+		Vector dirVector = VECTOR_Multiply(VECTOR_Magnitude(VECTOR_New(
+			(_isLeftPressed ? 1.f : 0.f) + (_isRightPressed ? -1.f : 0.f),
+			.0f,
+			(_isUpPressed ? -1.f : 0.f) + (_isDownPressed ? 1.f : 0.f)
+		)), CONFIG_SPEED);
+		_playerRb->linearVelocity.x = dirVector.x;
+		_playerRb->linearVelocity.z = dirVector.z;
 
-	// Set camera position to follow player
-	UpdateCameraPosition();
+		if (dirVector.x != 0.f || dirVector.z != 0.f)
+		{
+			_player->transform->rotation = VECTOR_New(.0f, (float)atan2(dirVector.x, dirVector.z), .0f);
+		}
+
+		if (_playerRb->isOnGround)
+		{
+			_quantumEnergy += ctx->time->deltaTime * CONFIG_ENERGY_RELOAD_RATE;
+			if (_quantumEnergy > 100.f) _quantumEnergy = 100.f;
+		}
+
+		{
+			char nb[4];
+			_itoa_s((int)_quantumEnergy, nb, 4, 10);
+
+			FONT_SetCursor(32, 16);
+
+			FONT_Print("Energy: ");
+			FONT_Print(nb);
+		}
+
+		// Set camera position to follow player
+		UpdateCameraPosition();
+	}
 }
 
 static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* texture, bool triggerOnly)
@@ -219,6 +229,7 @@ void USER_Init(Game* g, Context* ctx)
 	_lastFramerate = 0;
 	_framerate = 0;
 	_framerateTimer = 1.f;
+	_didWon = false;
 
 	{
 		_player = OBJECT_New();
