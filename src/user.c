@@ -264,10 +264,8 @@ static void AddObstacle(Game* game, int x, int y, int z, float ox, float oz)
 
 static void AddTombstone(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/tombstone.mesh", "res/textures/colors.tex", false);
-	Renderer* r = OBJECT_GetComponent(obj, COMPONENT_RENDERER);
-
-	Collider* triggerZone = COLLIDER_New(r);
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/tombstone.mesh", "res/textures/colors.tex", true);
+	Collider* triggerZone = OBJECT_GetComponent(obj, COMPONENT_COLLIDER);
 	const int size = 25;
 	triggerZone->min.x -= size;
 	triggerZone->min.y -= size;
@@ -275,7 +273,6 @@ static void AddTombstone(Game* game, int x, int y, int z)
 	triggerZone->max.x += size;
 	triggerZone->max.y += size;
 	triggerZone->max.z += size;
-	triggerZone->triggerOnly = true;
 
 	obj->tag = USERTAG_CREDITS;
 }
