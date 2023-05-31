@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "rendering/render.h"
 #include "rendering/font.h"
@@ -11,6 +12,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 {
 	(void)hPrevInstance;
 	(void)lpCmdLine;
+
+	srand((unsigned int)time(NULL));
 
 	if (!RENDER_Init(hInstance, nShowCmd))
 	{
