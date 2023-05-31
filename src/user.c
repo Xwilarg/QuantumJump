@@ -304,6 +304,7 @@ static void AddObstacle(Game* game, int x, int y, int z)
 static void AddJumper(Game* game, int x, int y, int z)
 {
 	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/coffin.mesh", "res/textures/colors.tex", true);
+	obj->transform->position.z += 50.f;
 
 	obj->tag = USERTAG_JUMPER;
 }
