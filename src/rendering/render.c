@@ -92,6 +92,7 @@ static bool CreateDevice(void)
 	d3dpp.hDeviceWindow = hWnd;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.EnableAutoDepthStencil = true;
+	d3dpp.MultiSampleType = D3DMULTISAMPLE_2_SAMPLES;
 	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 
 	// create the device
