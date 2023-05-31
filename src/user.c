@@ -164,7 +164,7 @@ void USER_Update(Game* g, Context* ctx)
 
 			FONT_SetCursor(32, 16);
 
-			FONT_Print("Energy: ");
+			FONT_Print("Quantum Energy: ");
 			FONT_Print(nb);
 		}
 
