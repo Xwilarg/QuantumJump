@@ -196,9 +196,15 @@ static void AddPlatform(Game* game, int x, int y, int z)
 	AddObject(game, x, y, z, "res/models/platform.mesh", "res/textures/colors.tex", false);
 }
 
-static void AddObjective(Game* game, int x, int y, int z)
+static void AddObjective(Game* game, int x, int y, int z, char* model)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/enemy.mesh", "res/textures/blue.tex", true);
+	Object* obj = AddObject(game, x, y, z, model, "res/textures/colors.tex", true);
+
+	Rigidbody* rb = RIGIDBODY_New();
+	rb->useGravity = false;
+	rb->angularVelocity = VECTOR_New(0.f, 3.f, 0.f);
+
+	OBJECT_AddComponent(obj, rb->parent);
 
 	obj->tag = USERTAG_OBJECTIVE;
 	collectibleLeft++;
@@ -206,14 +212,14 @@ static void AddObjective(Game* game, int x, int y, int z)
 
 static void AddCheckpoint(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/enemy.mesh", "res/textures/blue.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/enemy.mesh", "res/textures/colors.tex", true);
 
 	obj->tag = USERTAG_CHECKPOINT;
 }
 
 static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/plane.mesh", "res/textures/trap.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/snake.mesh", "res/textures/colors.tex", true);
 
 	obj->tag = USERTAG_TRAP;
 }
@@ -230,9 +236,11 @@ void USER_Init(Game* g, Context* ctx)
 	_canJump = true;
 	collectibleLeft = 0;
 	_quantumEnergy = 0.f;
+#if _DEBUG
 	_lastFramerate = 0;
 	_framerate = 0;
 	_framerateTimer = 1.f;
+#endif
 	_didWon = false;
 
 	{
@@ -255,15 +263,15 @@ void USER_Init(Game* g, Context* ctx)
 	AddPlatform(g, 0, 1, 0);
 
 	AddPlatform(g, 1, 1, 0);
-	AddObjective(g, 1, 2, 0);
+	AddTrap(g, 1, 3, 0);
+	//AddObjective(g, 1, 2, 0, "res/models/collectibles/gun.mesh");
 
 	AddPlatform(g, -1, 1, 0);
 	AddPlatform(g, -1, 1, 1);
 	AddPlatform(g, -2, 1, 1);
 	AddPlatform(g, -3, 1, 1);
 	AddPlatform(g, -3, 1, 0);
-	AddTrap(g, -2, 1, 0);
-	AddObjective(g, -3, 1, 0);
+	AddObjective(g, -3, 1, 0, "res/models/collectibles/gun.mesh");
 	AddCheckpoint(g, -2, 1, 1);
 
 	_initialPos = _player->transform->position;
