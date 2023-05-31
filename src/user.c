@@ -250,15 +250,16 @@ static void AddTrap(Game* game, int x, int y, int z, float ox, float oz, bool hi
 	obj->transform->position.x += ox;
 	obj->transform->position.z += oz;
 	obj->transform->position.y -= 20;
+	obj->transform->rotation.y = rand() % 360;
 
 	obj->tag = USERTAG_TRAP;
 }
 
-static void AddObstacle(Game* game, int x, int y, int z, float ox, float oz)
+static void AddObstacle(Game* game, int x, int y, int z)
 {
 	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/rocks.mesh", "res/textures/colors.tex", false);
-	obj->transform->position.x += ox;
-	obj->transform->position.z += oz;
+	obj->transform->position.x += rand() % 60 - 30;
+	obj->transform->position.z += rand() % 60 - 30;
 	obj->transform->position.y -= 20;
 }
 
@@ -280,7 +281,7 @@ static void AddTombstone(Game* game, int x, int y, int z)
 static void CreateMap(Game* g)
 {
 	const int size = 10;
-	const int halfSize = size / 2.f;
+	const int halfSize = size / 2;
 
 	const int P = 1;
 	const int _ = 1;
@@ -348,7 +349,7 @@ static void CreateMap(Game* g)
 					break;
 
 				case 6:
-					AddObstacle(g, px, 2, pz, 0, 0);
+					AddObstacle(g, px, 2, pz);
 					break;
 
 				case 7:
