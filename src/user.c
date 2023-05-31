@@ -221,7 +221,13 @@ static void AddObjective(Game* game, int x, int y, int z, char* model)
 
 static void AddCheckpoint(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/enemy.mesh", "res/textures/colors.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/checkpoint.mesh", "res/textures/colors.tex", true);
+
+	Rigidbody* rb = RIGIDBODY_New();
+	rb->useGravity = false;
+	rb->angularVelocity = VECTOR_New(0.f, 3.f, 0.f);
+
+	OBJECT_AddComponent(obj, rb->parent);
 
 	obj->tag = USERTAG_CHECKPOINT;
 }
@@ -272,7 +278,9 @@ void USER_Init(Game* g, Context* ctx)
 	AddPlatform(g, 0, 1, 0);
 
 	AddPlatform(g, 1, 1, 0);
-	AddTrap(g, 1, 3, 0);
+	//AddTrap(g, 1, 3, 0);
+	AddCheckpoint(g, 1, 2, 0);
+	AddObjective(g, -1, 3, 0, "res/models/collectibles/gun.mesh");
 	//AddObjective(g, 1, 2, 0, "res/models/collectibles/gun.mesh");
 
 	AddPlatform(g, -1, 1, 0);
@@ -280,8 +288,6 @@ void USER_Init(Game* g, Context* ctx)
 	AddPlatform(g, -2, 1, 1);
 	AddPlatform(g, -3, 1, 1);
 	AddPlatform(g, -3, 1, 0);
-	AddObjective(g, -1, 3, 0, "res/models/obstacles/cactus.mesh");
-	AddCheckpoint(g, -2, 1, 1);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
