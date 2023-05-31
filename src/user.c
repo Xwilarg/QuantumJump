@@ -321,6 +321,7 @@ static void AddJumper(Game* game, int x, int y, int z)
 static void AddTombstone(Game* game, int x, int y, int z)
 {
 	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/tombstone.mesh", "res/textures/colors.tex", true);
+	obj->transform->position.y -= 20;
 	Collider* triggerZone = OBJECT_GetComponent(obj, COMPONENT_COLLIDER);
 	const int size = 25;
 	triggerZone->min.x -= size;
