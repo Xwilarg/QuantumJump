@@ -221,7 +221,7 @@ static void AddObjective(Game* game, int x, int y, int z, char* model)
 
 static void AddCheckpoint(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/snake.mesh", "res/textures/colors.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/checkpoint.mesh", "res/textures/colors.tex", true);
 
 	Rigidbody* rb = RIGIDBODY_New();
 	rb->useGravity = false;
@@ -232,11 +232,78 @@ static void AddCheckpoint(Game* game, int x, int y, int z)
 	obj->tag = USERTAG_CHECKPOINT;
 }
 
-static void AddTrap(Game* game, int x, int y, int z)
+static void AddTrap(Game* game, int x, int y, int z, float ox, float oz)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/collectibles/gun.mesh", "res/textures/colors.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/snake.mesh", "res/textures/colors.tex", true);
+	obj->transform->position.x += ox;
+	obj->transform->position.z += oz;
+	obj->transform->position.y -= 20;
 
 	obj->tag = USERTAG_TRAP;
+}
+
+static void CreateMap(Game* g)
+{
+	const int size = 10;
+	const int halfSize = size / 2.f;
+
+	const int P = 1;
+	const int _ = 1;
+	const int O = 2;
+	const int C = 3;
+	const int T = 4;
+
+	int floor[10][10] = {
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, O },
+		{ 0, O, 0, 0, 0, 0, _, _, _, 0 },
+		{ _, T, _, _, _, _, 0, 0, 0, 0 },
+		{ 0, _, 0, 0, 0, _, 0, 0, 0, 0 },
+		{ 0, _, 0, 0, 0, _, 0, 0, 0, O },
+		{ 0, C, O, T, 0, P, 0, 0, 0, C },
+		{ 0, _, 0, 0, 0, _, 0, 0, _, T },
+		{ 0, _, 0, 0, 0, _, 0, 0, T, _ },
+		{ 0, _, _, 0, _, _, _, 0, _, T },
+		{ 0, 0, 0, 0, _, _, _, 0, 0, 0 }
+	};
+	char collectibles[4][36] = {
+		"res/models/collectibles/gun.mesh",
+		"res/models/collectibles/bullet.mesh",
+		"res/models/collectibles/lasso.mesh",
+		"res/models/collectibles/spur.mesh"
+	};
+	int collectibleIndex = 0;
+
+	for (int z = 0; z < size; z++)
+	{
+		for (int x = 0; x < size; x++)
+		{
+			if (floor[z][x])
+			{
+				int px = x - halfSize;
+				int pz = z - halfSize;
+				AddPlatform(g, px, 1, pz);
+				switch (floor[z][x])
+				{
+				case 2: // Objective
+					AddObjective(g, px, 2, pz, collectibles[collectibleIndex]);
+					collectibleIndex++;
+					break;
+
+				case 3: // Checkpoint
+					AddCheckpoint(g, px, 2, pz);
+					break;
+
+				case 4:
+					AddTrap(g, px, 2, pz, 0, 0);
+					AddTrap(g, px, 2, pz, 75, 75);
+					AddTrap(g, px, 2, pz, 75, -75);
+					AddTrap(g, px, 2, pz, -75, 75);
+					AddTrap(g, px, 2, pz, -75, -75);
+					break;
+				}
+			}
+		}
+	}
 }
 
 void USER_Init(Game* g, Context* ctx)
@@ -276,52 +343,7 @@ void USER_Init(Game* g, Context* ctx)
 		GAME_AddObject(g, _player);
 	}
 
-	const int size = 10;
-	const int halfSize = size / 2.f;
-
-	int floor[10][10] = {
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 0, 1, 1, 2, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-	};
-	char collectibles[4][36] = {
-		"res/models/collectibles/gun.mesh",
-		"res/models/collectibles/bullet.mesh",
-		"res/models/collectibles/lasso.mesh",
-		"res/models/collectibles/spur.mesh"
-	};
-	int collectibleIndex = 0;
-
-	for (int z = 0; z < size; z++)
-	{
-		for (int x = 0; x < size; x++)
-		{
-			if (floor[z][x])
-			{
-				int px = x - halfSize;
-				int pz = z - halfSize;
-				AddPlatform(g, px, 1, pz);
-				switch (floor[z][x])
-				{
-				case 2:
-					AddObjective(g, px, 2, pz, collectibles[collectibleIndex]);
-					collectibleIndex++;
-					break;
-				}
-			}
-		}
-	}
-
-	//AddTrap(g, 1, 3, 0);
-	//AddCheckpoint(g, 1, 2, 0);
-	//AddObjective(g, 1, 2, 0, "res/models/collectibles/gun.mesh");
+	CreateMap(g);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
