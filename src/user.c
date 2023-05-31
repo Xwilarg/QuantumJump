@@ -248,7 +248,7 @@ void USER_Init(Game* g, Context* ctx)
 		_player->transform->position.z = -200.f; // TODO: Probably can do so we don't hardcode that uh
 		_player->transform->position.y = CONFIG_GRID_UNIT_UP * 2.f;
 
-		Renderer* r = RENDERER_New("res/models/player.mesh", "res/textures/player.tex");
+		Renderer* r = RENDERER_New("res/models/player.mesh", "res/textures/colors.tex");
 		Collider* coll = COLLIDER_New(r);
 		_playerRb = RIGIDBODY_New();
 
@@ -271,7 +271,7 @@ void USER_Init(Game* g, Context* ctx)
 	AddPlatform(g, -2, 1, 1);
 	AddPlatform(g, -3, 1, 1);
 	AddPlatform(g, -3, 1, 0);
-	AddObjective(g, -3, 1, 0, "res/models/collectibles/gun.mesh");
+	AddObjective(g, -1, 3, 0, "res/models/obstacles/cactus.mesh");
 	AddCheckpoint(g, -2, 1, 1);
 
 	_initialPos = _player->transform->position;
