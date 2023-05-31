@@ -23,7 +23,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	if (!AUDIO_Init())
 	{
-		MessageBoxA(NULL, "Failed to initialize audio", "Failed", MB_OK | MB_ICONERROR);
+		MessageBoxA(NULL, "Failed to initialize audio.", "Failed", MB_OK | MB_ICONERROR);
 		return 1;
 	}
 

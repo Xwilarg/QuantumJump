@@ -10,7 +10,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	(void)ctx;
 	Collider* coll = (Collider*)self;
 
-	RENDER_RenderCube(coll->min, coll->max, o->transform->rotation);
+	//RENDER_RenderCube(coll->min, coll->max, o->transform->rotation);
 }
 
 static void Destroy(void* self)
