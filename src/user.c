@@ -28,6 +28,7 @@ static int collectibleLeft;
 
 static float _quantumEnergy;
 static float _endTime;
+static short _deaths;
 
 static bool showCredits;
 
@@ -70,6 +71,8 @@ static void OnPlayerCollision(Context* ctx, Game* game, Object* collision)
 	// If collision is NULL, it means we falled from a platform
 	if (collision == NULL || collision->tag == USERTAG_TRAP)
 	{
+		_deaths++;
+
 		ResetPlayer();
 	}
 	else if (collision->tag == USERTAG_OBJECTIVE)
@@ -195,6 +198,12 @@ void USER_Update(Game* g, Context* ctx)
 		char timeText[16];
 		sprintf_s(timeText, 16, "Time: %d:%d",(int)_endTime / 60, (int)_endTime % 60);
 		FONT_PrintCentered(timeText);
+
+		FONT_SetCursor(0, 190);
+
+		char deathsText[16];
+		sprintf_s(deathsText, 16, "Deaths: %d", _deaths);
+		FONT_PrintCentered(deathsText);
 	}
 	else // Move player
 	{
@@ -436,6 +445,7 @@ void USER_Init(Game* g, Context* ctx)
 	showCredits = false;
 	_checkpointNoticeTimer = -1.f;
 	_jumperReload = -1.f;
+	_deaths = 0;
 
 	{
 		_player = OBJECT_New();
