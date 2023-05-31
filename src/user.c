@@ -26,6 +26,7 @@ static Vector _camOffset;
 static int collectibleLeft;
 
 static float _quantumEnergy;
+static float _endTime;
 
 #ifdef _DEBUG
 static int _lastFramerate;
@@ -56,7 +57,7 @@ static void ResetPlayer(void)
 	UpdateCameraPosition();
 }
 
-static void OnPlayerCollision(Game* game, Object* collision)
+static void OnPlayerCollision(Context* ctx, Game* game, Object* collision)
 {
 	// If collision is NULL, it means we falled from a platform
 	if (collision == NULL || collision->tag == USERTAG_TRAP)
@@ -71,6 +72,7 @@ static void OnPlayerCollision(Game* game, Object* collision)
 		{
 			_didWon = true;
 			_playerRb->linearVelocity = VECTOR_Zero();
+			_endTime = ctx->time->timeSinceStart;
 		}
 	}
 	else if (collision->tag == USERTAG_CHECKPOINT)
@@ -134,8 +136,15 @@ void USER_Update(Game* g, Context* ctx)
 
 	if (_didWon)
 	{
+		char nb[4];
 		FONT_SetCursor(32, 16);
-		FONT_Print("You Won");
+		FONT_Print("You Won: ");
+		_itoa_s((int)_endTime / 60, nb, 4, 10);
+		FONT_Print(nb);
+		FONT_Print(":");
+		_itoa_s((int)_endTime % 60, nb, 4, 10);
+		FONT_Print(nb);
+		FONT_Print("s");
 	}
 	else // Move player
 	{

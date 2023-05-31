@@ -58,7 +58,7 @@ Collider* COLLIDER_New(Renderer* r)
 	return coll;
 }
 
-bool COLLIDER_Check(Object* o, Vector incrPos, Game* game)
+bool COLLIDER_Check(Object* o, Vector incrPos, Game* game, Context* ctx)
 {
 	Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 	if (coll == NULL)
@@ -88,7 +88,7 @@ bool COLLIDER_Check(Object* o, Vector incrPos, Game* game)
 			{
 				if (coll->onCollision != NULL)
 				{
-					coll->onCollision(game, *to);
+					coll->onCollision(ctx, game, *to);
 				}
 				if (!targetColl->triggerOnly)
 				{

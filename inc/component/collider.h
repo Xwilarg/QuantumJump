@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 
+#include "context/context.h"
 #include "component/renderer.h"
 #include "utils/vector.h"
 #include "game.h"
@@ -12,10 +13,10 @@ typedef struct {
 	Vector min;
 	Vector max;
 
-	void (*onCollision)(Game*, Object*);
+	void (*onCollision)(Context* ctx, Game*, Object*);
 
 	bool triggerOnly;
 } Collider;
 
 Collider* COLLIDER_New(Renderer* r);
-bool COLLIDER_Check(Object* o, Vector incrPos, Game* game);
+bool COLLIDER_Check(Object* o, Vector incrPos, Game* game, Context* ctx);

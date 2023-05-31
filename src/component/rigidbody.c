@@ -8,7 +8,6 @@
 
 static void Update(Object* o, Game* game, Context* ctx, void* self)
 {
-	(void)game;
 	Rigidbody* rb = (Rigidbody*)self;
 
 	// Move rb with velocity
@@ -34,18 +33,18 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 		Collider* coll = OBJECT_GetComponent(o, COMPONENT_COLLIDER);
 		if (coll->onCollision != NULL)
 		{
-			coll->onCollision(game, NULL);
+			coll->onCollision(ctx, game, NULL);
 		}
 	}
 
-	bool collision = COLLIDER_Check(o, targetPos, game);
+	bool collision = COLLIDER_Check(o, targetPos, game, ctx);
 	if (collision)
 	{
 		// Check collisions on all axises
 		Vector x = VECTOR_New(targetPos.x, .0f, .0f);
 		Vector y = VECTOR_New(.0f, targetPos.y, .0f);
 		Vector z = VECTOR_New(.0f, .0f, targetPos.z);
-		if (COLLIDER_Check(o, y, game))
+		if (COLLIDER_Check(o, y, game, ctx))
 		{
 			rb->linearVelocity.y = 0;
 			if (targetPos.y < 0.f) // We are going down
@@ -57,7 +56,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 		{
 			o->transform->position = VECTOR_Add(o->transform->position, y);
 		}
-		if (COLLIDER_Check(o, x, game))
+		if (COLLIDER_Check(o, x, game, ctx))
 		{
 			rb->linearVelocity.x = 0;
 		}
@@ -65,7 +64,7 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 		{
 			o->transform->position = VECTOR_Add(o->transform->position, x);
 		}
-		if (COLLIDER_Check(o, z, game))
+		if (COLLIDER_Check(o, z, game, ctx))
 		{
 			rb->linearVelocity.z = 0;
 		}
