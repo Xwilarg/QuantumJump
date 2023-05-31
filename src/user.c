@@ -366,7 +366,10 @@ static void CreateMap(Game* g)
 			{
 				int px = x - halfSize;
 				int pz = z - halfSize;
-				AddPlatform(g, px, 1, pz);
+				if (floor[z][x] != 8)
+				{
+					AddPlatform(g, px, 1, pz);
+				}
 				switch (floor[z][x])
 				{
 				case 2: // Objective
