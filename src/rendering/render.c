@@ -159,7 +159,7 @@ void RENDER_GetClientArea(int* clientWidth, int* clientHeight)
 void RENDER_Clear(void)
 {
 	// clear the screen and the depth buffer
-	d3dDevice->lpVtbl->Clear(d3dDevice, 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.f, 0);
+	d3dDevice->lpVtbl->Clear(d3dDevice, 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(49, 77, 121), 1.f, 0);
 
 	// begin a new scene
 	d3dDevice->lpVtbl->BeginScene(d3dDevice);
