@@ -221,7 +221,7 @@ static void AddObjective(Game* game, int x, int y, int z, char* model)
 
 static void AddCheckpoint(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/checkpoint.mesh", "res/textures/colors.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/snake.mesh", "res/textures/colors.tex", true);
 
 	Rigidbody* rb = RIGIDBODY_New();
 	rb->useGravity = false;
@@ -234,7 +234,7 @@ static void AddCheckpoint(Game* game, int x, int y, int z)
 
 static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/snake.mesh", "res/textures/colors.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/collectibles/gun.mesh", "res/textures/colors.tex", true);
 
 	obj->tag = USERTAG_TRAP;
 }
@@ -278,8 +278,8 @@ void USER_Init(Game* g, Context* ctx)
 	AddPlatform(g, 0, 1, 0);
 
 	AddPlatform(g, 1, 1, 0);
-	//AddTrap(g, 1, 3, 0);
-	AddCheckpoint(g, 1, 2, 0);
+	AddTrap(g, 1, 3, 0);
+	//AddCheckpoint(g, 1, 2, 0);
 	AddObjective(g, -1, 3, 0, "res/models/collectibles/gun.mesh");
 	//AddObjective(g, 1, 2, 0, "res/models/collectibles/gun.mesh");
 

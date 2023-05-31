@@ -81,10 +81,19 @@ bool COLLIDER_Check(Object* o, Vector incrPos, Game* game, Context* ctx)
 		{
 			Vector tarMin = VECTOR_Add((*to)->transform->position, targetColl->min);
 			Vector tarMax = VECTOR_Add((*to)->transform->position, targetColl->max);
-			bool xCheck = (oMin.x >= tarMin.x && oMin.x <= tarMax.x) || (oMax.x >= tarMin.x && oMax.x <= tarMax.x);
-			bool yCheck = (oMin.y >= tarMin.y && oMin.y <= tarMax.y) || (oMax.y >= tarMin.y && oMax.y <= tarMax.y);
-			bool zCheck = (oMin.z >= tarMin.z && oMin.z <= tarMax.z) || (oMax.z >= tarMin.z && oMax.z <= tarMax.z);
-			if (xCheck && yCheck && zCheck)
+			bool xCheck = oMax.x < tarMin.x || oMin.x > tarMax.x;
+			bool yCheck = oMax.y < tarMin.y || oMin.y > tarMax.y;
+			bool zCheck = oMax.z < tarMin.z || oMin.z > tarMax.z;
+			if ((*to)->tag == 1)
+			{
+
+				FONT_SetCursor(32, 150);
+				FONT_Print("Collisions: ");
+				FONT_Print(!xCheck ? "yes " : "no ");
+				FONT_Print(!yCheck ? "yes " : "no ");
+				FONT_Print(!zCheck ? "yes " : "no ");
+			}
+			if (!xCheck && !yCheck && !zCheck)
 			{
 				if (coll->onCollision != NULL)
 				{
