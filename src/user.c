@@ -347,17 +347,18 @@ static void CreateMap(Game* g)
 	const int C = 3;
 	const int TL = 4;
 	const int TH = 5;
+	const int TS = 9;
 	const int JU = 8;
 
 	int floor[10][10] = {
 		{ 0 , _2, 0 , 0 , 0 , _0, 0 , 0 , 0 , O  },
-		{ 0 , O , 0 , 0 , 0 , 0 , _ , _ , _ , 0  },
+		{ 0 , O , 0 , 0 , 0 , 0 , _ , TS, _ , 0  },
 		{ _ , TL, C , _ , _2, _ , 0 , 0 , 0 , 0  },
 		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0  },
 		{ 0 , _ , 0 , 0 , 0 , _2, TL, _ , TL, O  },
 		{ 0 , TL, O , TH, 0 , P , 0 , 0 , 0 , _  },
-		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , _ , TL },
-		{ 0 , _2, 0 , 0 , 0 , _ , 0 , 0 , TL, _  },
+		{ 0 , TS, 0 , 0 , 0 , _ , 0 , 0 , _ , TL },
+		{ 0 , _2, 0 , 0 , 0 , TS, 0 , 0 , TL, _  },
 		{ 0 , C , _ , 0 , _ , _ , _2, 0 , C , TL },
 		{ 0 , 0 , 0 , 0 , _2, JU, _ , 0 , 0 , 0  }
 	};
@@ -418,6 +419,10 @@ static void CreateMap(Game* g)
 
 				case 8:
 					AddJumper(g, px, 2, pz);
+					break;
+
+				case 9:
+					AddTrap(g, px, 2, pz, 0, 0, true);
 					break;
 				}
 			}
