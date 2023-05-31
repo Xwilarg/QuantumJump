@@ -256,13 +256,13 @@ static void CreateMap(Game* g)
 	int floor[10][10] = {
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, O },
 		{ 0, O, 0, 0, 0, 0, _, _, _, 0 },
-		{ _, T, _, _, _, _, 0, 0, 0, 0 },
+		{ _, T, C, _, _, _, 0, 0, 0, 0 },
 		{ 0, _, 0, 0, 0, _, 0, 0, 0, 0 },
-		{ 0, _, 0, 0, 0, _, 0, 0, 0, O },
-		{ 0, C, O, T, 0, P, 0, 0, 0, C },
+		{ 0, _, 0, 0, 0, _, T, _, T, O },
+		{ 0, T, O, T, 0, P, 0, 0, 0, _ },
 		{ 0, _, 0, 0, 0, _, 0, 0, _, T },
 		{ 0, _, 0, 0, 0, _, 0, 0, T, _ },
-		{ 0, _, _, 0, _, _, _, 0, _, T },
+		{ 0, C, _, 0, _, _, _, 0, C, T },
 		{ 0, 0, 0, 0, _, _, _, 0, 0, 0 }
 	};
 	char collectibles[4][36] = {
@@ -328,7 +328,7 @@ void USER_Init(Game* g, Context* ctx)
 	{
 		_player = OBJECT_New();
 		_player->transform->position.z = -200.f; // TODO: Probably can do so we don't hardcode that uh
-		_player->transform->position.y = CONFIG_GRID_UNIT_UP * 2.f;
+		_player->transform->position.y = CONFIG_GRID_UNIT_UP * 2.1f;
 
 		Renderer* r = RENDERER_New("res/models/player.mesh", "res/textures/colors.tex");
 		Collider* coll = COLLIDER_New(r);
