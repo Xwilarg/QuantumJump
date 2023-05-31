@@ -4,6 +4,8 @@
 #include "rendering/texture.h"
 #include "rendering/render.h"
 
+#define FONT_BUFFER_SIZE 16 * 1024
+
 static Texture* font;
 
 static RenderBuffer* verticeBuffer;
@@ -23,7 +25,7 @@ static bool CreateBuffer()
 	}
 
 	// create a buffer large enough to hold some text quads
-	if (FAILED(d3dDevice->lpVtbl->CreateVertexBuffer(d3dDevice, 2048, 0, RENDER2DFVF, D3DPOOL_DEFAULT, &verticeBuffer->resource, NULL)))
+	if (FAILED(d3dDevice->lpVtbl->CreateVertexBuffer(d3dDevice, FONT_BUFFER_SIZE, 0, RENDER2DFVF, D3DPOOL_DEFAULT, &verticeBuffer->resource, NULL)))
 	{
 		return false;
 	}
@@ -83,7 +85,10 @@ static void CopyVertex(RenderBuffer* self, void* data, size_t size)
 
 void FONT_Print(const char* text)
 {
-	//assert(strlen(text) * sizeof(RenderVertex2d) * 4 < 2048);
+	assert(strlen(text) * sizeof(RenderVertex2d) * 6 < FONT_BUFFER_SIZE);
+
+	verticeBuffer->size = 0;
+	int numPrim = 0;
 
 	const char* c = text;
 	while (*c)
@@ -104,20 +109,21 @@ void FONT_Print(const char* text)
 			{(float)cursorX,				(float)cursorY,				0.f,	1.f,	u1, v1},
 			{(float)cursorX + fontSizeX,	(float)cursorY,				0.f,	1.f,	u2, v1},
 			{(float)cursorX,				(float)cursorY + fontSizeY,	0.f,	1.f,	u1, v2},
+
 			{(float)cursorX + fontSizeX,	(float)cursorY + fontSizeY,	0.f,	1.f,	u2, v2},
+			{(float)cursorX,				(float)cursorY + fontSizeY,	0.f,	1.f,	u1, v2},
+			{(float)cursorX + fontSizeX,	(float)cursorY,				0.f,	1.f,	u2, v1},
 		};
 
-		// TODO optimize draw calls by filling the whole buffer first
-		// but that won't work with a triangle strip
-		verticeBuffer->size = 0;
 		CopyVertex(verticeBuffer, &vertices, sizeof(vertices));
-
-		RENDER_RenderTexture2d(font, verticeBuffer, 2);
+		numPrim += 2;
 
 		// move the text cursor
 		cursorX += fontSizeX;
 		c++;
 	}
+
+	RENDER_RenderTexture2d(font, verticeBuffer, numPrim);
 }
 
 void FONT_Destroy(void)

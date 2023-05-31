@@ -231,7 +231,7 @@ void RENDER_RenderTexture2d(Texture* texture, RenderBuffer* vertices, int numPri
 	d3dDevice->lpVtbl->SetTexture(d3dDevice, 0, texture->handle);
 
 	// draw our vertices as triangle strip
-	d3dDevice->lpVtbl->DrawPrimitive(d3dDevice, D3DPT_TRIANGLESTRIP, 0, numPrimitives);
+	d3dDevice->lpVtbl->DrawPrimitive(d3dDevice, D3DPT_TRIANGLELIST, 0, numPrimitives);
 
 	// reset render state
 	d3dDevice->lpVtbl->SetRenderState(d3dDevice, D3DRS_ALPHABLENDENABLE, false);
