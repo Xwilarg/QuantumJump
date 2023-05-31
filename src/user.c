@@ -193,7 +193,7 @@ static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* text
 
 static void AddPlatform(Game* game, int x, int y, int z)
 {
-	AddObject(game, x, y, z, "res/models/plane.mesh", "res/textures/blue.tex", false);
+	AddObject(game, x, y, z, "res/models/platform.mesh", "res/textures/colors.tex", false);
 }
 
 static void AddObjective(Game* game, int x, int y, int z)
@@ -222,7 +222,7 @@ void USER_Init(Game* g, Context* ctx)
 {
 	(void)ctx;
 
-	_cameraPos = VECTOR_New(0.f, 400.f, 200.f);
+	_cameraPos = VECTOR_New(0.f, 600.f, 200.f);
 	_isLeftPressed = false;
 	_isRightPressed = false;
 	_isUpPressed = false;

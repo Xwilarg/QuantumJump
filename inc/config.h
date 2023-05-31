@@ -8,6 +8,6 @@
 #define CONFIG_Y_TERMINAL_VELOCITY -100.f
 
 #define CONFIG_GRID_UNIT 400.f
-#define CONFIG_GRID_UNIT_UP 50.f
+#define CONFIG_GRID_UNIT_UP 75.f
 
 #define CONFIG_GAME_NAME "Quantum Ranger"
