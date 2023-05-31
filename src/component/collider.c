@@ -84,15 +84,6 @@ bool COLLIDER_Check(Object* o, Vector incrPos, Game* game, Context* ctx)
 			bool xCheck = oMax.x < tarMin.x || oMin.x > tarMax.x;
 			bool yCheck = oMax.y < tarMin.y || oMin.y > tarMax.y;
 			bool zCheck = oMax.z < tarMin.z || oMin.z > tarMax.z;
-			if ((*to)->tag == 1)
-			{
-
-				FONT_SetCursor(32, 150);
-				FONT_Print("Collisions: ");
-				FONT_Print(!xCheck ? "yes " : "no ");
-				FONT_Print(!yCheck ? "yes " : "no ");
-				FONT_Print(!zCheck ? "yes " : "no ");
-			}
 			if (!xCheck && !yCheck && !zCheck)
 			{
 				if (coll->onCollision != NULL)

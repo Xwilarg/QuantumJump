@@ -144,7 +144,7 @@ void USER_Update(Game* g, Context* ctx)
 		FONT_Print(":");
 		_itoa_s((int)_endTime % 60, nb, 4, 10);
 		FONT_Print(nb);
-		FONT_Print("s");
+		FONT_Print("min");
 	}
 	else // Move player
 	{
@@ -275,19 +275,53 @@ void USER_Init(Game* g, Context* ctx)
 
 		GAME_AddObject(g, _player);
 	}
-	AddPlatform(g, 0, 1, 0);
 
-	AddPlatform(g, 1, 1, 0);
-	AddTrap(g, 1, 3, 0);
+	const int size = 10;
+	const int halfSize = size / 2.f;
+
+	int floor[10][10] = {
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 0, 1, 1, 2, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 2, 2, 2 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+	};
+	char collectibles[4][36] = {
+		"res/models/collectibles/gun.mesh",
+		"res/models/collectibles/bullet.mesh",
+		"res/models/collectibles/lasso.mesh",
+		"res/models/collectibles/spur.mesh"
+	};
+	int collectibleIndex = 0;
+
+	for (int z = 0; z < size; z++)
+	{
+		for (int x = 0; x < size; x++)
+		{
+			if (floor[z][x])
+			{
+				int px = x - halfSize;
+				int pz = z - halfSize;
+				AddPlatform(g, px, 1, pz);
+				switch (floor[z][x])
+				{
+				case 2:
+					AddObjective(g, px, 2, pz, collectibles[collectibleIndex]);
+					collectibleIndex++;
+					break;
+				}
+			}
+		}
+	}
+
+	//AddTrap(g, 1, 3, 0);
 	//AddCheckpoint(g, 1, 2, 0);
-	AddObjective(g, -1, 3, 0, "res/models/collectibles/gun.mesh");
 	//AddObjective(g, 1, 2, 0, "res/models/collectibles/gun.mesh");
-
-	AddPlatform(g, -1, 1, 0);
-	AddPlatform(g, -1, 1, 1);
-	AddPlatform(g, -2, 1, 1);
-	AddPlatform(g, -3, 1, 1);
-	AddPlatform(g, -3, 1, 0);
 
 	_initialPos = _player->transform->position;
 	_camOffset = VECTOR_New(
