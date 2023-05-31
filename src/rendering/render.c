@@ -148,6 +148,12 @@ bool RENDER_Init(HINSTANCE hInstance, int nShowCmd)
 	return true;
 }
 
+void RENDER_GetClientArea(int* clientWidth, int* clientHeight)
+{
+	*clientWidth = width;
+	*clientHeight = height;
+}
+
 // Begin the frame
 void RENDER_Clear(void)
 {

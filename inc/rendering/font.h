@@ -15,3 +15,4 @@ void FONT_Destroy(void);
 void FONT_SetCursor(int x, int y);
 void FONT_SetSize(int sizeX, int sizeY);
 void FONT_Print(const char* text);
+void FONT_PrintCentered(const char* text);
