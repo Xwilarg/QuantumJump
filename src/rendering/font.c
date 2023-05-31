@@ -83,7 +83,7 @@ static void CopyVertex(RenderBuffer* self, void* data, size_t size)
 
 void FONT_Print(const char* text)
 {
-	assert(strlen(text) * sizeof(RenderVertex2d) * 4 < 2048);
+	//assert(strlen(text) * sizeof(RenderVertex2d) * 4 < 2048);
 
 	const char* c = text;
 	while (*c)

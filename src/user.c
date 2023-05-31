@@ -28,6 +28,8 @@ static int collectibleLeft;
 static float _quantumEnergy;
 static float _endTime;
 
+static bool showCredits;
+
 #ifdef _DEBUG
 static int _lastFramerate;
 static int _framerate;
@@ -78,6 +80,10 @@ static void OnPlayerCollision(Context* ctx, Game* game, Object* collision)
 	else if (collision->tag == USERTAG_CHECKPOINT)
 	{
 		_initialPos = VECTOR_New(collision->transform->position.x, _initialPos.y, collision->transform->position.z);
+	}
+	else if (collision->tag == USERTAG_CREDITS)
+	{
+		showCredits = true;
 	}
 }
 
@@ -134,6 +140,12 @@ void USER_Update(Game* g, Context* ctx)
 	FONT_Print(fps);
 #endif
 
+	if (showCredits)
+	{
+		FONT_SetCursor(150, 150);
+		FONT_Print("3D Modelling\nJadith Nicole Kay Bruzenak\n\nMusic\nMidori\n\nProgramming\nTheIndra\nChristian Chaux");
+	}
+	showCredits = false;
 	if (_didWon)
 	{
 		char nb[4];
@@ -242,12 +254,30 @@ static void AddTrap(Game* game, int x, int y, int z, float ox, float oz, bool hi
 	obj->tag = USERTAG_TRAP;
 }
 
-static void AddObstable(Game* game, int x, int y, int z, float ox, float oz)
+static void AddObstacle(Game* game, int x, int y, int z, float ox, float oz)
 {
 	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/rocks.mesh", "res/textures/colors.tex", false);
 	obj->transform->position.x += ox;
 	obj->transform->position.z += oz;
 	obj->transform->position.y -= 20;
+}
+
+static void AddTombstone(Game* game, int x, int y, int z)
+{
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/tombstone.mesh", "res/textures/colors.tex", false);
+	Renderer* r = OBJECT_GetComponent(obj, COMPONENT_RENDERER);
+
+	Collider* triggerZone = COLLIDER_New(r);
+	const int size = 25;
+	triggerZone->min.x -= size;
+	triggerZone->min.y -= size;
+	triggerZone->min.z -= size;
+	triggerZone->max.x += size;
+	triggerZone->max.y += size;
+	triggerZone->max.z += size;
+	triggerZone->triggerOnly = true;
+
+	obj->tag = USERTAG_CREDITS;
 }
 
 static void CreateMap(Game* g)
@@ -258,13 +288,14 @@ static void CreateMap(Game* g)
 	const int P = 1;
 	const int _ = 1;
 	const int _2 = 6;
+	const int _0 = 7;
 	const int O = 2;
 	const int C = 3;
 	const int TL = 4;
 	const int TH = 5;
 
 	int floor[10][10] = {
-		{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , O  },
+		{ 0 , 0 , 0 , 0 , 0 , _0, 0 , 0 , 0 , O  },
 		{ 0 , O , 0 , 0 , 0 , 0 , _ , _ , _ , 0  },
 		{ _ , TL, C , _ , _ , _ , 0 , 0 , 0 , 0  },
 		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0  },
@@ -320,7 +351,11 @@ static void CreateMap(Game* g)
 					break;
 
 				case 6:
-					AddObstable(g, px, 2, pz, 0, 0);
+					AddObstacle(g, px, 2, pz, 0, 0);
+					break;
+
+				case 7:
+					AddTombstone(g, px, 2, pz);
 					break;
 				}
 			}
@@ -346,6 +381,7 @@ void USER_Init(Game* g, Context* ctx)
 	_framerateTimer = 1.f;
 #endif
 	_didWon = false;
+	showCredits = false;
 
 	{
 		_player = OBJECT_New();
