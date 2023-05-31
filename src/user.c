@@ -143,7 +143,7 @@ void USER_Update(Game* g, Context* ctx)
 	if (showCredits)
 	{
 		FONT_SetCursor(150, 150);
-		FONT_Print("3D Modelling\nJadith Nicole Kay Bruzenak\n\nMusic\nMidori\n\nProgramming\nTheIndra\nChristian Chaux");
+		FONT_Print("3D Modelling\nJadith Nicole Kay Bruzenak\n\nMusic\nMidori\n\nProgramming\nTheIndra\nChristian Chaux\n\n\"Erika Type\"font by Peter Wiegel under OFL");
 	}
 	showCredits = false;
 	if (_didWon)
