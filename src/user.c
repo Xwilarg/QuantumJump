@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdio.h>
 
 #include "component/renderer.h"
 #include "component/rigidbody.h"
@@ -156,8 +157,17 @@ void USER_Update(Game* g, Context* ctx)
 
 	if (showCredits)
 	{
-		FONT_SetCursor(150, 150);
-		FONT_Print("3D Modelling\nJadith Nicole Kay Bruzenak\n\nMusic\nMidori\n\nProgramming\nTheIndra\nChristian Chaux\n\n\"Erika Type\"font by Peter Wiegel under OFL");
+		FONT_SetCursor(0, 80); FONT_PrintCentered("3D Modelling");
+		FONT_SetCursor(0, 120); FONT_PrintCentered("Jadith Nicole Kay Bruzenak");
+		
+		FONT_SetCursor(0, 200); FONT_PrintCentered("Music");
+		FONT_SetCursor(0, 240); FONT_PrintCentered("Midori");
+		
+		FONT_SetCursor(0, 320); FONT_PrintCentered("Programming");
+		FONT_SetCursor(0, 360); FONT_PrintCentered("TheIndra");
+		FONT_SetCursor(0, 400); FONT_PrintCentered("Christian Chaux");
+
+		FONT_SetCursor(0, 480); FONT_PrintCentered("\"Erika Type\" font by Peter Wiegel under OFL");
 	}
 	showCredits = false;
 	if (_checkpointNoticeTimer > 0.f)
@@ -172,15 +182,19 @@ void USER_Update(Game* g, Context* ctx)
 	}
 	if (_didWon)
 	{
-		char nb[4];
-		FONT_SetCursor(32, 16);
-		FONT_Print("You Won: ");
-		_itoa_s((int)_endTime / 60, nb, 4, 10);
-		FONT_Print(nb);
-		FONT_Print(":");
-		_itoa_s((int)_endTime % 60, nb, 4, 10);
-		FONT_Print(nb);
-		FONT_Print("min");
+		// big headline
+		FONT_SetCursor(0, 80);
+		FONT_SetSize(32, 64);
+
+		FONT_PrintCentered("You won!");
+
+		// stats
+		FONT_SetCursor(0, 150);
+		FONT_SetSize(16, 32);
+
+		char timeText[16];
+		sprintf_s(timeText, 16, "Time: %d:%d",(int)_endTime / 60, (int)_endTime % 60);
+		FONT_PrintCentered(timeText);
 	}
 	else // Move player
 	{
