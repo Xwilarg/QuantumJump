@@ -15,6 +15,9 @@ static int cursorY;
 static int fontSizeX = FONT_CHAR_WIDTH;
 static int fontSizeY = FONT_CHAR_HEIGHT;
 
+static int screenWidth;
+static int screenHeight;
+
 static bool CreateBuffer()
 {
 	verticeBuffer = malloc(sizeof(RenderBuffer));
@@ -55,6 +58,8 @@ bool FONT_Init(void)
 		return false;
 	}
 
+	RENDER_GetClientArea(&screenWidth, &screenHeight);
+
 	return true;
 }
 
@@ -81,6 +86,11 @@ static void CopyVertex(RenderBuffer* self, void* data, size_t size)
 	self->size += size;
 
 	resource->lpVtbl->Unlock(resource);
+}
+
+static int GetTextWidth(const char* text)
+{
+	return strlen(text) * fontSizeX;
 }
 
 void FONT_Print(const char* text)
@@ -124,6 +134,15 @@ void FONT_Print(const char* text)
 	}
 
 	RENDER_RenderTexture2d(font, verticeBuffer, numPrim);
+}
+
+void FONT_PrintCentered(const char* text)
+{
+	int width = GetTextWidth(text);
+	int x = (screenWidth / 2) - (width / 2);
+
+	FONT_SetCursor(x, cursorY);
+	FONT_Print(text);
 }
 
 void FONT_Destroy(void)

@@ -38,4 +38,6 @@ void RENDER_RenderCube(Vector min, Vector max, Vector rotation);
 void RENDER_RenderMesh(Mesh* mesh, Transform* t);
 void RENDER_RenderTexture2d(Texture* texture, RenderBuffer* vertices, int numPrimitives);
 
+void RENDER_GetClientArea(int* clientWidth, int* clientHeight);
+
 extern LPDIRECT3DDEVICE9 d3dDevice;
