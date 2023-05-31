@@ -232,9 +232,9 @@ static void AddCheckpoint(Game* game, int x, int y, int z)
 	obj->tag = USERTAG_CHECKPOINT;
 }
 
-static void AddTrap(Game* game, int x, int y, int z, float ox, float oz)
+static void AddTrap(Game* game, int x, int y, int z, float ox, float oz, bool high)
 {
-	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/snake.mesh", "res/textures/colors.tex", true);
+	Object* obj = AddObject(game, x, y, z, high ? "res/models/obstacles/cactus.mesh" : "res/models/obstacles/snake.mesh", "res/textures/colors.tex", true);
 	obj->transform->position.x += ox;
 	obj->transform->position.z += oz;
 	obj->transform->position.y -= 20;
@@ -257,21 +257,22 @@ static void CreateMap(Game* g)
 
 	const int P = 1;
 	const int _ = 1;
-	const int _2 = 5;
+	const int _2 = 6;
 	const int O = 2;
 	const int C = 3;
-	const int T = 4;
+	const int TL = 4;
+	const int TH = 5;
 
 	int floor[10][10] = {
 		{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , O  },
 		{ 0 , O , 0 , 0 , 0 , 0 , _ , _ , _ , 0  },
-		{ _ , T , C , _ , _ , _ , 0 , 0 , 0 , 0  },
+		{ _ , TL, C , _ , _ , _ , 0 , 0 , 0 , 0  },
 		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0  },
-		{ 0 , _ , 0 , 0 , 0 , _2, T , _ , T , O  },
-		{ 0 , T , O , T , 0 , P , 0 , 0 , 0 , _  },
-		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , _ , T  },
-		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , T , _  },
-		{ 0 , C , _ , 0 , _ , _ , _ , 0 , C , T  },
+		{ 0 , _ , 0 , 0 , 0 , _2, TL, _ , TL, O  },
+		{ 0 , TL, O , TH, 0 , P , 0 , 0 , 0 , _  },
+		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , _ , TL },
+		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , TL, _  },
+		{ 0 , C , _ , 0 , _ , _ , _ , 0 , C , TL },
 		{ 0 , 0 , 0 , 0 , _ , _ , _ , 0 , 0 , 0  }
 	};
 	char collectibles[4][36] = {
@@ -303,14 +304,22 @@ static void CreateMap(Game* g)
 					break;
 
 				case 4:
-					AddTrap(g, px, 2, pz, 0, 0);
-					AddTrap(g, px, 2, pz, 75, 75);
-					AddTrap(g, px, 2, pz, 75, -75);
-					AddTrap(g, px, 2, pz, -75, 75);
-					AddTrap(g, px, 2, pz, -75, -75);
+					AddTrap(g, px, 2, pz, 0, 0, false);
+					AddTrap(g, px, 2, pz, 75, 75, false);
+					AddTrap(g, px, 2, pz, 75, -75, false);
+					AddTrap(g, px, 2, pz, -75, 75, false);
+					AddTrap(g, px, 2, pz, -75, -75, false);
 					break;
 
 				case 5:
+					AddTrap(g, px, 2, pz, 0, 0, true);
+					AddTrap(g, px, 2, pz, 75, 75, true);
+					AddTrap(g, px, 2, pz, 75, -75, true);
+					AddTrap(g, px, 2, pz, -75, 75, true);
+					AddTrap(g, px, 2, pz, -75, -75, true);
+					break;
+
+				case 6:
 					AddObstable(g, px, 2, pz, 0, 0);
 					break;
 				}
