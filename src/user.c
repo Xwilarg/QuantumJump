@@ -31,6 +31,7 @@ static float _endTime;
 static short _deaths;
 
 static bool showCredits;
+static bool showEasterEgg;
 
 static float _checkpointNoticeTimer;
 
@@ -94,6 +95,10 @@ static void OnPlayerCollision(Context* ctx, Game* game, Object* collision)
 	else if (collision->tag == USERTAG_CREDITS)
 	{
 		showCredits = true;
+	}
+	else if (collision->tag == USERTAG_EASTEREGG)
+	{
+		showEasterEgg = true;
 	}
 	else if (collision->tag == USERTAG_JUMPER)
 	{
@@ -172,7 +177,18 @@ void USER_Update(Game* g, Context* ctx)
 
 		FONT_SetCursor(0, 480); FONT_PrintCentered("\"Erika Type\" font by Peter Wiegel under OFL");
 	}
+	if (showEasterEgg)
+	{
+		FONT_SetCursor(0, 80); FONT_PrintCentered("In the poussiere oh Ohio");
+		FONT_SetCursor(0, 120); FONT_PrintCentered("Wearing his beautiful chapeau");
+		FONT_SetCursor(0, 160); FONT_PrintCentered("But who's this caballero ?");
+
+		FONT_SetCursor(0, 220); FONT_PrintCentered("On his cheval y craint personne,");
+		FONT_SetCursor(0, 260); FONT_PrintCentered("Les rattlesnakes, y s'en tamponne");
+		FONT_SetCursor(0, 300); FONT_PrintCentered("Like the Peaux-Rouges or the Dalton");
+	}
 	showCredits = false;
+	showEasterEgg = false;
 	if (_checkpointNoticeTimer > 0.f)
 	{
 		_checkpointNoticeTimer -= ctx->time->deltaTime;
@@ -334,32 +350,60 @@ static void AddTombstone(Game* game, int x, int y, int z)
 	obj->tag = USERTAG_CREDITS;
 }
 
+static void AddEasterEgg(Game* game, int x, int y, int z)
+{
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/tombstone.mesh", "res/textures/colors.tex", true);
+	obj->transform->position.y -= 20;
+	Collider* triggerZone = OBJECT_GetComponent(obj, COMPONENT_COLLIDER);
+	const int size = 25;
+	triggerZone->min.x -= size;
+	triggerZone->min.y -= size;
+	triggerZone->min.z -= size;
+	triggerZone->max.x += size;
+	triggerZone->max.y += size;
+	triggerZone->max.z += size;
+
+	obj->tag = USERTAG_EASTEREGG;
+}
+
 static void CreateMap(Game* g)
 {
-	const int size = 10;
+	const int size = 20;
 	const int halfSize = size / 2;
 
 	const int P = 1;
 	const int _ = 1;
+	const int __ = 10;
 	const int _2 = 6;
 	const int _0 = 7;
 	const int O = 2;
 	const int C = 3;
 	const int TL = 4;
 	const int TH = 5;
+	const int TS = 9;
 	const int JU = 8;
 
-	int floor[10][10] = {
-		{ 0 , 0 , 0 , 0 , 0 , _0, 0 , 0 , 0 , O  },
-		{ 0 , O , 0 , 0 , 0 , 0 , _ , _ , _ , 0  },
-		{ _ , TL, C , _ , _ , _ , 0 , 0 , 0 , 0  },
-		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0  },
-		{ 0 , _ , 0 , 0 , 0 , _2, TL, _ , TL, O  },
-		{ 0 , TL, O , TH, 0 , P , 0 , 0 , 0 , _  },
-		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , _ , TL },
-		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , TL, _  },
-		{ 0 , C , _ , 0 , _ , _ , _ , 0 , C , TL },
-		{ 0 , 0 , 0 , 0 , _ , JU, _ , 0 , 0 , 0  }
+	int floor[20][20] = {
+		{ 0 , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , _ , _2, _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , _ , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , TS, _ , _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , _ , _ , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , _2, 0 , 0 , 0 , _0, 0 , 0 , 0 , O , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , O , 0 , 0 , 0 , 0 , _ , TS, _ , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , _ , TL, C , _ , _2, _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , _ , 0 , 0 , 0 , _2, TL, _ , TL, O , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , TL, O , TH, 0 , P , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , TS, 0 , 0 , 0 , _ , 0 , 0 , _ , TL, 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , _2, 0 , 0 , 0 , TS, 0 , 0 , TL, _ , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , C , _ , 0 , _ , _ , _2, 0 , C , TL, 0 , 0 , 0 , 0 , 0 },
+		{ 0 , __, 0 , 0 , 0 , 0 , 0 , 0 , 0 , _2, JU, _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , _2, _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , _ , _2, 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , _ , 0 , _ , 0 , _ , 0 , _ , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 },
+		{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 }
 	};
 	char collectibles[4][36] = {
 		"res/models/collectibles/gun.mesh",
@@ -419,6 +463,14 @@ static void CreateMap(Game* g)
 				case 8:
 					AddJumper(g, px, 2, pz);
 					break;
+
+				case 9:
+					AddTrap(g, px, 2, pz, 0, 0, true);
+					break;
+
+				case 10:
+					AddEasterEgg(g, px, 2, pz);
+					break;
 				}
 			}
 		}
@@ -444,6 +496,7 @@ void USER_Init(Game* g, Context* ctx)
 #endif
 	_didWon = false;
 	showCredits = false;
+	showEasterEgg = false;
 	_checkpointNoticeTimer = -1.f;
 	_jumperReload = -1.f;
 	_deaths = 0;
