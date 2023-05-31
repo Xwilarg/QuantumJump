@@ -193,12 +193,12 @@ static Object* AddObject(Game* game, int x, int y, int z, char* mesh, char* text
 
 static void AddPlatform(Game* game, int x, int y, int z)
 {
-	AddObject(game, x, y, z, "res/plane.mesh", "res/blue.tex", false);
+	AddObject(game, x, y, z, "res/models/plane.mesh", "res/textures/blue.tex", false);
 }
 
 static void AddObjective(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/blue.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/enemy.mesh", "res/textures/blue.tex", true);
 
 	obj->tag = USERTAG_OBJECTIVE;
 	collectibleLeft++;
@@ -206,14 +206,14 @@ static void AddObjective(Game* game, int x, int y, int z)
 
 static void AddCheckpoint(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/enemy.mesh", "res/blue.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/enemy.mesh", "res/textures/blue.tex", true);
 
 	obj->tag = USERTAG_CHECKPOINT;
 }
 
 static void AddTrap(Game* game, int x, int y, int z)
 {
-	Object* obj = AddObject(game, x, y, z, "res/plane.mesh", "res/trap.tex", true);
+	Object* obj = AddObject(game, x, y, z, "res/models/plane.mesh", "res/textures/trap.tex", true);
 
 	obj->tag = USERTAG_TRAP;
 }
@@ -240,7 +240,7 @@ void USER_Init(Game* g, Context* ctx)
 		_player->transform->position.z = -200.f; // TODO: Probably can do so we don't hardcode that uh
 		_player->transform->position.y = CONFIG_GRID_UNIT_UP * 2.f;
 
-		Renderer* r = RENDERER_New("res/player.mesh", "res/player.tex");
+		Renderer* r = RENDERER_New("res/models/player.mesh", "res/textures/player.tex");
 		Collider* coll = COLLIDER_New(r);
 		_playerRb = RIGIDBODY_New();
 

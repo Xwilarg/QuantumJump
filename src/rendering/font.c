@@ -40,7 +40,7 @@ bool FONT_Init(void)
 		return false;
 	}
 
-	if (!TEXTURE_Load("res/font.tex", font))
+	if (!TEXTURE_Load("res/fonts/default.tex", font))
 	{
 		assert(!"Failed to load font texture");
 

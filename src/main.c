@@ -31,7 +31,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	USER_Init(game, ctx);
 
-	Sound* bgm = AUDIO_Load("res/BGM.sound", true);
+	Sound* bgm = AUDIO_Load("res/audio/BGM.sound", true);
 	AUDIO_Play(bgm);
 	//
 
