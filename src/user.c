@@ -161,7 +161,7 @@ void USER_Update(Game* g, Context* ctx)
 		FONT_SetCursor(0, 120); FONT_PrintCentered("Jadith Nicole Kay Bruzenak");
 		
 		FONT_SetCursor(0, 200); FONT_PrintCentered("Music");
-		FONT_SetCursor(0, 240); FONT_PrintCentered("Midori");
+		FONT_SetCursor(0, 240); FONT_PrintCentered("-K4ZE-");
 		
 		FONT_SetCursor(0, 320); FONT_PrintCentered("Programming");
 		FONT_SetCursor(0, 360); FONT_PrintCentered("TheIndra");
