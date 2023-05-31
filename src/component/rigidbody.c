@@ -14,13 +14,13 @@ static void Update(Object* o, Game* game, Context* ctx, void* self)
 	rb->linearVelocity = VECTOR_Multiply(rb->linearVelocity, 1.f - rb->linearDrag * ctx->time->deltaTime);
 	if (rb->useGravity)
 	{
-		float prevY = rb->linearVelocity.y;
-		float minY = min(prevY, CONFIG_Y_TERMINAL_VELOCITY); // Allow override of terminal velocity if input manually
+		//float prevY = rb->linearVelocity.y;
+		//float minY = min(prevY, CONFIG_Y_TERMINAL_VELOCITY); // Allow override of terminal velocity if input manually
 		rb->linearVelocity = VECTOR_Add(rb->linearVelocity, VECTOR_New(0.f, CONFIG_GRAVITY * ctx->time->deltaTime, 0.f));
-		if (rb->linearVelocity.y < minY)
+		/*if (rb->linearVelocity.y < prev)
 		{
 			rb->linearVelocity.y = minY;
-		}
+		}*/
 	}
 	rb->angularVelocity = VECTOR_Multiply(rb->angularVelocity, 1.f - rb->angularDrag * ctx->time->deltaTime);
 

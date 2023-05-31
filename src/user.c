@@ -40,6 +40,9 @@ static float _framerateTimer;
 
 static bool _didWon;
 
+static const float _jumperReloadRef = 2.f;
+static float _jumperReload;
+
 const Vector* GetCameraPosition(void)
 {
 	return &_cameraPos;
@@ -87,6 +90,14 @@ static void OnPlayerCollision(Context* ctx, Game* game, Object* collision)
 	else if (collision->tag == USERTAG_CREDITS)
 	{
 		showCredits = true;
+	}
+	else if (collision->tag == USERTAG_JUMPER)
+	{
+		if (_jumperReload < 0.f)
+		{
+			RIGIDBODY_AddForce(_playerRb, VECTOR_New(.0f, CONFIG_JUMP_FORCE * 5.f, .0f));
+			_jumperReload = _jumperReloadRef;
+		}
 	}
 }
 
@@ -154,6 +165,10 @@ void USER_Update(Game* g, Context* ctx)
 		_checkpointNoticeTimer -= ctx->time->deltaTime;
 		FONT_SetCursor(32, 64);
 		FONT_Print("Checkpoint Passed");
+	}
+	if (_jumperReload > 0.f)
+	{
+		_jumperReload -= ctx->time->deltaTime;
 	}
 	if (_didWon)
 	{
@@ -272,6 +287,13 @@ static void AddObstacle(Game* game, int x, int y, int z)
 	obj->transform->position.y -= 20;
 }
 
+static void AddJumper(Game* game, int x, int y, int z)
+{
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/coffin.mesh", "res/textures/colors.tex", true);
+
+	obj->tag = USERTAG_JUMPER;
+}
+
 static void AddTombstone(Game* game, int x, int y, int z)
 {
 	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/tombstone.mesh", "res/textures/colors.tex", true);
@@ -300,6 +322,7 @@ static void CreateMap(Game* g)
 	const int C = 3;
 	const int TL = 4;
 	const int TH = 5;
+	const int JU = 8;
 
 	int floor[10][10] = {
 		{ 0 , 0 , 0 , 0 , 0 , _0, 0 , 0 , 0 , O  },
@@ -311,7 +334,7 @@ static void CreateMap(Game* g)
 		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , _ , TL },
 		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , TL, _  },
 		{ 0 , C , _ , 0 , _ , _ , _ , 0 , C , TL },
-		{ 0 , 0 , 0 , 0 , _ , _ , _ , 0 , 0 , 0  }
+		{ 0 , 0 , 0 , 0 , _ , JU, _ , 0 , 0 , 0  }
 	};
 	char collectibles[4][36] = {
 		"res/models/collectibles/gun.mesh",
@@ -364,6 +387,10 @@ static void CreateMap(Game* g)
 				case 7:
 					AddTombstone(g, px, 2, pz);
 					break;
+
+				case 8:
+					AddJumper(g, px, 2, pz);
+					break;
 				}
 			}
 		}
@@ -390,6 +417,7 @@ void USER_Init(Game* g, Context* ctx)
 	_didWon = false;
 	showCredits = false;
 	_checkpointNoticeTimer = -1.f;
+	_jumperReload = -1.f;
 
 	{
 		_player = OBJECT_New();
