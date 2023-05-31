@@ -27,9 +27,11 @@ static int collectibleLeft;
 
 static float _quantumEnergy;
 
+#ifdef _DEBUG
 static int _lastFramerate;
 static int _framerate;
 static float _framerateTimer;
+#endif
 
 static bool _didWon;
 
@@ -115,6 +117,7 @@ void USER_Update(Game* g, Context* ctx)
 {
 	(void)g;
 
+#ifdef _DEBUG
 	_framerate++;
 	_framerateTimer -= ctx->time->deltaTime;
 	if (_framerateTimer <= 0.f)
@@ -127,6 +130,7 @@ void USER_Update(Game* g, Context* ctx)
 	_itoa_s((int)_lastFramerate, fps, 5, 10);
 	FONT_SetCursor(32, 64);
 	FONT_Print(fps);
+#endif
 
 	if (_didWon)
 	{
