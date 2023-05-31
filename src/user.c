@@ -242,6 +242,14 @@ static void AddTrap(Game* game, int x, int y, int z, float ox, float oz)
 	obj->tag = USERTAG_TRAP;
 }
 
+static void AddObstable(Game* game, int x, int y, int z, float ox, float oz)
+{
+	Object* obj = AddObject(game, x, y, z, "res/models/obstacles/rocks.mesh", "res/textures/colors.tex", false);
+	obj->transform->position.x += ox;
+	obj->transform->position.z += oz;
+	obj->transform->position.y -= 20;
+}
+
 static void CreateMap(Game* g)
 {
 	const int size = 10;
@@ -249,21 +257,22 @@ static void CreateMap(Game* g)
 
 	const int P = 1;
 	const int _ = 1;
+	const int _2 = 5;
 	const int O = 2;
 	const int C = 3;
 	const int T = 4;
 
 	int floor[10][10] = {
-		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, O },
-		{ 0, O, 0, 0, 0, 0, _, _, _, 0 },
-		{ _, T, C, _, _, _, 0, 0, 0, 0 },
-		{ 0, _, 0, 0, 0, _, 0, 0, 0, 0 },
-		{ 0, _, 0, 0, 0, _, T, _, T, O },
-		{ 0, T, O, T, 0, P, 0, 0, 0, _ },
-		{ 0, _, 0, 0, 0, _, 0, 0, _, T },
-		{ 0, _, 0, 0, 0, _, 0, 0, T, _ },
-		{ 0, C, _, 0, _, _, _, 0, C, T },
-		{ 0, 0, 0, 0, _, _, _, 0, 0, 0 }
+		{ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , O  },
+		{ 0 , O , 0 , 0 , 0 , 0 , _ , _ , _ , 0  },
+		{ _ , T , C , _ , _ , _ , 0 , 0 , 0 , 0  },
+		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , 0 , 0  },
+		{ 0 , _ , 0 , 0 , 0 , _2, T , _ , T , O  },
+		{ 0 , T , O , T , 0 , P , 0 , 0 , 0 , _  },
+		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , _ , T  },
+		{ 0 , _ , 0 , 0 , 0 , _ , 0 , 0 , T , _  },
+		{ 0 , C , _ , 0 , _ , _ , _ , 0 , C , T  },
+		{ 0 , 0 , 0 , 0 , _ , _ , _ , 0 , 0 , 0  }
 	};
 	char collectibles[4][36] = {
 		"res/models/collectibles/gun.mesh",
@@ -299,6 +308,10 @@ static void CreateMap(Game* g)
 					AddTrap(g, px, 2, pz, 75, -75);
 					AddTrap(g, px, 2, pz, -75, 75);
 					AddTrap(g, px, 2, pz, -75, -75);
+					break;
+
+				case 5:
+					AddObstable(g, px, 2, pz, 0, 0);
 					break;
 				}
 			}
