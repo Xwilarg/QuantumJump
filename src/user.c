@@ -31,6 +31,8 @@ static float _endTime;
 
 static bool showCredits;
 
+static float _checkpointNoticeTimer;
+
 #ifdef _DEBUG
 static int _lastFramerate;
 static int _framerate;
@@ -81,6 +83,7 @@ static void OnPlayerCollision(Context* ctx, Game* game, Object* collision)
 	else if (collision->tag == USERTAG_CHECKPOINT)
 	{
 		_initialPos = VECTOR_New(collision->transform->position.x, _initialPos.y, collision->transform->position.z);
+		_checkpointNoticeTimer = 2.f;
 	}
 	else if (collision->tag == USERTAG_CREDITS)
 	{
@@ -137,7 +140,7 @@ void USER_Update(Game* g, Context* ctx)
 	}
 	char fps[5];
 	_itoa_s((int)_lastFramerate, fps, 5, 10);
-	FONT_SetCursor(32, 64);
+	FONT_SetCursor(32, 96);
 	FONT_Print(fps);
 #endif
 
@@ -156,6 +159,12 @@ void USER_Update(Game* g, Context* ctx)
 		FONT_SetCursor(0, 480); FONT_PrintCentered("\"Erika Type\" font by Peter Wiegel under OFL");
 	}
 	showCredits = false;
+	if (_checkpointNoticeTimer > 0.f)
+	{
+		_checkpointNoticeTimer -= ctx->time->deltaTime;
+		FONT_SetCursor(32, 64);
+		FONT_Print("Checkpoint Passed");
+	}
 	if (_didWon)
 	{
 		// big headline
@@ -394,6 +403,7 @@ void USER_Init(Game* g, Context* ctx)
 #endif
 	_didWon = false;
 	showCredits = false;
+	_checkpointNoticeTimer = -1.f;
 
 	{
 		_player = OBJECT_New();
